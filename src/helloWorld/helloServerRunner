@@ -1,0 +1,32 @@
+#!/bin/bash
+#!-*- sh -*-
+#
+# Abs: helloServerRunner executes the helloServer EV4 server.
+#
+# Rem: helloServer is a simple example server demonstrating support for
+#      a client/server environment in EPICS V4. 
+#
+#      The important unique line in this script is -records. This argument
+#      sets the name of the E4V Database file where the server should find
+#      its interface definition - the queries and arguments it should expect.
+#
+#      THE ORDER OF ARGS IS IMPORTANT. -records must follow -structures.
+#
+# Usage: Execute helloServerRunner prior to executing helloClientRunner.   
+# 
+#         > ./helloServerRunner    
+# 
+# Ref: 
+# ----------------------------------------------------------------------------
+# Auth: 14-Sep-2011, Greg White (greg@slac.stanford.edu)
+# Mod:  
+# ============================================================================
+source helloWorld_setup.bash
+
+java -server org.epics.ioc.JavaIOC \
+     -structures ${JAVAIOC}/xml/structures.xml \
+     -structures ${PVSERVICE}/xml/structures.xml \
+     -records ${HELLO}/helloService.xml \
+     -server  ${JAVAIOC}/server/pvAccessClient.txt \
+     -server  ${JAVAIOC}/server/pvAccessServer.txt 
+#!     -swtshell 

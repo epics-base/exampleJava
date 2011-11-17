@@ -1,0 +1,28 @@
+#!/bin/bash
+#!-*- sh -*-
+#
+# Abs: helloClientRunner executes the helloClient EV4 client.
+#
+# Rem: helloClient is a simple example of an E4C client demonstrating support for a
+#      a client/server environment in EPICS V4. 
+#
+#      helloClient passes the argument it was given to the helloServer, which
+#      constructs and returns a simple greeting. The helloClient receives the 
+#      greeting, and prints it.
+#
+# Usage: Execute helloClientRunner anytime while helloServerRunner is running.   
+# 
+#         > ./helloClientRunner [optional name, if not supplied, "greg" is used].  
+#
+#         E.g.: 
+#         bash-3.2$ ./helloClientRunner julie
+#         Hello julie
+# 
+# Ref: 
+# ----------------------------------------------------------------------------
+# Auth: 14-Sep-2011, Greg White (greg@slac.stanford.edu)
+# Mod:  
+# ============================================================================
+source helloWorld_setup.bash
+
+java -server helloWorld.HelloClient ${1:-greg}

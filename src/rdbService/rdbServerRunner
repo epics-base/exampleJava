@@ -1,0 +1,35 @@
+#! /bin/bash
+#!-*- sh -*-
+#
+# Abs: rdbServerRunner executes the rdbService in an EV4 
+#      server.
+#
+# Rem: rdbService is a simple service for getting data out of a relational database
+#      such as Oracle. 
+#
+#      THE ORDER OF ARGS IS IMPORTANT. -records must follow -structures.
+#
+# Usage: Execute rdbServerRunner prior to executing rdbClientRunner.   
+# 
+#         > ./rdbServerRunner    
+# 
+# Ref: 
+# ----------------------------------------------------------------------------
+# Auth: 13-Oct-2011, Greg White (greg@slac.stanford.edu)
+# Mod:  
+# ============================================================================
+
+source rdb_setup.bash
+
+# Start the service as a factory Class called by the JavaIOC framework.
+# -XstartOnFirstThread is required in MacOS, to enable use of swtshell. 
+# If the swtshell is not required, -swtshell and -XstartOnFirstThread can be 
+# removed.
+# 
+java -server -XstartOnFirstThread org.epics.ioc.JavaIOC \
+     -structures ${JAVAIOC}/xml/structures.xml \
+     -structures ${PVSERVICE}/xml/structures.xml \
+     -records ${RDBXML}/rdbService.xml \
+     -server  ${JAVAIOC}/server/pvAccessClient.txt \
+     -server  ${JAVAIOC}/server/pvAccessServer.txt
+#     -swtshell 

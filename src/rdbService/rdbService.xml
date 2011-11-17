@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<!-- 
+
+    This XML file is a EPICS V4 IOC Database definition file, which defines 
+	the interface for the EPICS v4 service named rdbService. 
+	
+	The arguments to rdbService, are an "entity" String, and a 
+	String containing the parameters. The entity defines what it is that
+	the service should process. It's simply a text string that must be 
+	recognized by rdbService as a valid name of a query. It will look up the
+	given entity in some internal database, find the SQL query identified by 
+	that entity, and proceed to execute the given SQL query. 
+	
+	eg entity may be valued "SwissFel:allquads", in which case rdbService
+	would know it must find a SQL query that gets data about all the quadrupoles 
+	in the SwissFEL accelerator.
+	
+	Presently, the "parameters" argument is not used by rdbService. It 
+	might be used in a future version to provide, for instance replacement
+	symbols for the SQL query. 
+
+	========================================================================= 
+	Auth: 21-Sep-2011, Greg White (greg@slac.stanford.edu)
+	Rev: 
+	
+	Mod: 21-Sep-2011, Greg White. Renamed from testArchiveService and added header. 
+-->
+
+<database>
+	<record recordName = "rdbService" extends = "org.epics.pvService.service">
+    	<scalar name = "factoryRPC">rdbService.RdbServiceFactory</scalar>
+    	<structure name = "arguments">  
+        	<scalar name = "entity" scalarType = "string" />
+        	<scalar name = "parameters" scalarType = "string" />
+    	</structure>
+	</record>
+</database>
+
