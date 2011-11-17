@@ -2,7 +2,8 @@ RDBSERVICE_README.txt
 
 This is the README file of the rdbService module. rdbService is a 
 minimal EPICS V4 service which demonstrates the use of EPICS V4 RPC support in pvService
-for implementing a relational database service.
+for implementing a relational database service, and client that shows how
+users can trivially get data from a db like Oracle.
 
 Auth: Greg White, 13-Oct-2011 (greg@slac.stanford.edu) / gregory.white@psi.ch
 
@@ -10,7 +11,7 @@ EXAMPLE
 -------
 The following is an example of running the client. This examples gets details
 about all the devices in the SwissFEL Test accelerator from the PSI Oracle database,
-and prints them to the terminal. For brevity, only 6 rows of hundreds are included here:
+and prints them to the terminal. For brevity, only 6 rows of the output are included here:
 
   % ./rdbClientRunner swissfeltest:alldevices
         NAME         PREFIX  SUFFIX                 DESCRIPTION                    RESPONSIBLE    
@@ -183,11 +184,11 @@ side to format, about 560 rows of data.
 * Large size sample: 60M characters (all the pvname data) in SLS, took 13 seconds:
 [gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner sls:allpvnames >/dev/null
 13.270u 2.201s 0:38.66 40.0%    0+0k 21+72io 8pf+0w
-[gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner sls:allpvnames | wc
+[gregsmac:exampleJava/src/rdbService] greg% ./rdbClientRunner sls:allpvnames | wc
   348848 3136676 60350704
 
-So, extremely roughly speaking, 1/2 Megabyte query result data per second, based on simple
-unoptimized oracle queries executed by unoptimized JDBC, and, importantly, including the 
+So, extremely roughly speaking, a rdbClient user sees 1/2 Megabyte query result data per second, 
+based on simple unoptimized Oracle queries executed by unoptimized JDBC, and, importantly, including the 
 reformatting for printing that application would probably skip or do itself.
 
 

@@ -25,46 +25,63 @@
 
 function usage {
     echo "
-Usage: `basename $0` [-h] queryname
-   -h   Show this help
-
-   `basename $0` is a utility for getting data out of a relational database.
+    getRdb is a utility for getting data out of a relational database.
+ 
+    Usage: getRdb [-lLrch] queryname
    
+   -h   Show this help
+   -l   Print labels as well as data. This is the default
+   -L   No labels are printed, useful in unix pipes
+   -r   Print output row oriented
+   -c   Print output column oriented (ie as a table). This is the default
+    
    The database queries understood by getRdb are each 'named' so a user does not
    have to know the SQL query itself, only the name of the query. The SQL queries
    equivalent to each name, are known by the server that getRdb calls. As a user,
    you only have to know the simple names.
    
    Examples:
-   
-       $ getRdb LCLS:elementInfo.byZ   
+       Note: the names of queries will change from lab ot lab, so these examples
+       from PSI are for illustration.
        
-       This gets all the lattice elements of the LCLS accelerator and associated 
-       information about them.
+       At PSI this gets all the devices of the SwissFEL accelerator and associated 
+       information about them:
+       
+       $ getRdb swissfeltest:alldevices  
+      
+       This might get all of the modelled Twiss parameters of every element
+       the last time the model was run on the real machine:
        
        $ getRdb  modelTwiss:Extant.FullMachine
        
-       This gets all of the modelled Twiss parameters of every element of LCLS, 
-       at the last time the model was run on the existing accelerator setpoints.
+       To suppress labels, use -L:
+       
+       % getRdb -L swissfel:sectiontree 
        
 "
 }   
 
 source `dirname $0`/rdb_setup.bash
 
-while getopts h opt; do
+labelswanted=labels
+orientation=col
+while getopts Llrch opt; do
     case $opt in
         h) usage; shift ;;
+        l) labelswanted=labels; shift ;;
+        L) labelswanted=nolabels; shift ;;
+        r) orientation=row; shift ;;
+        c) orientation=col; shift ;;
         *) printf "option \"$opt\" not recognized. Try getRdb -h for help\n" ;;
     esac
 done
 
-if [ $# -le 0 -o $# -gt 1 ]; then 
+if [ $# -le 0 ]; then 
     echo "getRdb requires the name of a query to be given."
     echo "Try getRdb -h for help."
     exit 1
 fi
 
-rdbClientRunner $1
+./rdbClientRunner $1 $orientation $labelswanted
 
 exit
