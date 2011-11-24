@@ -99,10 +99,11 @@ public class RdbServiceFactory
 		private static final String CONNECTION_URI_DEFAULT = 
 			"jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD";
 		private static final String CONNECTION_USERID_DEFAULT = "eida";
-		private static final String CONNECTION_PWD = "eida-2011";
+		private static final String CONNECTION_PWD_DEFAULT = "nicetry";
 		private static final String NORESULTSETMETADATA = 
 			"No ResultSet metadata available, so can not continue to get data";
-		private static final int MAX_RETRIES = 2; // Try a sql query at most 2 times.
+		private static final int MAX_RETRIES = 2; // Try a SQL query at most 2 times
+		                                          // before reinit and requery.
 	
 		// Index of the column of eida.eida_names that contains the query string.
 		private static final int QRYCOLUMNNUM = 1; 
@@ -188,9 +189,10 @@ public class RdbServiceFactory
 				// CONNECTION_USERID_PWD if given, otherwise hard coded.
 				//
 				String connectionString = System.getProperty("CONNECTION_URI_PROPERTY", CONNECTION_URI_DEFAULT);
+				String pwd = System.getProperty("CONNECTION_PWD", CONNECTION_PWD_DEFAULT);
 				msgl("Initializing database connection: " + connectionString);
 				m_Conn = DriverManager.getConnection(connectionString,
-				        System.getProperty("CONNECTION_USERID_PROPERTY", CONNECTION_USERID_DEFAULT), CONNECTION_PWD); 
+				        System.getProperty("CONNECTION_USERID_PROPERTY", CONNECTION_USERID_DEFAULT), pwd); 
 		
 			} catch (Exception ex)
 			{

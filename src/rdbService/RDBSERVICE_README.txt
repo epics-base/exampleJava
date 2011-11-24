@@ -75,6 +75,8 @@ CONFIGURATION
    sls:allmagnetdata	     Select * from sls.magnetddata_v order by type
    swissfeltest:sectiontree	 Select *  from swissfel.swissfel_test_tree_v
 
+   Then edit your version of rdbServiceRunner to pass the right Java Properties (-Ds)
+   
 1. Edit your version of common/script/pvCommon_setup.bash, and set the value of JAVAIOC
 
 2. Edit your version of exampleJava/src/rdbService/rdbSetup.bash and set it for your environment.

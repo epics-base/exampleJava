@@ -9,6 +9,5 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/pvAccessJava"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pvDataJava"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pvIOCJava"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/pvServiceJava"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

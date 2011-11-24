@@ -6,10 +6,10 @@ Auth: Greg White, 19-Sep-2011 (greg@slac.stanford.edu)
 
 EXMAPLE
 -------
-The following is an exampe of running the client, giving the argument "greg"
+The following is an example of running the client, giving the argument "Jessica"
 
-          % ./helloClientRunner greg
-          Hello greg
+          % ./helloClientRunner Jessica
+          Hello Jessica
 
 SUMMARY
 -------
