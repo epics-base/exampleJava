@@ -1,5 +1,5 @@
 bin
 doc
-
+src/rdbService/rdbServerRunner
 syntax: regexp
 ^target$
