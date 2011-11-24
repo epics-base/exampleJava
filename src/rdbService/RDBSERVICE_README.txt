@@ -53,15 +53,14 @@ rdb_setup.bash                  A unix (bash) source script which initializes th
 UnableToGetDataException        A simple Exception class used to indicate inability to get data.
 
 
-PREREQUISITES
--------------
-EPICS V4 components:
+REQUISITES
+----------
+EPICS V4 components. Basically, check these repos out of EPICS V4 Mercurial
 1. common  - for source/pvCommon_setup.bash
-2. pvAccess - for PVAccess 
-3. pvData   - for PVData 
-4. pvIOC     - for JavaIOC 
-5. pvService - for pvService.rpc Java classes
-6. example   - for the rdbService java classes and config files.
+2. pvAccessJava - for PVAccess 
+3. pvDataJava   - for PVData 
+4. pvIOCJava    - for JavaIOC 
+5. exampleJava   - for the rdbService java classes and config files.
 
 CONFIGURATION
 -------------
