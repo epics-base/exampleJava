@@ -3,6 +3,8 @@ HELLOWORLD_README.txt
 This is the README file of the helloWorld service.
 
 Auth: Greg White, 19-Sep-2011 (greg@slac.stanford.edu)
+Mod:  Greg White, 1-Dec-2011 (greg@slac.stanford.edu), removed dependency on pvService.
+
 
 EXMAPLE
 -------
@@ -34,11 +36,10 @@ PREREQUISITES
 -------------
 EPICS V4 components:
 1. common  - for source/pvCommon_setup.bash
-2. pvAccess - for PVAccess 
-3. pvData   - for PVData 
-4. pvIOC     - for JavaIOC 
-5. pvService - for pvService.rpc Java classes
-6. example   - for the example java classes and config files.
+2. pvAccessJava - for PVAccess 
+3. pvDataJava   - for PVData 
+4. pvIOCJava    - for JavaIOC rpc
+5. exampleJava      - for the example java classes and config files.
 
 SETUP
 -----
