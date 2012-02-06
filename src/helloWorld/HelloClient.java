@@ -14,9 +14,9 @@ import org.epics.pvData.pv.PVString;
 import org.epics.pvData.pv.PVStructure;
 import org.epics.pvData.pv.ScalarType;
 import org.epics.pvData.pv.Status;
-import org.epics.rpc.ServiceClient;
-import org.epics.rpc.ServiceClientFactory;
-import org.epics.rpc.ServiceClientRequester;
+import org.epics.pvService.rpc.ServiceClient;
+import org.epics.pvService.rpc.ServiceClientFactory;
+import org.epics.pvService.rpc.ServiceClientRequester;
 
 /**
  * HelloClient is a main class that illustrates a simple example of an E4C

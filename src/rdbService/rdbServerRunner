@@ -37,7 +37,7 @@ source rdb_setup.bash
 java -server \
      -DCONNECTION_URI_PROPERTY=jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD \
      -DCONNECTION_USERID_PROPERTY=eida \
-     -DCONNECTION_PWD=eidaspassword \
+     -DCONNECTION_PWD=nicetry! \
      -XstartOnFirstThread org.epics.ioc.JavaIOC \
      -structures ${JAVAIOC}/xml/structures.xml \
      -structures ${PVSERVICE}/xml/structures.xml \

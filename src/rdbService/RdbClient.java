@@ -10,9 +10,9 @@ import org.epics.pvData.pv.FieldCreate;
 import java.lang.RuntimeException;
 import org.epics.pvData.pv.PVDataCreate;
 import org.epics.pvData.pv.*;
-import org.epics.rpc.ServiceClient;
-import org.epics.rpc.ServiceClientFactory;
-import org.epics.rpc.ServiceClientRequester;
+import org.epics.pvService.rpc.ServiceClient;
+import org.epics.pvService.rpc.ServiceClientFactory;
+import org.epics.pvService.rpc.ServiceClientRequester;
 
 import rdbService.namedValues.*;                         // Table manipulation and printing 
 import rdbService.pvDataHelper.GetHelper;
