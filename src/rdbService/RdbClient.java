@@ -8,7 +8,6 @@ import org.epics.pvData.factory.PVDataFactory;
 import org.epics.pvData.pv.Field;
 import org.epics.pvData.pv.FieldCreate;
 import java.lang.RuntimeException;
-import org.epics.pvData.pv.PVDataCreate;
 import org.epics.pvData.pv.*;
 import org.epics.pvService.rpc.ServiceClient;
 import org.epics.pvService.rpc.ServiceClientFactory;
@@ -27,6 +26,7 @@ import rdbService.pvDataHelper.GetHelper;
  */
 public class RdbClient 
 {
+	// Issue application level debugging messages if true.
 	private static final boolean DEBUG = false;
 	
 	// Set an identifying name for your client, used by the service. Does not have to
@@ -94,7 +94,8 @@ public class RdbClient
 	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, SERVICE_ARGUMENTS_FIELDNAME, fields);
 	    
 		// Make connection to service
-		client.connect(OBJECTIVE_SERVICE_NAME);
+
+	    client.connect(OBJECTIVE_SERVICE_NAME);
 
 		_dbg("DEBUG: main(): following client connect, pvarguments = "+
 				pvArguments.toString());
@@ -127,13 +128,19 @@ public class RdbClient
 		}
 		catch ( Exception ex )
 		{
-			System.err.println(ex.getMessage());
-			pvResult = null;
+			if ( ex.getMessage() != null ) System.err.println(ex.getMessage());
+		    System.exit(NODATARETURNED);	
 		}
 		
 		// Print the results if we have any.
 		//
-		if (pvResult != null) 
+		if (pvResult == null)
+		{
+			System.err.println("Internal Error in "+OBJECTIVE_SERVICE_NAME+
+					". Server returned null top level result but no Exception");
+		    System.exit(NODATARETURNED);	
+		}
+		else
 		{
 			PVString normativetypeField = pvResult.getStringField(TYPE_FIELD_NAME);
 
@@ -278,15 +285,25 @@ public class RdbClient
 		 * @return The pvStructure of the arguments expected by the service; the client
 		 * "sends arguments" by filling in the elements of this returned structure.
 		 */
-		void connect( String objectiveServiceName) 
+		void connect( String objectiveServiceName)
 		{
 			_dbg("connect() entered");
 
 			// Service name argument must match recordName in XML database exactly, 
 			// including case.
-			serviceClient = ServiceClientFactory.create(objectiveServiceName, this);			
-			// Connect with 5.0s timeout. Increase for slow services. 
-			serviceClient.waitConnect(5.0);
+			try 
+			{
+				serviceClient = ServiceClientFactory.create(objectiveServiceName, this);			
+				// Connect with 5.0s timeout. Increase for slow services. 
+				serviceClient.waitConnect(5.0);	
+			}
+			catch ( Exception ex )
+			{
+				System.err.println(this.getClass().getName()+" received Exception "+ ex.getClass() +
+						" with message \""+ex.getMessage() +"\"");
+				System.err.println("Unable to contact "+OBJECTIVE_SERVICE_NAME+". Exiting");
+				System.exit(1);	
+			}
 
 			_dbg("connect() exits");
 		}
@@ -366,7 +383,8 @@ public class RdbClient
 		    if ( !status.isOK() ) 
 		    {
 		        // throw new RuntimeException("Request error: " + status.getMessage());
-		    	System.err.println(status.getMessage());
+		    	System.err.println(OBJECTIVE_SERVICE_NAME + " returned status "+status.getType().toString() +
+		    			" with message: "+status.getMessage());
 		    	this.pvResult = null;
 		    }
 		    else
@@ -407,7 +425,8 @@ public class RdbClient
 		@Override
 		public void message(String message, MessageType messageType) 
 		{
-			System.out.printf("%n%s %s%n",messageType.toString(),message);
+			System.out.printf("Message from %s %s: %s",OBJECTIVE_SERVICE_NAME, 
+					messageType.toString(),message);
 		}
 		
 	} // end class Client

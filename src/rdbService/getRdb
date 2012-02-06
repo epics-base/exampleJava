@@ -22,6 +22,7 @@
 # Auth: 13-Oct-2011, Greg White (greg@slac.stanford.edu)
 # Mod:  
 # ============================================================================
+BADARGS=1
 
 function usage {
     echo "
@@ -72,16 +73,15 @@ while getopts Llrch opt; do
         L) labelswanted=nolabels; shift ;;
         r) orientation=row; shift ;;
         c) orientation=col; shift ;;
-        *) printf "option \"$opt\" not recognized. Try getRdb -h for help\n" ;;
+        *) printf "option not recognized. Try getRdb -h for help\n"; exit $BADARGS;;
     esac
 done
 
 if [ $# -le 0 ]; then 
-    echo "getRdb requires the name of a query to be given."
-    echo "Try getRdb -h for help."
+    echo "getRdb requires the name of a query to be given. Try getRdb -h for help."
     exit 1
 fi
 
 ./rdbClientRunner $1 $orientation $labelswanted
 
-exit
+exit $?

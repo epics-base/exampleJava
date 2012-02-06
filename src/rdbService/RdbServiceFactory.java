@@ -17,31 +17,36 @@ import org.epics.pvData.pv.Status.StatusType;
 import org.epics.pvData.pv.*;
 
 /**
- * RdbServiceFactory implements an EPICS v4 service for retrieving data from a relational database (rdb) like Oracle.
+ * RdbServiceFactory implements an EPICS v4 service for retrieving data from a relational 
+ * database (rdb) like Oracle.
  * 
- * In the EPICS v4 services framework, each service is implemented by creating a class with the signature defined by
- * [TODO: where in fact?]. RdbServiceFactory is the required factory Class for the Rdb service. This is the guy a
- * service developer writes.
+ * In the EPICS v4 services framework, each service is implemented by creating a class with 
+ * the signature defined by [TODO: where in fact?]. RdbServiceFactory is the required factory 
+ * Class for the Rdb service. This is the guy a service developer writes.
  * 
  * As written, RdbService expects arguments of the following form:
  * <pre>
  *     string entity      - The entity for which to get data from the relational database,
  *                          eg "SwissFEL:alldevices"
  *     string parameters  - No parameters are supported by rdbService at present. When 
- *                          functionality like text replacement is added, this argument will be used.
+ *                          functionality like text replacement is added, this argument 
+ *                          will be used.
  * </pre>
- * [This form is not required by the EPICS v4 RPC framework, but is shared by the 3 services I've written 
- * so far because it's a pattern that seems to fit many use cases; you ask a service for a named thing, 
- * subject to parameters. It's also the pattern at the heart of URLs, so it'll be easy to expose 
- * EPICS V4 services as Web Services.]
+ * This form is not required by the EPICS v4 RPC framework, but is shared by the 3 
+ * services I've written so far because it's a pattern that seems to fit many use 
+ * cases; you ask a service for a named thing, subject to parameters. It's also the pattern 
+ * at the heart of URLs, so it'll be easy to expose EPICS V4 services as Web Services.
  * 
- * These must be defined in the EPICS V4 XML database definition file of the service (rdbService.xml) and this class
- * must expect and process these in accordance with the XML file. Note the XML db is part of EPICS V4, and has nothing
- * to do with the relational database that will be accessed. The XML db is part of the required EPICS V4 infrastructure
- * of any EPICS V4 RPC type service, this particular service accesses a relational database like Oracle.  
+ * These must be defined in the EPICS V4 XML database definition file of the service 
+ * (rdbService.xml) and this class must expect and process these in accordance with the 
+ * XML file. Note the XML db is part of EPICS V4, and has nothing to do with the 
+ * relational database that will be accessed. The XML db is part of the required EPICS 
+ * V4 infrastructure of any EPICS V4 RPC type service, this particular service accesses 
+ * a relational database like Oracle.  
  * 
- * The service returns results as a PVStructure of normative type NTTable (as NTTable was defined at the 
- * time of writing, it was in flux, as the idea was being driven by this project).
+ * The service returns results as a PVStructure of normative type NTTable (as NTTable 
+ * was defined at the time of writing, it was in flux, as the idea was being driven 
+ * by this project).
  * 
  * @author Greg White, 13-Oct-2011 (greg@slac.stanford.edu)
  * 
@@ -114,8 +119,9 @@ public class RdbServiceFactory
 		// user's client, 2) global message log, 3) local stderr.
 		private void msg(String message)
 		{
-			// TODO: Make these go back to the client
-			System.out.println(SERVICE_NAME + ": " + message);
+			// TODO: Make these go back to the client. Following line causes Connection Error
+			// channelRPCRequester.message(message, MessageType.error);
+			System.err.println(SERVICE_NAME + ": " + message);
 		}
 
 		private void msgl(String message)
@@ -279,11 +285,13 @@ public class RdbServiceFactory
 		    // by rdbClient. It is only in the rdbService xml record db because 
 			// a this early stage in EPICS v4 it looks like a good idea to make all
 			// services xml look identical, so all server code can be cloned.
-			m_pvEntity = pvArguments.getStringField("entity");
-			if (m_pvEntity == null)
-				channelRPCRequester.requestDone(missingRequiredArgumentStatus, null);
-			entity = m_pvEntity.get();
-			// m_pvParameters is not used, so we don't check it.
+			//
+            m_pvEntity = pvArguments.getStringField("entity");
+            if (m_pvEntity == null)
+            	channelRPCRequester.requestDone(missingRequiredArgumentStatus, null);
+            entity = m_pvEntity.get();
+
+            // m_pvParameters is not used, so we don't check it.
 			m_pvParameters = pvArguments.getStringField("parameters");
 
 			// Construct the return data structure "pvTop."
@@ -306,6 +314,7 @@ public class RdbServiceFactory
 			if (query == null)
 			{
 				_dbg("No matching Entity was found for query: " + query);
+
 				channelRPCRequester.requestDone(noMatchingQueryStatus, pvTop);
 			} else
 			{
