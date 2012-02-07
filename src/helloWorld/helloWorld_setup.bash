@@ -17,22 +17,24 @@
 #
 # ----------------------------------------------------------------------------
 # Auth: 14-Sep-2011, Greg White (greg@slac.stanford.edu).
-# Mod:  
+# Mod:   7-Feb-2011, Greg White (greg@slac.stanford.edu and gregory.white@psi.ch
+#        Edited to be suitable for use with maven builds, rather than Eclipse.
 # ============================================================================
 
 # "Source" file that sets up shared references. Sets JAVAIOC shared reference.
-source $HOME/Development/epicsV4/workspace_hg/common/source/pvCommon_setup.bash
+source $HOME/Development/epicsV4/ev4hg/common/source/pvCommon_setup.bash
 
 # Set the antecedent dependency locations, used to 
 # set the classpath, and in startup to find setup data like xmls.
 #
-WORKSPACE=$HOME/Development/epicsV4/workspace_hg
-EXAMPLES=${WORKSPACE}/exampleJava
-HELLO=${EXAMPLES}/src/helloWorld
+WORKSPACE=$HOME/Development/epicsV4/ev4hg
 
-PVDATA=${WORKSPACE}/pvDataJava
-PVACCESS=${WORKSPACE}/pvAccessJava
+# Where to find service xmls:
 PVSERVICE=${WORKSPACE}/pvServiceJava
+# Where to find exampleJava's class files, as used in CLASSPATH:
+EXAMPLES=${WORKSPACE}/exampleJava
+# Where to find HELLO's own xml:
+HELLO=${EXAMPLES}/src/helloWorld
 
 # Set the CLASSPATH. Classpath requires classes or jars for all the antecedent
 # dependencies of helloWorld: pvIOC, pvData, pvAccess, pvService, CAJ, JCA. 
@@ -41,19 +43,20 @@ PVSERVICE=${WORKSPACE}/pvServiceJava
 # by Eclipse (delivering classes to their respective /bin dirs) but you may 
 # need to edit this if you build a different way.
 #
-CLASSPATH=${EXAMPLES}/bin
-CLASSPATH=${CLASSPATH}:${JAVAIOC}/bin
-CLASSPATH=${CLASSPATH}:${PVDATA}/bin
-CLASSPATH=${CLASSPATH}:${PVACCESS}/bin
-CLASSPATH=${CLASSPATH}:${PVSERVICE}/bin
-CLASSPATH=${CLASSPATH}:${JAVAIOC}/jar/CAJ.jar
-CLASSPATH=${CLASSPATH}:${JAVAIOC}/jar/JCA.jar
+CLASSPATH=${EXAMPLES}/target/classes
+PVVERSION='1.1-SNAPSHOT'
+CLASSPATH=${CLASSPATH}:${HOME}/.m2/repository/epics/pvIOC/${PVVERSION}/pvIOC-${PVVERSION}.jar
+CLASSPATH=${CLASSPATH}:${HOME}/.m2/repository/epics/pvData/${PVVERSION}/pvData-${PVVERSION}.jar
+CLASSPATH=${CLASSPATH}:${HOME}/.m2/repository/epics/pvAccess/${PVVERSION}/pvAccess-${PVVERSION}.jar
+CLASSPATH=${CLASSPATH}:${HOME}/.m2/repository/epics/pvService/${PVVERSION}/pvService-${PVVERSION}.jar
+CLASSPATH=${CLASSPATH}:${HOME}/.m2/repository/epics/caj/1.1.8/caj-1.1.8.jar
+CLASSPATH=${CLASSPATH}:${HOME}/.m2/repository/epics/jca/2.3.5/jca-2.3.5.jar
 # If you like, add swt.jar for your platform. It may be in /usr/lib (linux) or a
 # subdir of the Eclipse app on a Mac.
-# export CLASSPATH=${CLASSPATH}:/usr/lib/eclipse/swt.jar 
-CLASSPATH=${CLASSPATH}:/Applications/eclipse\ 3.6.2\ \(IDE\ for\ EE\)\ /plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.6.2.v3659b.jar
+# For linux add CLASSPATH=${CLASSPATH}:/usr/lib/eclipse/swt.jar 
+# For mac add, eg, CLASSPATH=${CLASSPATH}:/Applications/eclipse\ 3.6.2\ \(IDE\ for\ EE\)\ /plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.6.2.v3659b.jar
 
-# Export the variables actually used at runtime.
+# Export the variables actually used at build or runtime.
 #
 export HELLO
 export PVSERVICE

@@ -1,17 +1,18 @@
 RDBSERVICE_README.txt
 
-This is the README file of the rdbService module. rdbService is a 
-minimal EPICS V4 service which demonstrates the use of EPICS V4 RPC support in pvService
-for implementing a relational database service, and client that shows how
-users can trivially get data from a db like Oracle.
+This is the README file of the rdbService module. rdbService is a minimal EPICS V4
+service which demonstrates the use of EPICS V4 RPC support in pvService for
+implementing a relational database service, and client that shows how users can
+trivially get data from a db like Oracle.
 
 Auth: Greg White, 13-Oct-2011 (greg@slac.stanford.edu) / gregory.white@psi.ch
 
 EXAMPLE
 -------
-The following is an example of running the client. This examples gets details
-about all the devices in the SwissFEL Test accelerator from the PSI Oracle database,
-and prints them to the terminal. For brevity, only 6 rows of the output are included here:
+The following is an example of running the client. This examples gets details about
+all the devices in the SwissFEL Test accelerator from the PSI Oracle database, and
+prints them to the terminal. For brevity, only 6 rows of the output are included
+here:
 
   % ./rdbClientRunner swissfeltest:alldevices
         NAME         PREFIX  SUFFIX                 DESCRIPTION                    RESPONSIBLE    
@@ -26,17 +27,17 @@ and prints them to the terminal. For brevity, only 6 rows of the output are incl
 
 SUMMARY
 -------
-
-rdbService is a minimum client and server implemented in the EPICS v4 RPC "framework" intended
-to show programming required to implement a service that gets data out 
-of a relational database, like Oracle. The server side receives a named request for 
-data, such as "swissFEL:allQUADs" and finds the SQL SELECT (or equivalent) database 
-query for that name. It then executes the database query, and returns the resulting 
-table of data to the client. 
-	RdbService illustrates mapping a JDBC ResultSet returned by a relational DB query,
-to a PVStructure (in fact, specifically an early version of the NTTable normative type), 
-extracting the data from a PVStructure (see use of GetHelper class) and a tabular data formatting
-utility useful for printing the tabular contents of an NTTable (see use of NamedValues class).
+rdbService is a minimum client and server implemented in the EPICS v4 RPC "framework"
+intended to show programming required to implement a service that gets data out of a
+relational database, like Oracle. The server side receives a named request for data,
+such as "swissFEL:allQUADs" and finds the SQL SELECT (or equivalent) database query
+for that name. It then executes the database query, and returns the resulting table
+of data to the client.
+	RdbService illustrates mapping a JDBC ResultSet returned by a relational DB
+query, to a PVStructure (in fact, specifically an early version of the NTTable
+normative type), extracting the data from a PVStructure (see use of GetHelper class)
+and a tabular data formatting utility useful for printing the tabular contents of an
+NTTable (see use of NamedValues class).
 
 
 FILES THAT COMPRISE THE RDB SERVICE EXAMPLE
@@ -60,25 +61,34 @@ EPICS V4 components. Basically, check these repos out of EPICS V4 Mercurial
 2. pvAccessJava - for PVAccess 
 3. pvDataJava   - for PVData 
 4. pvIOCJava    - for JavaIOC 
-5. exampleJava   - for the rdbService java classes and config files.
+5. pvService    - for service xml
+6. exampleJava   - for the rdbService java classes and config files.
 
 CONFIGURATION
 -------------
-0. Most importantly, work out how your rdbService server side will translate the names
-   it is given, like "myaccelerators:magnetdata" into a SQL SELECT statement. As shipped
-   rdbService does this in RdbServiceFactory, by looking up the name it was given in 
-   a trivial 2-column Oracle table called EIDA_NAMES (see RdbServiceFactory.java). Eg:
+0. Most importantly, work out how your rdbService server side will translate the
+   names it is given, like "myaccelerators:magnetdata" into a SQL SELECT
+   statement. As shipped rdbService does this in RdbServiceFactory, by looking up the
+   name it was given in a trivial 2-column Oracle table called EIDA_NAMES (see
+   RdbServiceFactory.java). Eg:
 
    sls:alldevices	         Select * from sls.alldevices_v
    sls:allmagnets	         Select * from sls.magnetdevice_v order by domain,ds
-   sls:allmagnetdata	     Select * from sls.magnetddata_v order by type
+   sls:allmagnetdata	         Select * from sls.magnetddata_v order by type
    swissfeltest:sectiontree	 Select *  from swissfel.swissfel_test_tree_v
 
-   Then edit your version of rdbServiceRunner to pass the right Java Properties (-Ds)
+   Then edit your version of rdbServiceRunner to pass the right Java Properties (-Ds) 
+   for such things as the jdbc connection URL, schema name etc.
+
+   Work out how to get a password to your server. In the shipped example the 
+   password is in rdbServiceRunner but you'll want a better way for production.
    
 1. Edit your version of common/script/pvCommon_setup.bash, and set the value of JAVAIOC
 
-2. Edit your version of exampleJava/src/rdbService/rdbSetup.bash and set it for your environment.
+2. Edit your version of exampleJava/src/rdbService/rdb_setup.bash and set it for your
+   environment
+
+
  
 EXECUTION
 ---------
@@ -89,18 +99,20 @@ To start the rdbService server
 ------------------------------
 1. cd to the directory containing the rdbService source files:
 
-   E.g. % cd ~/Development/epicsV4/workspace_hg/exampleJava/src/rdbService
+   E.g. % cd ~/Development/epicsV4/ev4hg/exampleJava/src/rdbService
   
-2. If you have never started the server before (for instance you are deploying a fresh install), 
-   then you'll need to edit rdb_setup.bash to change values of WORKSPACE and RDBXML (possibly others).
+2. If you have never started the server before (for instance you are deploying 
+   a fresh install), then you'll need to edit rdb_setup.bash to change values of 
+   WORKSPACE and RDBXML (possibly others).
 
 
 3. Start the server in one terminal 
 
    E.g. % ./rdbServerRunner
    
-   Verify that the line beginning "installed records.." shows records from rdbService.xml, 
-   and it looks successful. You should see, at the end of the startup echos, "Running server ..."
+   Verify that the line beginning "installed records.." shows records from
+   rdbService.xml, and it looks successful. You should see, at the end of the startup
+   echos, "Running server ..."
   
 4. Terminate the server with a SIGTERM (like CTRL-C in its process window) - after
    you've tested it with the client below of course.
@@ -110,15 +122,16 @@ To run the rdbService example client
 --------------------------------------------
 In another window from the server:
  
-1. cd to the directory containing the rdbService files (both client and server are in the same dir 
-   for demo purposes)
+1. cd to the directory containing the rdbService files (both client and server are in
+   the same dir for demo purposes)
    
-   E.g. % cd ~/Development/epicsV4/workspace_hg/exampleJava/src/rdbService
+   E.g. % cd ~/Development/epicsV4/ev4hg/exampleJava/src/rdbService
  
-2. Execute the client side example runner script rdbClientRunner, giving as an argument the name
-   of some query you know is understood by the server. In this example "LCLS:elementInfo.byZ" is 
-   theis "key" understood by the rdbService to lookup the SQL SELECT string which is itself 
-   the SQL query the service executes to get the data. 
+2. Execute the client side example runner script rdbClientRunner, giving as an
+   argument the name of some query you know is understood by the server. In this
+   example "LCLS:elementInfo.byZ" is theis "key" understood by the rdbService to
+   lookup the SQL SELECT string which is itself the SQL query the service executes to
+   get the data.
  
    E.g. % ./rdbClientRunner  swissfeltest:alldiag
    
@@ -129,15 +142,17 @@ In another window from the server:
 
 IMPLEMENTATION DETAILS
 ======================
-At PSI there is an Oracle database for SLS and anther for SWissFEL projects. A single oracle "schema"
-named EIDA has been granted read access to both of these. The example rdbService uses that 
-schema to access data in the other 2 schema. 
 
-The name to SQL query mapping is stored, in this example, within the EIDA schema itself (though
-other implementations may like to keep the mapping elsewhere, such as in a directory service). 
-Specifically, EIDA_NAMES is a table in EIDA, which just has 2 important columns, the "names" of
-queries (what a user asks for), and the SQL statement equivalent to that query (the SQL
-that the rdb Server executes when the user asks for a given name. Here is an extract from EIDA_NAMES:
+At PSI there is an Oracle database for SLS and anther for SWissFEL projects. A single
+oracle "schema" named EIDA has been granted read access to both of these. The example
+rdbService uses that schema to access data in the other 2 schema.
+
+The name to SQL query mapping is stored, in this example, within the EIDA schema
+itself (though other implementations may like to keep the mapping elsewhere, such as
+in a directory service).  Specifically, EIDA_NAMES is a table in EIDA, which just has
+2 important columns, the "names" of queries (what a user asks for), and the SQL
+statement equivalent to that query (the SQL that the rdb Server executes when the
+user asks for a given name. Here is an extract from EIDA_NAMES:
 
 NAME                        QRY
 ------------------------    ---------------------------------------------------------------
@@ -148,9 +163,10 @@ swissfeltest:sectiontree	Select * from swissfel.swissfel_test_tree_v
 swissfeltest:alldevices	    Select * from swissfel.feltest_heilig_v order by PREFIX,"Z0(M)"
 <many rows snipped for clarity>
 
-So, when a user asks for, for example, swissfeltest:alldevices, the rdbService first looks
-in EIDA_NAMES to find the QRY whose NAME is swissfeltest:alldevices, and then it executes the
-SQL statement it finds 'Select * from swissfel.feltest_heilig_v order by PREFIX,"Z0(M)". Simple as that.
+So, when a user asks for, for example, swissfeltest:alldevices, the rdbService first
+looks in EIDA_NAMES to find the QRY whose NAME is swissfeltest:alldevices, and then
+it executes the SQL statement it finds 'Select * from swissfel.feltest_heilig_v order
+by PREFIX,"Z0(M)". Simple as that.
 
 Eg:
 [gregsmac:exampleJava/src/rdbService] greg% ./rdbClientRunner swissfeltest:alldevices | more
@@ -165,12 +181,14 @@ Eg:
 
 PERFORMANCE
 -----------
-No serious performance measurements have been done. Note that the server side has been
-written for illustrative clarity as an EPICS V4 example, not for performance. But for example, 
-see the mid-sized sample below: *including* client image startup (ie starting a java vm and executing the 
-client), this SwissFel ORACLE db query took about 3/4s user time, to request, execute 
-the SQL, get ResultSet from oracle, return it to the client as a PVStructure, and client 
-side to format, about 560 rows of data.
+
+No serious performance measurements have been done. Note that the server side has
+been written for illustrative clarity as an EPICS V4 example, not for
+performance. But for example, see the mid-sized sample below: *including* client
+image startup (ie starting a java vm and executing the client), this SwissFel ORACLE
+db query took about 3/4s user time, to request, execute the SQL, get ResultSet from
+oracle, return it to the client as a PVStructure, and client side to format, about
+560 rows of data.
 
 * Small size sample: 2610 characters, 18 rows, takes 1/2 second. Probably mostly image startup.
 [gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner swissfeltest:sectiontree > /dev/null
@@ -188,8 +206,7 @@ side to format, about 560 rows of data.
 [gregsmac:exampleJava/src/rdbService] greg% ./rdbClientRunner sls:allpvnames | wc
   348848 3136676 60350704
 
-So, extremely roughly speaking, a rdbClient user sees 1/2 Megabyte query result data per second, 
-based on simple unoptimized Oracle queries executed by unoptimized JDBC, and, importantly, including the 
-reformatting for printing that application would probably skip or do itself.
-
-
+So, extremely roughly speaking, a rdbClient user sees ~1/2 Megabyte query result data
+per second, based on simple unoptimized Oracle queries executed by unoptimized JDBC,
+and, importantly, including the reformatting for printing that a real application would
+probably skip or do itself. So, it's not slow!

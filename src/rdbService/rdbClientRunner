@@ -24,12 +24,13 @@
 # Ref: <TODO>
 # ----------------------------------------------------------------------------
 # Auth: 14-Sep-2011, Greg White (greg@slac.stanford.edu)
-# Mod:  
+# Mod:  07-Feb-2012, Greg White (greg@slac.stanford.edu, gregory.white@psi.ch)
+#       bugfix: replaced -server with -client java command line opt. 
 # ============================================================================
 
 source rdb_setup.bash
 
-java -server rdbService/RdbClient $1 ${2:-col} ${3:-labels}
+java -client rdbService/RdbClient $1 ${2:-col} ${3:-labels}
 
 exit $?
 
