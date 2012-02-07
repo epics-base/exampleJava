@@ -37,6 +37,11 @@
         	<artifactId>pvIOC</artifactId>
         	<version>${project.version}</version>
         </dependency>
+        <dependency>
+        	<groupId>${project.groupId}</groupId>
+        	<artifactId>pvService</artifactId>
+        	<version>${project.version}</version>
+        </dependency>
     </dependencies>
     
    <repositories>
