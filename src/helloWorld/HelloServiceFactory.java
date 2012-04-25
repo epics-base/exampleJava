@@ -11,7 +11,8 @@ import org.epics.pvioc.pvAccess.RPCServer;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.factory.StatusFactory;
-import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.*;
+import org.epics.pvdata.pv.FieldCreate;
 import org.epics.pvdata.pv.PVDataCreate;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
@@ -98,23 +99,25 @@ public class HelloServiceFactory {
 		@Override
 		public void request( PVStructure pvArgument ) 
 		{	
-			// Extract the arguments. Just one in this case.
-			inputPersonName = pvArgument.getStringField("personsname");
+		    FieldCreate fieldCreate = FieldFactory.getFieldCreate();
+		    // Create top level structure of the introspection interface, which is used 
+		    // to send the response to the client.
+		    Field[] fields = new Field[1];
+		    String[] fieldNames = new String[1];
+		    fields[0] = fieldCreate.createScalar(ScalarType.pvString); 
+		    fieldNames[0] = "greeting";
+		    Structure structure = fieldCreate.createStructure(fieldNames, fields);
+		    
+		    // Now create the top level structure of the data interface.
+			PVStructure pvTop = pvDataCreate.createPVStructure(null,structure);
 			
-			// Construct a structure that will return the greeting message
-			//
-			Field field[] = new Field[1];  // You have to create array, 
-				 // since that's the only interface to createPVStructure! 
-			field[0] = FieldFactory.getFieldCreate().createScalar("greeting", 
-					ScalarType.pvString);			
-			PVStructure pvTop = pvDataCreate.createPVStructure(null, "",field);
-			
-			// Now extract from the constructed structure its introspection 
-			// interface, and use the interface to set the greeting field to 
-			// the value to return. The value we'll return, is "Hello" concatenated 
+			// Now extract from the constructed data interface the value of "greeting" 
+			// field. The value we'll return, is "Hello" concatenated 
 			// to the value of the input parameter called "personsname". 
 			//
 			PVString greetingvalue = pvTop.getStringField("greeting"); 
+			// Extract the arguments. Just one in this case.
+            inputPersonName = pvArgument.getStringField("personsname");
 			greetingvalue.put("Hello " + inputPersonName.get());
 			
 			// Return the constructed structure, with the message pay load, to client.
