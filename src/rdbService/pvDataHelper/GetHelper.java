@@ -2,14 +2,14 @@ package rdbService.pvDataHelper;
 
 import java.util.Vector;
 
-import org.epics.pvData.pv.ByteArrayData;
-import org.epics.pvData.pv.DoubleArrayData;
-import org.epics.pvData.pv.LongArrayData;
-import org.epics.pvData.pv.PVByteArray;
-import org.epics.pvData.pv.PVDoubleArray;
-import org.epics.pvData.pv.PVLongArray;
-import org.epics.pvData.pv.PVStringArray;
-import org.epics.pvData.pv.StringArrayData;
+import org.epics.pvdata.pv.ByteArrayData;
+import org.epics.pvdata.pv.DoubleArrayData;
+import org.epics.pvdata.pv.LongArrayData;
+import org.epics.pvdata.pv.PVByteArray;
+import org.epics.pvdata.pv.PVDoubleArray;
+import org.epics.pvdata.pv.PVLongArray;
+import org.epics.pvdata.pv.PVStringArray;
+import org.epics.pvdata.pv.StringArrayData;
 
 /**
  * GetHelper is a utility class with methods to help copy the contents of PVData types

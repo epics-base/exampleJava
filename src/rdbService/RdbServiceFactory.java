@@ -303,13 +303,17 @@ public class RdbServiceFactory
 			// to be normative type NTTable in their first element. The data payload
 			// follows the declaration, in another PVStructure called ResultSet.
 			//
-			Field normativeType = fieldCreate.createScalar("normativeType", ScalarType.pvString);
-			PVField[] t = new PVField[1];
-			t[0] = pvDataCreate.createPVField(null, normativeType);
-			PVString x = (PVString) t[0];
-			x.put("NTTable");
-			PVStructure pvTop = pvDataCreate.createPVStructure(null, "ResultSet", t);
+			String[] fieldNames = new String[1];
+			fieldNames[0]="normativeType";
+			Field normativeType = fieldCreate.createScalar(ScalarType.pvString);
 
+			PVString pvNormativeType = (PVString)pvDataCreate.createPVField(null,normativeType);
+			PVField[] pvFields = new PVField[1];
+			pvFields[0] = pvNormativeType;
+			pvNormativeType.put("NTTable");
+
+            PVStructure pvTop = pvDataCreate.createPVStructure(null, fieldNames, pvFields);
+			
 			String query = entityToQuery(entity);
 			if (query == null)
 			{
@@ -404,7 +408,8 @@ public class RdbServiceFactory
 
 				// Get number of columns in ResultSet
 				int columnsN = rsmd.getColumnCount();
-				String columnName = null;
+				String[] columnNames = new String[columnsN];
+				PVField[] pvFields = new PVField[columnsN];
 				_dbg("Num Columns = " + columnsN);
 
 				// For each column, extract all the rows of the column from the
@@ -417,8 +422,8 @@ public class RdbServiceFactory
 					rs.beforeFirst(); // Reset cursor to first row.
 					int i = 0; // Reset row indexer.
 					ScalarArray colField = null;
-					columnName = rsmd.getColumnName(colj);
-					_dbg("\nColumn Name = " + columnName);
+					columnNames[colj] = rsmd.getColumnName(colj);
+					_dbg("\nColumn Name = " + columnNames[colj]);
 
 					switch (rsmd.getColumnType(colj)) {
 					case java.sql.Types.DECIMAL:
@@ -427,61 +432,61 @@ public class RdbServiceFactory
 					case java.sql.Types.NUMERIC:
 					case java.sql.Types.FLOAT:
 					{
-						colField = fieldCreate.createScalarArray(columnName, ScalarType.pvDouble);
-						// myArr.add(colField);
+						colField = fieldCreate.createScalarArray(ScalarType.pvDouble);
 						PVDoubleArray valuesArray = (PVDoubleArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-
+						pvFields[colj] = valuesArray;
+						
 						double[] coldata = new double[rowsM];
 						while (rs.next())
 						{
 							coldata[i++] = rs.getDouble(colj);
 						}
 						valuesArray.put(0, rowsM, coldata, 0);
-						pvTop.appendPVField(valuesArray);
 						break;
 					}
 					case java.sql.Types.INTEGER:
 					case java.sql.Types.SMALLINT:
 					case java.sql.Types.BIGINT:
 					{
-						colField = fieldCreate.createScalarArray(columnName, ScalarType.pvInt);
+						colField = fieldCreate.createScalarArray(ScalarType.pvInt);
 						myArr.add(colField);
 						PVLongArray valuesArray = (PVLongArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-
+                        pvFields[colj] = valuesArray;
+                        
 						long[] coldata = new long[rowsM];
 						while (rs.next())
 						{
 							coldata[i++] = rs.getLong(colj);
 						}
 						valuesArray.put(0, rowsM, coldata, 0);
-						pvTop.appendPVField(valuesArray);
 						break;
 					}
 
 					case java.sql.Types.TINYINT:
 					case java.sql.Types.BIT:
 					{
-						colField = fieldCreate.createScalarArray(columnName, ScalarType.pvByte);
+						colField = fieldCreate.createScalarArray(ScalarType.pvByte);
 						myArr.add(colField);
 						PVByteArray valuesArray = (PVByteArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-
+                        pvFields[colj]=valuesArray;
+                        
 						byte[] coldata = new byte[rowsM];
 						while (rs.next())
 						{
 							coldata[i++] = rs.getByte(colj);
 						}
 						valuesArray.put(0, rowsM, coldata, 0);
-						pvTop.appendPVField(valuesArray);
 						break;
 					}
 					case java.sql.Types.VARCHAR:
 					case java.sql.Types.CHAR:
 					case java.sql.Types.LONGVARCHAR:
 					{
-						colField = fieldCreate.createScalarArray(columnName, ScalarType.pvString);
+						colField = fieldCreate.createScalarArray(ScalarType.pvString);
 						myArr.add(colField);
 						PVStringArray valuesArray = (PVStringArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-
+                        pvFields[colj]=valuesArray;
+                        
 						String[] coldata = new String[rowsM];
 						while (rs.next())
 						{
@@ -490,15 +495,15 @@ public class RdbServiceFactory
 							_dbg("coldata = '" + coldata[i - 1] + "'");
 						}
 						valuesArray.put(0, rowsM, coldata, 0);
-						pvTop.appendPVField(valuesArray);
 						break;
 					}
 					default:
 					{
-						colField = fieldCreate.createScalarArray(columnName, ScalarType.pvString);
+						colField = fieldCreate.createScalarArray(ScalarType.pvString);
 						myArr.add(colField);
 						PVStringArray valuesArray = (PVStringArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-
+                        pvFields[colj]=valuesArray;
+                        
 						String[] coldata = new String[rowsM];
 						while (rs.next())
 						{
@@ -507,12 +512,15 @@ public class RdbServiceFactory
 							_dbg("coldata = '" + coldata[i - 1] + "'");
 						}
 						valuesArray.put(0, rowsM, coldata, 0);
-						pvTop.appendPVField(valuesArray);
 						break;
 					}
 					} // column type
 
 				} // For each column
+				
+				// Append all the fields we created for each column, to the top level structure to be returned.
+				pvTop.appendPVFields(columnNames, pvFields);
+				
 			} // try block processing ResultSet
 
 			catch (Exception e)

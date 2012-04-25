@@ -4,6 +4,7 @@ package helloWorld;
  * a client/server environment in EPICS V4.  
  */
 
+import org.epics.pvaccess.ClientFactory;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Field;
@@ -14,6 +15,7 @@ import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.Status;
+import org.epics.pvdata.pv.Structure;
 import org.epics.pvservice.rpc.ServiceClient;
 import org.epics.pvservice.rpc.ServiceClientFactory;
 import org.epics.pvservice.rpc.ServiceClientRequester;
@@ -49,14 +51,18 @@ public class HelloClient
 		PVString pvPerson = null;       // The argument of the service we're goint to set.
 		
 		// Start PVAccess and construct a client connection object
-		org.epics.ca.ClientFactory.start();
+		ClientFactory.start();
 		Client client = new Client();
 
 		PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
 	    FieldCreate fieldCreate = FieldFactory.getFieldCreate();
 	    Field[] fields = new Field[1];
-	    fields[0] = fieldCreate.createScalar("personsname",ScalarType.pvString);
-	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, "arguments", fields);
+	    String[] fieldNames = new String[fields.length];
+	    fieldNames[0] = "personsname";
+	    fields[0] = fieldCreate.createScalar(ScalarType.pvString);
+	    Structure structure = fieldCreate.createStructure(fieldNames, fields);  
+	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, structure);
+	    
 		// Connect to the given Service, and retrieve its argument interface
 		try
 		{
@@ -86,7 +92,7 @@ public class HelloClient
 
 		// Termination: destroy this instance client's resources, stop pvAccess cleanly, and exit.
 		client.destroy();
-		org.epics.ca.ClientFactory.stop();
+		ClientFactory.stop();
 		System.exit(0);
 	}
 

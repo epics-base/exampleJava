@@ -4,6 +4,7 @@
 package rdbService;
 
 import java.lang.RuntimeException;
+import org.epics.pvaccess.ClientFactory;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Field;
@@ -82,15 +83,19 @@ public class RdbClient
 		parseArguments( args );
 		
 		// Start PVAccess. Instantiate private class that handles callbacks and look for arguments
-		org.epics.ca.ClientFactory.start();
+		ClientFactory.start();
 		Client client = new Client();
 		
 		PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
 	    FieldCreate fieldCreate = FieldFactory.getFieldCreate();
 	    Field[] fields = new Field[2];
-	    fields[0] = fieldCreate.createScalar(ENTITY_ARGNAME,ScalarType.pvString);
-	    fields[1] = fieldCreate.createScalar(PARAMS_ARGNAME,ScalarType.pvString);
-	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, SERVICE_ARGUMENTS_FIELDNAME, fields);
+        String[] fieldNames = new String[fields.length];
+        fieldNames[0]=ENTITY_ARGNAME; 
+        fieldNames[1]=PARAMS_ARGNAME; 
+	    fields[0] = fieldCreate.createScalar(ScalarType.pvString);
+	    fields[1] = fieldCreate.createScalar(ScalarType.pvString);
+	    Structure structure = fieldCreate.createStructure(fieldNames, fields);
+	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, structure);
 	    
 		// Make connection to service
 
@@ -198,7 +203,7 @@ public class RdbClient
 			{
 				// Get the label attached to the field. This will be the column name from the ResultSet
 				// of the SQL SELECT query.
-				String fieldName = pvFielde.getField().getFieldName();
+				String fieldName = pvFielde.getFieldName();
 				
 				// Skip past the meta-data field named "normativeType"
 				if (fieldName.compareTo(TYPE_FIELD_NAME) == 0)
@@ -257,7 +262,7 @@ public class RdbClient
 
         // Clean up
         client.destroy();
-		org.epics.ca.ClientFactory.stop();
+		ClientFactory.stop();
 		
 		_dbg("DEBUG: main(): Completed Successfully");
 		System.exit(0);
