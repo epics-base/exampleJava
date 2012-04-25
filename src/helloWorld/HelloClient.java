@@ -4,19 +4,19 @@ package helloWorld;
  * a client/server environment in EPICS V4.  
  */
 
-import org.epics.pvData.factory.FieldFactory;
-import org.epics.pvData.factory.PVDataFactory;
-import org.epics.pvData.pv.Field;
-import org.epics.pvData.pv.FieldCreate;
-import org.epics.pvData.pv.MessageType;
-import org.epics.pvData.pv.PVDataCreate;
-import org.epics.pvData.pv.PVString;
-import org.epics.pvData.pv.PVStructure;
-import org.epics.pvData.pv.ScalarType;
-import org.epics.pvData.pv.Status;
-import org.epics.pvService.rpc.ServiceClient;
-import org.epics.pvService.rpc.ServiceClientFactory;
-import org.epics.pvService.rpc.ServiceClientRequester;
+import org.epics.pvdata.factory.FieldFactory;
+import org.epics.pvdata.factory.PVDataFactory;
+import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.FieldCreate;
+import org.epics.pvdata.pv.MessageType;
+import org.epics.pvdata.pv.PVDataCreate;
+import org.epics.pvdata.pv.PVString;
+import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.Status;
+import org.epics.pvservice.rpc.ServiceClient;
+import org.epics.pvservice.rpc.ServiceClientFactory;
+import org.epics.pvservice.rpc.ServiceClientRequester;
 
 /**
  * HelloClient is a main class that illustrates a simple example of an E4C

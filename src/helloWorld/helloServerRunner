@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #!-*- sh -*-
 #
 # Abs: helloServerRunner executes the helloServer EV4 server.
@@ -23,7 +23,7 @@
 # ============================================================================
 source helloWorld_setup.bash
 
-java -server org.epics.ioc.JavaIOC \
+java -server org.epics.pvioc.JavaIOC \
      -structures ${JAVAIOC}/xml/structures.xml \
      -structures ${PVSERVICE}/xml/structures.xml \
      -records ${HELLO}/helloService.xml \

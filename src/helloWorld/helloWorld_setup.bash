@@ -31,7 +31,7 @@ EXAMPLES=${WORKSPACE}/exampleJava
 HELLO=${EXAMPLES}/src/helloWorld
 
 PVDATA=${WORKSPACE}/pvDataJava
-PVACCESS=${WORKSPACE}/pvAccessJava
+PVACCESS=${WORKSPACE}/pvAccessJava-codecBased
 PVSERVICE=${WORKSPACE}/pvServiceJava
 
 # Set the CLASSPATH. Classpath requires classes or jars for all the antecedent
@@ -58,4 +58,6 @@ CLASSPATH=${CLASSPATH}:/Applications/eclipse\ 3.6.2\ \(IDE\ for\ EE\)\ /plugins/
 export HELLO
 export PVSERVICE
 export CLASSPATH
+
+printenv CLASSPATH | tr : '\n'
 

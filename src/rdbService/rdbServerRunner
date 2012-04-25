@@ -38,10 +38,10 @@ java -server \
      -DCONNECTION_URI_PROPERTY=jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD \
      -DCONNECTION_USERID_PROPERTY=eida \
      -DCONNECTION_PWD=nicetry \
-     -XstartOnFirstThread org.epics.ioc.JavaIOC \
+     -XstartOnFirstThread org.epics.pvioc.JavaIOC \
      -structures ${JAVAIOC}/xml/structures.xml \
      -structures ${PVSERVICE}/xml/structures.xml \
      -records ${RDBXML}/rdbService.xml \
      -server  ${JAVAIOC}/server/pvAccessClient.txt \
      -server  ${JAVAIOC}/server/pvAccessServer.txt
-#     -swtshell 
+#!     -swtshell 

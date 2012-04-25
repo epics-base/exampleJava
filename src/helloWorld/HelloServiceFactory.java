@@ -4,20 +4,20 @@
  */
 package helloWorld;
 
-import org.epics.ca.client.Channel;
-import org.epics.ca.client.ChannelRPCRequester;
-import org.epics.ioc.database.PVRecord;
-import org.epics.ioc.pvAccess.RPCServer;
-import org.epics.pvData.factory.FieldFactory;
-import org.epics.pvData.factory.PVDataFactory;
-import org.epics.pvData.factory.StatusFactory;
-import org.epics.pvData.pv.Field;
-import org.epics.pvData.pv.PVDataCreate;
-import org.epics.pvData.pv.PVString;
-import org.epics.pvData.pv.PVStructure;
-import org.epics.pvData.pv.ScalarType;
-import org.epics.pvData.pv.Status;
-import org.epics.pvData.pv.StatusCreate;
+import org.epics.pvaccess.client.Channel;
+import org.epics.pvaccess.client.ChannelRPCRequester;
+import org.epics.pvioc.database.PVRecord;
+import org.epics.pvioc.pvAccess.RPCServer;
+import org.epics.pvdata.factory.FieldFactory;
+import org.epics.pvdata.factory.PVDataFactory;
+import org.epics.pvdata.factory.StatusFactory;
+import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.PVDataCreate;
+import org.epics.pvdata.pv.PVString;
+import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.Status;
+import org.epics.pvdata.pv.StatusCreate;
 
 /**
  * HelloServiceFactory is an example of the factory class a user-developer of EPICS V4

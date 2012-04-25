@@ -3,16 +3,15 @@
  */
 package rdbService;
 
-import org.epics.pvData.factory.FieldFactory;
-import org.epics.pvData.factory.PVDataFactory;
-import org.epics.pvData.pv.Field;
-import org.epics.pvData.pv.FieldCreate;
 import java.lang.RuntimeException;
-import org.epics.pvData.pv.*;
-import org.epics.pvService.rpc.ServiceClient;
-import org.epics.pvService.rpc.ServiceClientFactory;
-import org.epics.pvService.rpc.ServiceClientRequester;
-
+import org.epics.pvdata.factory.FieldFactory;
+import org.epics.pvdata.factory.PVDataFactory;
+import org.epics.pvdata.pv.Field;
+import org.epics.pvdata.pv.FieldCreate;
+import org.epics.pvdata.pv.*;
+import org.epics.pvservice.rpc.ServiceClient;
+import org.epics.pvservice.rpc.ServiceClientFactory;
+import org.epics.pvservice.rpc.ServiceClientRequester;
 import rdbService.namedValues.*;                         // Table manipulation and printing 
 import rdbService.pvDataHelper.GetHelper;
 

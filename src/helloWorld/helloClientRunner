@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #!-*- sh -*-
 #
 # Abs: helloClientRunner executes the helloClient EV4 client.

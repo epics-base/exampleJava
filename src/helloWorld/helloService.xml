@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <database>
-<record recordName = "helloService" extends = "org.epics.pvService.service">
+<record recordName = "helloService" extends = "org.epics.pvservice.service">
     <scalar name = "factoryRPC">helloWorld.HelloServiceFactory</scalar>
     <structure name = "arguments">
         <scalar name = "personsname" scalarType = "string" />

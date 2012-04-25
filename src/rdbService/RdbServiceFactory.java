@@ -6,15 +6,15 @@ package rdbService;
 
 import java.util.*;
 import java.sql.*; // Oracle connections
-import org.epics.ca.client.Channel;
-import org.epics.ca.client.ChannelRPCRequester;
-import org.epics.ioc.database.PVRecord;
-import org.epics.ioc.pvAccess.RPCServer;
-import org.epics.pvData.factory.FieldFactory;
-import org.epics.pvData.factory.PVDataFactory;
-import org.epics.pvData.factory.StatusFactory;
-import org.epics.pvData.pv.Status.StatusType;
-import org.epics.pvData.pv.*;
+import org.epics.pvaccess.client.Channel;
+import org.epics.pvaccess.client.ChannelRPCRequester;
+import org.epics.pvioc.database.PVRecord;
+import org.epics.pvioc.pvAccess.RPCServer;
+import org.epics.pvdata.factory.FieldFactory;
+import org.epics.pvdata.factory.PVDataFactory;
+import org.epics.pvdata.factory.StatusFactory;
+import org.epics.pvdata.pv.Status.StatusType;
+import org.epics.pvdata.pv.*;
 
 /**
  * RdbServiceFactory implements an EPICS v4 service for retrieving data from a relational 
