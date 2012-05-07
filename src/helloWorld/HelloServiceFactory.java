@@ -25,6 +25,8 @@ import org.epics.pvdata.pv.StatusCreate;
  * would write to implement a trivial RPC style server.
  *   
  * @author Greg White 29.Sep.11 (gregory.white@psi.ch)
+ * @version 7-May-2012, Greg White (greg@slac.stanford.edu) Changed calls to pvAccess api
+ * following changes in introspection API.
  */
 public class HelloServiceFactory {
 	

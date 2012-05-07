@@ -31,7 +31,7 @@ EXAMPLES=${WORKSPACE}/exampleJava
 RDBXML=${EXAMPLES}/src/rdbService
 
 PVDATA=${WORKSPACE}/pvDataJava
-PVACCESS=${WORKSPACE}/pvAccessJava
+PVACCESS=${WORKSPACE}/pvAccessJava-codecBased
 PVSERVICE=${WORKSPACE}/pvServiceJava
 
 # Set the CLASSPATH. Classpath requires classes or jars for all the antecedent

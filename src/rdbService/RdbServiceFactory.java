@@ -49,6 +49,8 @@ import org.epics.pvdata.pv.*;
  * by this project).
  * 
  * @author Greg White, 13-Oct-2011 (greg@slac.stanford.edu)
+ * @version 7-May-2012, Greg White (greg@slac.stanford.edu) Changed calls to pvAccess api
+ * following changes in introspection API.
  * 
  */
 public class RdbServiceFactory
@@ -422,8 +424,8 @@ public class RdbServiceFactory
 					rs.beforeFirst(); // Reset cursor to first row.
 					int i = 0; // Reset row indexer.
 					ScalarArray colField = null;
-					columnNames[colj] = rsmd.getColumnName(colj);
-					_dbg("\nColumn Name = " + columnNames[colj]);
+					columnNames[colj-1] = rsmd.getColumnName(colj);
+					_dbg("\nColumn Name = " + columnNames[colj-1]);
 
 					switch (rsmd.getColumnType(colj)) {
 					case java.sql.Types.DECIMAL:
@@ -434,7 +436,7 @@ public class RdbServiceFactory
 					{
 						colField = fieldCreate.createScalarArray(ScalarType.pvDouble);
 						PVDoubleArray valuesArray = (PVDoubleArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-						pvFields[colj] = valuesArray;
+						pvFields[colj-1] = valuesArray;
 						
 						double[] coldata = new double[rowsM];
 						while (rs.next())
@@ -451,7 +453,7 @@ public class RdbServiceFactory
 						colField = fieldCreate.createScalarArray(ScalarType.pvInt);
 						myArr.add(colField);
 						PVLongArray valuesArray = (PVLongArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-                        pvFields[colj] = valuesArray;
+                        pvFields[colj-1] = valuesArray;
                         
 						long[] coldata = new long[rowsM];
 						while (rs.next())
@@ -468,7 +470,7 @@ public class RdbServiceFactory
 						colField = fieldCreate.createScalarArray(ScalarType.pvByte);
 						myArr.add(colField);
 						PVByteArray valuesArray = (PVByteArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-                        pvFields[colj]=valuesArray;
+                        pvFields[colj-1] = valuesArray;
                         
 						byte[] coldata = new byte[rowsM];
 						while (rs.next())
@@ -485,7 +487,7 @@ public class RdbServiceFactory
 						colField = fieldCreate.createScalarArray(ScalarType.pvString);
 						myArr.add(colField);
 						PVStringArray valuesArray = (PVStringArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-                        pvFields[colj]=valuesArray;
+                        pvFields[colj-1] = valuesArray;
                         
 						String[] coldata = new String[rowsM];
 						while (rs.next())
@@ -502,7 +504,7 @@ public class RdbServiceFactory
 						colField = fieldCreate.createScalarArray(ScalarType.pvString);
 						myArr.add(colField);
 						PVStringArray valuesArray = (PVStringArray) pvDataCreate.createPVScalarArray(pvTop, colField);
-                        pvFields[colj]=valuesArray;
+                        pvFields[colj-1] = valuesArray;
                         
 						String[] coldata = new String[rowsM];
 						while (rs.next())
@@ -525,7 +527,7 @@ public class RdbServiceFactory
 
 			catch (Exception e)
 			{
-				msgl(e.getMessage() + "when processing SQL query ");
+				msgl(e.toString() + " when processing SQL query ");
 			} 
 			finally
 			{
@@ -540,7 +542,8 @@ public class RdbServiceFactory
 					}
 				} catch (Exception e)
 				{
-					msgl("when attempting to free JDBC resources for query " + query);
+					msgl(e.toString() + 
+							" when attempting to free JDBC resources for query " + query);
 				}
 			}
 

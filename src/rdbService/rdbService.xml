@@ -27,7 +27,7 @@
 -->
 
 <database>
-	<record recordName = "rdbService" extends = "org.epics.pvService.service">
+	<record recordName = "rdbService" extends = "org.epics.pvservice.service">
     	<scalar name = "factoryRPC">rdbService.RdbServiceFactory</scalar>
     	<structure name = "arguments">  
         	<scalar name = "entity" scalarType = "string" />
