@@ -23,12 +23,10 @@ and returns a string.
 
 FILES THAT COMPRISE THE HELLOWORLD EXAMPLE
 ------------------------------------------
-HelloServiceFactory.java          Java source code of the server side of the example
+HelloService.java                 Java source code of the server side of the example
 HelloClient.java                  Java source code of the client side of the example
 helloClientRunner                 A unix (bash) executable script to run the client side 
 helloServerRunner                 A unix (bash) executable script to run the server side 
-helloService.xml                  The EPICS V4 record database which personifies 
-                                  the hello service.
 helloWorld_setup.bash             A unix (bash) source script which initializes the 
                                   runtime environment (as written, for both client and server).
 
@@ -38,12 +36,11 @@ EPICS V4 components:
 1. common  - for source/pvCommon_setup.bash
 2. pvAccessJava - for PVAccess 
 3. pvDataJava   - for PVData 
-4. pvIOCJava    - for JavaIOC rpc
-5. exampleJava      - for the example java classes and config files.
+4. exampleJava      - for the example java classes and config files.
 
 SETUP
 -----
-1. Visit your version of common/script/pvCommon_setup.bash, a set the value of JAVAIOC
+1. Visit your version of common/script/pvCommon_setup.bash and edit for your environment.
 2. Visit your version of exampleJava/src/helloWorld/helloWorld_setup.bash and edit for your environment.
 
 EXECUTION

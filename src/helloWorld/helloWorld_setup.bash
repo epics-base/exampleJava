@@ -7,10 +7,10 @@
 # client and server sides the hello Service, "helloServerRunner" and
 # "helloClientRunner". 
 #
-# Sources:  pvCommon_setup.bash - for JAVAIOC
+# Sources:  pvCommon_setup.bash
 #
 # Remarks: This script only actually exports HELLO, PVSERVICE and CLASSPATH (plus
-# whatever is exported in pvCommon_setup.bash, which is presently JAVAIOC). Everything
+# whatever is exported in pvCommon_setup.bash). Everything
 # else in here is just getting to right values for those. 
 #  
 # Ref: HELLOWORLD_README.txt
@@ -20,7 +20,7 @@
 # Mod:  
 # ============================================================================
 
-# "Source" file that sets up shared references. Sets JAVAIOC shared reference.
+# "Source" file that sets up shared references.
 source $HOME/Development/epicsV4/workspace_hg/common/source/pvCommon_setup.bash
 
 # Set the antecedent dependency locations, used to 
@@ -31,27 +31,18 @@ EXAMPLES=${WORKSPACE}/exampleJava
 HELLO=${EXAMPLES}/src/helloWorld
 
 PVDATA=${WORKSPACE}/pvDataJava
-PVACCESS=${WORKSPACE}/pvAccessJava-codecBased
+PVACCESS=${WORKSPACE}/pvAccessJava
 PVSERVICE=${WORKSPACE}/pvServiceJava
 
 # Set the CLASSPATH. Classpath requires classes or jars for all the antecedent
-# dependencies of helloWorld: pvIOC, pvData, pvAccess, pvService, CAJ, JCA. 
-# If you're going to use the "SWTConsole" then swt.jar too. As written here
-# it assumes exampleJava, pvIOCJava, pvDataJava and pvServiceJava were built
+# dependencies of helloWorld: pvData, pvAccess. As written here
+# it assumes exampleJava, pvDataJava and pvAccessJava were built
 # by Eclipse (delivering classes to their respective /bin dirs) but you may 
 # need to edit this if you build a different way.
 #
-CLASSPATH=${EXAMPLES}/bin
-CLASSPATH=${CLASSPATH}:${JAVAIOC}/bin
+CLASSPATH=${EXAMPLES}/target/classes
 CLASSPATH=${CLASSPATH}:${PVDATA}/bin
 CLASSPATH=${CLASSPATH}:${PVACCESS}/bin
-CLASSPATH=${CLASSPATH}:${PVSERVICE}/bin
-CLASSPATH=${CLASSPATH}:${JAVAIOC}/jar/CAJ.jar
-CLASSPATH=${CLASSPATH}:${JAVAIOC}/jar/JCA.jar
-# If you like, add swt.jar for your platform. It may be in /usr/lib (linux) or a
-# subdir of the Eclipse app on a Mac.
-# export CLASSPATH=${CLASSPATH}:/usr/lib/eclipse/swt.jar 
-CLASSPATH=${CLASSPATH}:/Applications/eclipse\ 3.6.2\ \(IDE\ for\ EE\)\ /plugins/org.eclipse.swt.cocoa.macosx.x86_64_3.6.2.v3659b.jar
 
 # Export the variables actually used at runtime.
 #

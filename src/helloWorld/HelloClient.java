@@ -4,21 +4,19 @@ package helloWorld;
  * a client/server environment in EPICS V4.  
  */
 
-import org.epics.pvaccess.ClientFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.epics.pvaccess.client.rpc.ServiceClientImpl;
+import org.epics.pvaccess.server.rpc.RPCRequestException;
+import org.epics.pvaccess.util.logging.ConsoleLogHandler;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
-import org.epics.pvdata.pv.MessageType;
-import org.epics.pvdata.pv.PVDataCreate;
-import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvdata.pv.Status;
 import org.epics.pvdata.pv.Structure;
-import org.epics.pvservice.rpc.ServiceClient;
-import org.epics.pvservice.rpc.ServiceClientFactory;
-import org.epics.pvservice.rpc.ServiceClientRequester;
 
 /**
  * HelloClient is a main class that illustrates a simple example of an E4C
@@ -28,160 +26,80 @@ import org.epics.pvservice.rpc.ServiceClientRequester;
  * constructs and returns a simple greeting. The helloClient receives the
  * greeting, and prints it.
  * 
- * @author 13-Sep-2011, Greg White (greg@slac.stanford.edu)
- * @version 15-Nov-2011, Greg White (greg@slac.stanford.edu) 
- * Modifications for pvAccess/pvData changes w.r.t. modification of shape of 
- * argument PVStructure call-to-call.
+ * @author Greg White (greg@slac.stanford.edu)
+ * @author Matej Sekoranja
  */
-public class HelloClient 
+public class HelloClient
 {
+    private static final Logger logger = Logger.getLogger(HelloClient.class.getName());
 
+	private final static FieldCreate fieldCreate = FieldFactory.getFieldCreate();
+	
+	private final static Structure requestStructure =
+		fieldCreate.createStructure(
+				new String[] { "personsname" },
+				new Field[] { fieldCreate.createScalar(ScalarType.pvString) }
+				);
+	
+	private final static double REQUEST_TIMEOUT = 3.0;
+	
 	/**
 	 * main establishes the connection to the helloServer, constructs the
 	 * mechanism to pass parameters to the server, calls the server in the EV4
 	 * 2-step way, gets the response from the helloServer, unpacks it, and
 	 * prints the greeting.
 	 * 
-	 * @param nameofpersontogreet
+	 * @param args name of person to greet
 	 */
-	public static void main(String[] args) 
+	public static void main(String[] args) throws Throwable
 	{
-		// PVStructure pvArguments = null; // The API of the helloService. 
-		                                // Also known as its "introspecton interface"
-		PVString pvPerson = null;       // The argument of the service we're goint to set.
-		
-		// Start PVAccess and construct a client connection object
-		ClientFactory.start();
-		Client client = new Client();
+		// initialize nice console logging
+		ConsoleLogHandler.defaultConsoleLogging(Level.INFO);
 
-		PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
-	    FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-	    Field[] fields = new Field[1];
-	    String[] fieldNames = new String[fields.length];
-	    fieldNames[0] = "personsname";
-	    fields[0] = fieldCreate.createScalar(ScalarType.pvString);
-	    Structure structure = fieldCreate.createStructure(fieldNames, fields);  
-	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, structure);
-	    
-		// Connect to the given Service, and retrieve its argument interface
+		// start pvAccess client
+		org.epics.pvaccess.ClientFactory.stop();
+		
 		try
 		{
-			client.connect("helloService");
-			pvPerson = pvArguments.getStringField("personsname");
-		}
-		catch ( Exception ex )
-		{
-			System.err.println("Unable to contact helloService. Exiting");
-			System.exit(1);	
-		}
-		
-		// Make request. 
-		pvPerson.put(args[0]);
-		PVStructure pvResult = client.request(pvArguments);
-
-		// If getting the result was successful, extract the value of the
-		// expected String field named "greeting" from the returned structure,
-		// and print it.
-		if (pvResult != null) 
-		{
-			String res = pvResult.getStringField("greeting").get();
-			System.out.println(res);
-		} 
-		else
-			System.out.println("Acquisition of greeting was not successful");
-
-		// Termination: destroy this instance client's resources, stop pvAccess cleanly, and exit.
-		client.destroy();
-		ClientFactory.stop();
-		System.exit(0);
-	}
-
-	private static class Client implements ServiceClientRequester 
-	{
-		private ServiceClient serviceClient = null;
-		private PVStructure pvResult = null;
-
-		// Connect and wait until connected, or timeout
-		void connect(String serivceNameToWhichToConnect) 
-		{
-			serviceClient = 
-				ServiceClientFactory.create(serivceNameToWhichToConnect, this);
-			serviceClient.waitConnect(5.0); // 5.0 second timeout to find the service	
-		}
-
-		// Cleanup
-		void destroy() 
-		{
-			serviceClient.destroy();
-		}
-
-		// Send a request and wait until done
-		PVStructure request(PVStructure pvArguments) 
-		{
-			serviceClient.sendRequest( pvArguments );
-			serviceClient.waitRequest();
-			return pvResult;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.epics.pvService.client.ServiceClientRequester#connectResult(org
-		 * .epics.pvData.pv.Status, org.epics.pvData.pv.PVStructure,
-		 * org.epics.pvData.misc.BitSet)
-		 */
-		@Override
-		public void connectResult(Status status) 
-		{
-			if (!status.isOK()) 
+			// create request structure
+			PVStructure pvArguments =
+				PVDataFactory.getPVDataCreate().createPVStructure(requestStructure);
+			
+			// set data
+			String name = args.length > 0 ? args[0] : "anonymous";
+			pvArguments.getStringField("personsname").put(name);
+			
+			// create an RPC client to the "helloService" service
+			// connection has allready started in background
+			ServiceClientImpl client = new ServiceClientImpl("helloService");
+			
+			try
 			{
-				throw new RuntimeException("Connect error "
-						+ status.getMessage());
+				// create an RPC request and block until response is received
+				// no need to explicitly wait for connection, this method takes care of it
+				// in case of an error, an exception is throw 
+				PVStructure pvResult = client.request(pvArguments, REQUEST_TIMEOUT);
+				
+				// print the result, this particular service never returns a null result
+				String res = pvResult.getStringField("greeting").get();
+				logger.info(res);
 			}
-			return;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * org.epics.pvService.client.ServiceClientRequester#requestResult(org
-		 * .epics.pvData.pv.Status, org.epics.pvData.pv.PVStructure)
-		 */
-		@Override
-		public void requestResult(Status status, PVStructure pvResult) 
-		{
-			if (!status.isOK()) 
+			catch (RPCRequestException rre)
 			{
-				throw new RuntimeException("request error "
-						+ status.getMessage());
+				logger.log(Level.SEVERE, "Acquisition of greeting was not successful.", rre);
 			}
-			this.pvResult = pvResult;
-			return;
+			catch (IllegalStateException rre)
+			{
+				logger.log(Level.SEVERE, "Acquisition of greeting was not successful, failed to connect.", rre);
+			}
+			
+			// disconnect from the service
+			client.destroy();
 		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.epics.pvData.pv.Requester#getRequesterName()
-		 */
-		@Override
-		public String getRequesterName() 
+		finally
 		{
-			return "helloServiceClient";
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see org.epics.pvData.pv.Requester#message(java.lang.String,
-		 * org.epics.pvData.pv.MessageType)
-		 */
-		@Override
-		public void message(String message, MessageType messageType) 
-		{
-			System.out.printf("%n%s %s%n", messageType.toString(), message);
+			// stop pvAccess client, so that the app cleanly exits
+			org.epics.pvaccess.ClientFactory.stop();
 		}
 	}
 }
