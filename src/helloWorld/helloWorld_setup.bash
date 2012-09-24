@@ -28,11 +28,9 @@ source $HOME/Development/epicsV4/workspace_hg/common/source/pvCommon_setup.bash
 #
 WORKSPACE=$HOME/Development/epicsV4/workspace_hg
 EXAMPLES=${WORKSPACE}/exampleJava
-HELLO=${EXAMPLES}/src/helloWorld
 
 PVDATA=${WORKSPACE}/pvDataJava
 PVACCESS=${WORKSPACE}/pvAccessJava
-PVSERVICE=${WORKSPACE}/pvServiceJava
 
 # Set the CLASSPATH. Classpath requires classes or jars for all the antecedent
 # dependencies of helloWorld: pvData, pvAccess. As written here
@@ -46,8 +44,6 @@ CLASSPATH=${CLASSPATH}:${PVACCESS}/bin
 
 # Export the variables actually used at runtime.
 #
-export HELLO
-export PVSERVICE
 export CLASSPATH
 
 printenv CLASSPATH | tr : '\n'

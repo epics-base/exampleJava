@@ -41,13 +41,12 @@ utility useful for printing the tabular contents of an NTTable (see use of Named
 
 FILES THAT COMPRISE THE RDB SERVICE EXAMPLE
 -------------------------------------------
-RdbServiceFactory.java          Java source code of the server side of the example
+RdbService.java                 Java source code of the server side of the example
+RdbServiceConnection.java       Java source code of the server side of the example handling the RDB connection
 RdbClient.java                  Java source code of the client side of the example
 rdbClientRunner                 A unix (bash) executable script to run the client side 
 getRdb                          A wrapper for rdbClientRunner, with a more descriptive name
 rdbServerRunner                 A unix (bash) executable script to run the server side 
-rdbService.xml                  The EPICS V4 record database which personifies 
-                                the RDB service.
 rdb_setup.bash                  A unix (bash) source script which initializes the 
                                 runtime environment (as written, for both client and server).
 UnableToGetDataException        A simple Exception class used to indicate inability to get data.
@@ -59,14 +58,13 @@ EPICS V4 components. Basically, check these repos out of EPICS V4 Mercurial
 1. common  - for source/pvCommon_setup.bash
 2. pvAccessJava - for PVAccess 
 3. pvDataJava   - for PVData 
-4. pvIOCJava    - for JavaIOC 
-5. exampleJava   - for the rdbService java classes and config files.
+4. exampleJava   - for the rdbService java classes and config files.
 
 CONFIGURATION
 -------------
 0. Most importantly, work out how your rdbService server side will translate the names
    it is given, like "myaccelerators:magnetdata" into a SQL SELECT statement. As shipped
-   rdbService does this in RdbServiceFactory, by looking up the name it was given in 
+   rdbService does this in RdbServiceConnection, by looking up the name it was given in 
    a trivial 2-column Oracle table called EIDA_NAMES (see RdbServiceFactory.java). Eg:
 
    sls:alldevices	         Select * from sls.alldevices_v
@@ -76,7 +74,7 @@ CONFIGURATION
 
    Then edit your version of rdbServiceRunner to pass the right Java Properties (-Ds)
    
-1. Edit your version of common/script/pvCommon_setup.bash, and set the value of JAVAIOC
+1. Edit your version of common/script/pvCommon_setup.bash
 
 2. Edit your version of exampleJava/src/rdbService/rdbSetup.bash and set it for your environment.
  

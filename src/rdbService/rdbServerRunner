@@ -21,27 +21,4 @@
 
 source rdb_setup.bash
 
-# Start the service as a factory Class called by the JavaIOC framework.
-#
-# Pass in connection details for your database schema (as -D in this example). 
-# This schema must contain "the names to SQL query translation" table (EIDA_NAMES
-# in this example) and must have read access to all the schema referenced in the 
-# SQL queries. To port to another installation, you will also have to change the
-# code to reflect the exact query to be used to access the translation table - the
-# example isn't so general it can be used without modification.
-# 
-# -XstartOnFirstThread is required in MacOS, to enable use of swtshell. 
-# If the swtshell is not required, -swtshell and -XstartOnFirstThread can be 
-# removed.
-# 
-java -server \
-     -DCONNECTION_URI_PROPERTY=jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD \
-     -DCONNECTION_USERID_PROPERTY=eida \
-     -DCONNECTION_PWD=<databaseuseridpassword> \
-     -XstartOnFirstThread org.epics.pvioc.JavaIOC \
-     -structures ${JAVAIOC}/xml/structures.xml \
-     -structures ${PVSERVICE}/xml/structures.xml \
-     -records ${RDBXML}/rdbService.xml \
-     -server  ${JAVAIOC}/server/pvAccessClient.txt \
-     -server  ${JAVAIOC}/server/pvAccessServer.txt
-#!     -swtshell 
+java -server rdbService/RdbService

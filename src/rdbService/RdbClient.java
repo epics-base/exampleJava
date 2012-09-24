@@ -3,17 +3,27 @@
  */
 package rdbService;
 
-import java.lang.RuntimeException;
 import org.epics.pvaccess.ClientFactory;
+import org.epics.pvaccess.client.rpc.ServiceClient;
+import org.epics.pvaccess.client.rpc.ServiceClientFactory;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Field;
 import org.epics.pvdata.pv.FieldCreate;
-import org.epics.pvdata.pv.*;
-import org.epics.pvservice.rpc.ServiceClient;
-import org.epics.pvservice.rpc.ServiceClientFactory;
-import org.epics.pvservice.rpc.ServiceClientRequester;
-import rdbService.namedValues.*;                         // Table manipulation and printing 
+import org.epics.pvdata.pv.PVByteArray;
+import org.epics.pvdata.pv.PVDoubleArray;
+import org.epics.pvdata.pv.PVField;
+import org.epics.pvdata.pv.PVLongArray;
+import org.epics.pvdata.pv.PVString;
+import org.epics.pvdata.pv.PVStringArray;
+import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.ScalarArray;
+import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.Structure;
+import org.epics.pvdata.pv.Type;
+
+import rdbService.namedValues.NamedValues;
+import rdbService.namedValues.NamedValuesFormatter;
 import rdbService.pvDataHelper.GetHelper;
 
 /**
@@ -27,16 +37,11 @@ import rdbService.pvDataHelper.GetHelper;
 public class RdbClient 
 {
 	// Issue application level debugging messages if true.
+	// TODO remove this C concept, use Java Logging API instead
 	private static final boolean DEBUG = false;
 	
-	// Set an identifying name for your client, used by the service. Does not have to
-	// be unique in an installation, just a free format string.
-	private static final String CLIENT_NAME = "RDB client";
-	
-	// These literals must agree with the XML Database of the service in question. In this
-	// case perfTestService. See perfTestService.xml.
 	private static final String OBJECTIVE_SERVICE_NAME = "rdbService";  // Name of service to contact.
-	private static final String SERVICE_ARGUMENTS_FIELDNAME = "arguments"; 
+	
 	                                                               // Name of field holding
 	                                                               // arguments in the service's interface xml db.
 	private static final String ENTITY_ARGNAME = "entity";         // Name of argument holding what the user asked for.   
@@ -44,12 +49,11 @@ public class RdbClient
 	                                                               // the rdb service. 
 	
 	// rdbClient expects to get returned a PVStructure which conforms to the 
-	// definition of a NTTable. As such, the PVStructure's first field should 
-	// be called "normativeType" and have value "NTTable".
-	private static String TYPE_FIELD_NAME = "normativeType";
+	// definition of a NTTable. 
 	private static String NTTABLE_TYPE_NAME = "NTTable";
 	
 	// Error exit codes
+	@SuppressWarnings("unused")
 	private static final int NOTNORMATIVETYPE = 1;
 	private static final int NOTNTTABLETYPE = 2;
 	private static final int NODATARETURNED = 3;
@@ -68,6 +72,22 @@ public class RdbClient
 	private static int _style = NamedValuesFormatter.STYLE_COLUMNS;
 	private static boolean _labels_wanted = true;
 	
+	private final static double TIMEOUT_SEC = 5.0;
+	
+	private final static FieldCreate fieldCreate = FieldFactory.getFieldCreate();
+
+	private final static Structure requestStructure =
+    	fieldCreate.createStructure(
+				new String[] { 
+						ENTITY_ARGNAME, 
+						PARAMS_ARGNAME 
+						},
+				new Field[] { 
+						fieldCreate.createScalar(ScalarType.pvString),
+						fieldCreate.createScalar(ScalarType.pvString)
+						}
+				);
+	
 	/**
 	 * Main of rdbService client takes 1 argument, being the name of a SQL query that the
 	 * server side will understand.
@@ -78,45 +98,30 @@ public class RdbClient
 	 */
 	public static void main(String[] args) 
 	{	
-		PVStructure pvResult=null;  // The data that will come back from the server.
-
-		parseArguments( args );
-		
-		// Start PVAccess. Instantiate private class that handles callbacks and look for arguments
-		ClientFactory.start();
-		Client client = new Client();
-		
-		PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
-	    FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-	    Field[] fields = new Field[2];
-        String[] fieldNames = new String[fields.length];
-        fieldNames[0]=ENTITY_ARGNAME; 
-        fieldNames[1]=PARAMS_ARGNAME; 
-	    fields[0] = fieldCreate.createScalar(ScalarType.pvString);
-	    fields[1] = fieldCreate.createScalar(ScalarType.pvString);
-	    Structure structure = fieldCreate.createStructure(fieldNames, fields);
-	    PVStructure pvArguments = pvDataCreate.createPVStructure(null, structure);
-	    
-		// Make connection to service
-
-	    client.connect(OBJECTIVE_SERVICE_NAME);
-
-		_dbg("DEBUG: main(): following client connect, pvarguments = "+
-				pvArguments.toString());
-
-		// Retrieve interface (i.e., an API for setting the arguments of the service)
-		//
-		PVString pvQuery = pvArguments.getStringField(ENTITY_ARGNAME);
-		@SuppressWarnings("unused") // The parameters field of the input is not yet used by rdbService.
-        PVString pvParams = pvArguments.getStringField(PARAMS_ARGNAME);
-
 		// Update arguments to the service with what we got at the command line, like "swissfel:allmagnetnames"
-		//
 		if ( args.length <= 0 )
 		{
 			System.err.println("No name of a db query was given; exiting.");
 			System.exit(NOARGS);
 		}
+
+		parseArguments( args );
+		
+		
+		// Start pvAccess and instantiate RPC client.
+		ClientFactory.start();
+		ServiceClient client = ServiceClientFactory.create(OBJECTIVE_SERVICE_NAME);
+		
+	    PVStructure pvArguments = PVDataFactory.getPVDataCreate().createPVStructure(requestStructure);
+	    
+		_dbg("DEBUG: main(): following client connect, pvarguments = "+
+				pvArguments.toString());
+
+		// Retrieve interface (i.e., an API for setting the arguments of the service)
+		PVString pvQuery = pvArguments.getStringField(ENTITY_ARGNAME);
+		@SuppressWarnings("unused") // The parameters field of the input is not yet used by rdbService.
+        PVString pvParams = pvArguments.getStringField(PARAMS_ARGNAME);
+
 		pvQuery.put(args[0]);
 		
 		// TODO: There are presently no record parameters supported (ie, parameters 
@@ -126,12 +131,14 @@ public class RdbClient
 
 		// Execute the service request for data subject to the arguments constructed above. 
 		//
+		PVStructure pvResult = null;
 		try
 		{
-			pvResult = client.request( pvArguments );
+			pvResult = client.request( pvArguments, TIMEOUT_SEC );
 		}
 		catch ( Exception ex )
 		{
+			// TODO see HelloClient for better error handling
 			if ( ex.getMessage() != null ) System.err.println(ex.getMessage());
 		    System.exit(NODATARETURNED);	
 		}
@@ -146,18 +153,8 @@ public class RdbClient
 		}
 		else
 		{
-			PVString normativetypeField = pvResult.getStringField(TYPE_FIELD_NAME);
-
-			if ( normativetypeField == null ) 
-			{
-				System.err.println("Unable to get data: unexpected data structure returned from "+
-						OBJECTIVE_SERVICE_NAME + ". Expected normativetype member, "+
-						"but normativetype not found in returned datum."); 
-				System.err.println(pvResult);
-				System.exit(NOTNORMATIVETYPE);
-			}
-			String type = normativetypeField.get();
-			if (type.compareTo(NTTABLE_TYPE_NAME ) != 0)	
+			String type = pvResult.getStructure().getID();
+			if (!type.equals(NTTABLE_TYPE_NAME))	
 			{
 				System.err.println("Unable to get data: unexpected data structure returned from "+
 						OBJECTIVE_SERVICE_NAME + ".");
@@ -182,8 +179,7 @@ public class RdbClient
 			 * these types is each <array> member of the NTTable.
 			 */
 			
-			// skip past the first field, that was the normative type specifier.
-			int N_dataFields = pvResult.getNumberFields()-1;
+			int N_dataFields = pvResult.getNumberFields();
 			
 			PVField[] pvFields = pvResult.getPVFields();
 			if ( N_dataFields <= 0 || pvFields.length <= 0)
@@ -204,10 +200,6 @@ public class RdbClient
 				// Get the label attached to the field. This will be the column name from the ResultSet
 				// of the SQL SELECT query.
 				String fieldName = pvFielde.getFieldName();
-				
-				// Skip past the meta-data field named "normativeType"
-				if (fieldName.compareTo(TYPE_FIELD_NAME) == 0)
-					continue;
 				
 				if ( pvFielde.getField().getType() == Type.scalarArray ) 
 				{
@@ -271,170 +263,6 @@ public class RdbClient
 	
 	
 	
-	/** 
-	 * Client is an example implementor of ServiceClientRequester. A client side
-	 * of EPICS V4 rpc support must implement a static class of ServiceClientImplemetor.
-	 * This class forms the interface between your functional client side code, and the
-	 * callbacks required by the client side of pvData and the RPC support.
-	 */
-	private static class Client implements ServiceClientRequester 
-	{	
-		private ServiceClient serviceClient = null;
-		private PVStructure pvResult = null;
-
-		/**
-		 * Connect and wait until connected
-		 * 
-		 * @param objectiveServiceName The recordName of the service to which to connect.
-		 * @return The pvStructure of the arguments expected by the service; the client
-		 * "sends arguments" by filling in the elements of this returned structure.
-		 */
-		void connect( String objectiveServiceName)
-		{
-			_dbg("connect() entered");
-
-			// Service name argument must match recordName in XML database exactly, 
-			// including case.
-			try 
-			{
-				serviceClient = ServiceClientFactory.create(objectiveServiceName, this);			
-				// Connect with 5.0s timeout. Increase for slow services. 
-				serviceClient.waitConnect(5.0);	
-			}
-			catch ( Exception ex )
-			{
-				System.err.println(this.getClass().getName()+" received Exception "+ ex.getClass() +
-						" with message \""+ex.getMessage() +"\"");
-				System.err.println("Unable to contact "+OBJECTIVE_SERVICE_NAME+". Exiting");
-				System.exit(1);	
-			}
-
-			_dbg("connect() exits");
-		}
-		
-		/**
-		 * Cleanup client side resource. At least call super serviceClient destroy.
-		 */
-		void destroy()
-		{
-		    serviceClient.destroy();
-		}
-		
-		/**
-		 * Send a request and wait until done.
-		 * 
-		 * The service will be issued a "sendRequest" by this method invocation, which 
-		 * is its queue to "process the record." Processing the record amounts to
-		 * examining the bitset on the server side, processing, and returning a 
-		 * PVStructure holding the returned data. 
-		 * 
-		 * It's important that this request method sets the bits of the bitset 
-		 * to indicate which arguments (inside the PVArguments PVStructure) should 
-		 * be examined by the server for possible changes in value. Since it's a 
-		 * cheap operation, and this is a demo, we just set those bits every time. 
-		 * But an optimized client would only actively reset bits in the bitset if
-		 * the had changed value since the last sendRequest. 
-		 * 
-		 * @return PVStructure the data returned by the service for this call.  
-		 */
-		PVStructure request( PVStructure pvArguments ) 
-		{
-			_dbg("request() entered");
-				
-			// Actually execute the request for data on the server.
-			serviceClient.sendRequest( pvArguments );
-			serviceClient.waitRequest();
-			
-			_dbg("Request() exits with pvResult="+pvResult.toString());
-			return pvResult;
-		}
-		
-		/**
-		 * connectResult verifies connection and gets the interface of the specific server
-		 * you specified in ServiceClientFactory.create. 
-		 * 
-		 * You, the client side programmer must supply (aka Override) this method 
-		 * definition in your implementation of ServiceClientRequester; but client
-		 * side of pvData calls it, you don't call it directly.
-		 * 
-		 * @see org.epics.pvService.client.ServiceClientRequester#connectResult(org.epics.pvData.pv.Status, 
-		 * org.epics.pvData.pv.PVStructure, org.epics.pvData.misc.BitSet)
-		 */
-		@Override
-		public void connectResult( Status status ) 
-		{
-		    if ( !status.isOK() ) 
-		    {
-		        throw new RuntimeException("Connection error: " + status.getMessage());
-		    }
-
-		    return;
-		}
-		
-		/**
-		 * requestResult receives the data from the server.
-		 * 
-		 * You, the client side programmer must supply (aka Override) this method 
-		 * definition in your implementation of ServiceClientRequester; but client
-		 * side of pvData calls it, you don't call it directly.
-		 * 
-		 * @see org.epics.pvService.client.ServiceClientRequester#requestResult(org.epics.pvData.pv.Status, 
-		 * org.epics.pvData.pv.PVStructure)
-		 */
-		@Override
-		public void requestResult(Status status, PVStructure pvResult) 
-		{
-		    if ( !status.isOK() ) 
-		    {
-		        // throw new RuntimeException("Request error: " + status.getMessage());
-		    	System.err.println(OBJECTIVE_SERVICE_NAME + " returned status "+status.getType().toString() +
-		    			" with message: "+status.getMessage());
-		    	this.pvResult = null;
-		    }
-		    else
-		    	this.pvResult = pvResult;
-		    return;
-		}
-		
-		/**
-		 * The message method is called back by the service to acquire the
-		 * name of client. Right! It's that clever: you
-		 * can get and print diagnostic messages from a server while it's
-		 * processing your request, not just an exit status. Neatto eh.
-		 * 
-		 * You, the client side programmer must supply (aka Override) this method 
-		 * definition in your implementation of ServiceClientRequester; but the
-		 * client side of pvData calls it, not your client side code directly.
-		 * 
-		 * @see org.epics.pvData.pv.Requester#getRequesterName()
-		 */
-		@Override
-		public String getRequesterName() 
-		{
-			return CLIENT_NAME;  
- 		}
-		
-		/**
-		 * The message method is called back by the service to issue messages
-		 * while it is processing requests for you. Right! It's that clever: you
-		 * can get and print diagnostic messages from a server while it's
-		 * processing your request, not just an exit status. Neatto eh.
-		 * 
-		 * You, the client side programmer must supply this method; but the
-		 * server calls it, not your client side code.
-		 * 
-		 * @see org.epics.pvData.pv.Requester#message(java.lang.String,
-		 *      org.epics.pvData.pv.MessageType)
-		 */
-		@Override
-		public void message(String message, MessageType messageType) 
-		{
-			System.out.printf("Message from %s %s: %s",OBJECTIVE_SERVICE_NAME, 
-					messageType.toString(),message);
-		}
-		
-	} // end class Client
-
 	/**
 	 * parse command line arguments to see what we're going to get and how to print it.
 	 * @param args the command line arguments
@@ -478,6 +306,7 @@ public class RdbClient
 	 * 
 	 * @param debug_message
 	 */
+	// TODO remove this C concept, use Java Logging API instead
 	private static void _dbg(String debug_message)
 	{
 		if (DEBUG)
