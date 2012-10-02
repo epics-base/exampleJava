@@ -4,8 +4,8 @@
 package rdbService;
 
 import org.epics.pvaccess.ClientFactory;
-import org.epics.pvaccess.client.rpc.ServiceClient;
-import org.epics.pvaccess.client.rpc.ServiceClientFactory;
+import org.epics.pvaccess.client.rpc.RPCClient;
+import org.epics.pvaccess.client.rpc.RPCClientFactory;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Field;
@@ -110,7 +110,7 @@ public class RdbClient
 		
 		// Start pvAccess and instantiate RPC client.
 		ClientFactory.start();
-		ServiceClient client = ServiceClientFactory.create(OBJECTIVE_SERVICE_NAME);
+		RPCClient client = RPCClientFactory.create(OBJECTIVE_SERVICE_NAME);
 		
 	    PVStructure pvArguments = PVDataFactory.getPVDataCreate().createPVStructure(requestStructure);
 	    

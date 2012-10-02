@@ -7,7 +7,7 @@ package helloWorld;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.epics.pvaccess.client.rpc.ServiceClientImpl;
+import org.epics.pvaccess.client.rpc.RPCClientImpl;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvaccess.util.logging.ConsoleLogHandler;
 import org.epics.pvdata.factory.FieldFactory;
@@ -71,7 +71,7 @@ public class HelloClient
 			
 			// create an RPC client to the "helloService" service
 			// connection has allready started in background
-			ServiceClientImpl client = new ServiceClientImpl("helloService");
+			RPCClientImpl client = new RPCClientImpl("helloService");
 			
 			try
 			{
