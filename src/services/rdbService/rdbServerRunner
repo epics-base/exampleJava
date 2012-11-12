@@ -1,13 +1,10 @@
 #! /bin/bash
 #!-*- sh -*-
 #
-# Abs: rdbServerRunner executes the rdbService in an EV4 
-#      server.
+# Abs: rdbServerRunner executes the example EPICS V4 RDB service.
 #
 # Rem: rdbService is a simple service for getting data out of a relational database
 #      such as Oracle. 
-#
-#      THE ORDER OF ARGS IS IMPORTANT. -records must follow -structures.
 #
 # Usage: Execute rdbServerRunner prior to executing rdbClientRunner.   
 # 
@@ -21,4 +18,4 @@
 
 source rdb_setup.bash
 
-java -server rdbService/RdbService
+java -server services/rdbService/RdbService

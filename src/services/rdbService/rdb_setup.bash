@@ -21,13 +21,13 @@
 # ============================================================================
 
 # "Source" file that sets up shared references. Sets JAVAIOC shared reference.
-source $HOME/Development/epicsV4/workspace_hg/common/source/pvCommon_setup.bash
+# source $HOME/Development/epicsV4/workspace_hg/common/source/pvCommon_setup.bash
 
 # Set the antecedent dependency locations, used to 
 # set the classpath, and in startup to find setup data like xmls.
 #
-WORKSPACE=$HOME/Development/epicsV4/workspace_hg
-EXAMPLES=${WORKSPACE}/exampleJava
+WORKSPACE=$HOME/Development/epicsV4/workspace_hg_beta2
+EXAMPLEJAVA=${WORKSPACE}/exampleJava
 
 PVDATA=${WORKSPACE}/pvDataJava
 PVACCESS=${WORKSPACE}/pvAccessJava
@@ -39,7 +39,7 @@ PVACCESS=${WORKSPACE}/pvAccessJava
 # by Eclipse (delivering classes to their respective /bin dirs) but you may 
 # need to edit this if you build a different way.
 #
-CLASSPATH=${EXAMPLES}/target/classes
+CLASSPATH=${EXAMPLEJAVA}/target/classes
 CLASSPATH=${CLASSPATH}:${PVDATA}/bin
 CLASSPATH=${CLASSPATH}:${PVACCESS}/bin
 

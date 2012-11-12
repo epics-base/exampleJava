@@ -1,0 +1,19 @@
+#!/bin/bash
+#!-*- sh -*-
+#
+# Abs: multiplierServerRunner executes the multiplierServer EV4 server.
+#
+# Rem: multiplierServer is a simple example server demonstrating use of NTScalar
+#
+# Usage: Execute multiplierServerRunner prior to executing multiplierClientRunner.   
+# 
+#         > ./multiplierServerRunner    
+# 
+# Ref: 
+# ----------------------------------------------------------------------------
+# Auth: 02-Oct-2012, Greg White (greg@slac.stanford.edu)
+# Mod:  
+# ============================================================================
+source multiplier_setup.bash
+
+java -server illustrations.multiplierService.MultiplierService

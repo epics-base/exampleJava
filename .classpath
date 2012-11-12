@@ -5,5 +5,6 @@
 	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pvAccessJava"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/pvDataJava"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/easyPVA"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

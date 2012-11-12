@@ -1,12 +1,16 @@
 RDBSERVICE_README.txt
 
 This is the README file of the rdbService module. rdbService is a 
-minimal EPICS V4 service which demonstrates the use of EPICS V4 RPC support in pvService
-for implementing a relational database service, and client that shows how
-users can trivially get data from a db like Oracle.
+minimal EPICS V4 service which demonstrates the use of EPICS V4 RPC support.
+It implements a relational database service, which accesses a relational
+database on behalf of a pvAccess client, shows how users can trivially 
+get data from a db like Oracle.
 
 Auth: Greg White, 13-Oct-2011 (greg@slac.stanford.edu) / gregory.white@psi.ch
+Mod:  Greg White,  9-Nov-2012 (greg@slac.stanford.edu) / gregory.white@psi.ch
+      Updated for EPICS V4 beta 2 APIs and techniques.
 
+      
 EXAMPLE
 -------
 The following is an example of running the client. This examples gets details
@@ -85,13 +89,15 @@ Start the server side first.
 
 To start the rdbService server 
 ------------------------------
+** If you encounter issues, you might start with 
+   http://epics-pvdata.sourceforge.net/troubleshooting.html **
+
 1. cd to the directory containing the rdbService source files:
 
-   E.g. % cd ~/Development/epicsV4/workspace_hg/exampleJava/src/rdbService
+   E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
   
 2. If you have never started the server before (for instance you are deploying a fresh install), 
    then you'll need to edit rdb_setup.bash to change values of WORKSPACE and RDBXML (possibly others).
-
 
 3. Start the server in one terminal 
 
@@ -111,7 +117,7 @@ In another window from the server:
 1. cd to the directory containing the rdbService files (both client and server are in the same dir 
    for demo purposes)
    
-   E.g. % cd ~/Development/epicsV4/workspace_hg/exampleJava/src/rdbService
+   E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
  
 2. Execute the client side example runner script rdbClientRunner, giving as an argument the name
    of some query you know is understood by the server. In this example "LCLS:elementInfo.byZ" is 

@@ -29,7 +29,7 @@
 
 source rdb_setup.bash
 
-java -server rdbService/RdbClient $1 ${2:-col} ${3:-labels}
+java -client services.rdbService/RdbClient $1 ${2:-col} ${3:-labels}
 
 exit $?
 

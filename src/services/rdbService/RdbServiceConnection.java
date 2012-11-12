@@ -2,7 +2,7 @@
  * rdbService defines classes for the server side of an EPICS V4 service for accessing
  * a relational database, such as ORACLE.
  */
-package rdbService;
+package services.rdbService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -44,7 +44,7 @@ public class RdbServiceConnection
 	private static final String CONNECTION_URI_DEFAULT = 
 		"jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD";
 	private static final String CONNECTION_USERID_DEFAULT = "eida";
-	private static final String CONNECTION_PWD_DEFAULT = "nicetry";
+	private static final String CONNECTION_PWD_DEFAULT = "eida4gfa";
 	private static final String NORESULTSETMETADATA = 
 		"No ResultSet metadata available, so can not continue to get data";
 	private static final int MAX_RETRIES = 2; // Try a SQL query at most 2 times
@@ -361,13 +361,13 @@ public class RdbServiceConnection
 	}
 
 	/**
-	 * Queries the AIDA Name Server database with the query in sqlString. This is a wrapper to give appropriate
+	 * Queries the database with the query in sqlString. This is a wrapper to give appropriate
 	 * error handling and retry logic.
 	 * 
 	 * @param sqlString
 	 *            the SQL query, in "ascii" (actually UTF-16 or whatever java String is).
 	 * @return The ResultSet given by stmt.executeQuery(sqlString)
-	 * @version 1.0 19-Jun-2005, Greg White
+	 * @version 1.0 19-Oct-2011, Greg White
 	 */
 	private ResultSet executeQuery(String sqlString) throws SQLException
 	{
@@ -396,8 +396,7 @@ public class RdbServiceConnection
 			catch (Throwable ex)
 			{
 				// We encountered an error in the execution of the sql
-				// query,
-				// so try to fix this by getting a new Oracle connection
+				// query, so try to fix this by getting a new Oracle connection
 				// and set logic so we'll go through the do loop again.
 				if (nRetries < MAX_RETRIES)
 				{

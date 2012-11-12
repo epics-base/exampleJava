@@ -1,4 +1,4 @@
-package rdbService;
+package services.rdbService;
 
 @SuppressWarnings("serial")
 public class UnableToGetDataException extends Exception 

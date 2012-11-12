@@ -4,6 +4,7 @@ This is the README file of the helloWorld service.
 
 Auth: Greg White, 19-Sep-2011 (greg@slac.stanford.edu)
 Mod:  Greg White, 1-Dec-2011 (greg@slac.stanford.edu), removed dependency on pvService.
+      Greg White, 15-Oct-2012 (greg@slac.stanford.edu), updated for beta 2.      
 
 
 EXMAPLE
@@ -40,8 +41,7 @@ EPICS V4 components:
 
 SETUP
 -----
-1. Visit your version of common/script/pvCommon_setup.bash and edit for your environment.
-2. Visit your version of exampleJava/src/helloWorld/helloWorld_setup.bash and edit for your environment.
+Visit your version of exampleJava/src/helloWorld/helloWorld_setup.bash and edit for your environment.
 
 EXECUTION
 ---------
@@ -52,10 +52,8 @@ To start the Hello World server
 -------------------------------
  * cd to the directory containing helloWorld
 
-   E.g. % cd ~/Development/epicsV4/workspace_hg/exampleJava/src/helloWorld
+   E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/helloWorld
   
- * Edit helloWorld_setup.bash to change WORKSPACE and HELLO.
-
  * Start the server in one terminal 
 
    E.g. % ./helloServerRunner
@@ -71,7 +69,7 @@ To run a Hello World Client
  * cd to the directory containing helloWorld (both client and server are in the same dir 
    for demo purposes)
    
-   E.g. % cd /Users/greg/Development/epicsV4/workspace_hg/exampleJava/src/helloWorld
+   E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/helloWorld
  
  * Execute the client side demo, optionally giving your name!
  
