@@ -1,4 +1,4 @@
-package rdbService.namedValues;
+package services.rdbService.namedValues;
 
 import java.io.PrintStream;
 
