@@ -44,7 +44,7 @@ public class RdbServiceConnection
 	private static final String CONNECTION_URI_DEFAULT = 
 		"jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD";
 	private static final String CONNECTION_USERID_DEFAULT = "eida";
-	private static final String CONNECTION_PWD_DEFAULT = "eida4gfa";
+	private static final String CONNECTION_PWD_DEFAULT = "nicetry";
 	private static final String NORESULTSETMETADATA = 
 		"No ResultSet metadata available, so can not continue to get data";
 	private static final int MAX_RETRIES = 2; // Try a SQL query at most 2 times
