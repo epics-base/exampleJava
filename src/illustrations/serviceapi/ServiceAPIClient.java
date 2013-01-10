@@ -1,7 +1,6 @@
 package illustrations.serviceapi;
 
 import org.epics.pvaccess.client.rpc.RPCClientImpl;
-import org.epics.pvaccess.easyPVA.*;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
