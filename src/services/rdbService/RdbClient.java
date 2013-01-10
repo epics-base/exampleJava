@@ -8,9 +8,7 @@ import java.util.logging.Logger;   // Prerequisite of ConsoleLogHandler pvAccess
 
 import org.epics.pvaccess.util.logging.ConsoleLogHandler;    // Logging.
 import org.epics.pvaccess.ClientFactory;                     // Client side constructor.
-import org.epics.pvaccess.client.rpc.RPCClient;
 import org.epics.pvaccess.client.rpc.RPCClientImpl;
-import org.epics.pvaccess.client.rpc.RPCClientRequester;
 import org.epics.pvaccess.server.rpc.RPCRequestException;    // Standard EPICS service exception.
 import org.epics.pvdata.factory.FieldFactory;                // 
 import org.epics.pvdata.factory.PVDataFactory;
