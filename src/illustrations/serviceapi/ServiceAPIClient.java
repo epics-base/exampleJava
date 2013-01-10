@@ -1,6 +1,8 @@
 package illustrations.serviceapi;
 
+import org.epics.pvaccess.client.rpc.RPCClientImpl;
 import org.epics.pvaccess.easyPVA.*;
+import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.Field;
@@ -64,7 +66,7 @@ public class ServiceAPIClient
 	
 	public static void main(String[] args) throws Throwable 
 	{
-		EasyPVA easyPVA = EasyPVAFactory.get();
+
 
 		PVStructure request = PVDataFactory.getPVDataCreate().
 			createPVStructure(uriStructure);
@@ -87,10 +89,33 @@ public class ServiceAPIClient
 		// conformance to the definition of NTURI; but there is no programmatic link between
 		// the channel argument to pvAccess (the argument to createChannel) and the value
 		// of the path part of the NTURI encoded in the pvStructure in the request method argument.
-		// 
-		PVStructure result = easyPVA.createChannel("miniArchiveServiceToDemoServiceInterface").createRPC().request(request);
+		//
+		// Using easyPVA in alphaJava this acqu would have been as commented out, but instead see 
+		// actual code below.
+		// EasyPVA easyPVA = EasyPVAFactory.get();
+		// PVStructure result = easyPVA.createChannel("miniArchiveServiceToDemoServiceInterface").createRPC().request(request);
 		
-		System.out.println("The URI request structure:\n" + request +"\n\nResulted in:\n" + result);
+		RPCClientImpl client = new RPCClientImpl("miniArchiveServiceToDemoServiceInterface");
+		try 
+		{
+			PVStructure result = client.request(request, 3.0);	
+			System.out.println("The URI request structure:\n" + request +"\n\nResulted in:\n" + result);
+		}
+		catch (RPCRequestException ex)
+		{
+			// The client connected to the server, but the server request method issued its 
+			// standard summary exception indicating it couldn't complete the requested task.
+			System.err.println("Acquisition was not successful, " +
+				"service responded with an error: " + ex.getMessage());
+		}	
+		catch (IllegalStateException ex)
+		{
+			// The client failed to connect to the server. The server isn't running or
+			// some other network related error occurred.
+			System.err.println("Acquisition was not successful, " +
+				"failed to connect: "+ ex.getMessage());
+		}
+		client.destroy();
 		
         System.exit(0);
 	}
