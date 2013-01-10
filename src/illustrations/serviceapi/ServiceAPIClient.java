@@ -1,4 +1,4 @@
-package snippets.serviceapi;
+package illustrations.serviceapi;
 
 import org.epics.pvaccess.easyPVA.*;
 import org.epics.pvdata.factory.FieldFactory;

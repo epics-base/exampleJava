@@ -1,4 +1,4 @@
-package snippets.serviceapi;
+package illustrations.serviceapi;
 
 
 import java.util.Date;
