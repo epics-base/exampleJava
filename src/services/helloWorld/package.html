@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+helloWorld is the simplest possible illustration of the client and server sides of an EPICS V4 "service" 
+(based on pvAccess RPC).
+
+<p>The service is the classical "hello world" implemented as a client executable, which a
+user runs giving their name, and a server which receives the user's name as an argument, and says 
+hello. For instance, in one widow;</p>
+<pre>
+% ./helloServerRunner
+...
+</pre>
+<p>Then in another process...</p>
+<pre>
+% ./helloClientRunner greg
+        Hello greg
+</pre>
+
+</body>
+</html>

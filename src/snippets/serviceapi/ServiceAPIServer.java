@@ -1,4 +1,4 @@
-package illustrations.serviceapi;
+package snippets.serviceapi;
 
 
 import java.util.Date;
@@ -40,14 +40,15 @@ import org.epics.pvdata.factory.StatusFactory;
  * <p>The service uses the pattern of an archive client and server to make the illustration.</p>
  * 
  * <p> The server encodes its response in a pvStructure whose fields map to the components 
- * are defined as an EPICS V4 standard type, NTTable, in the EPICS V4 document
+ * as defined in one of the EPICS V4 standard (aka "normative") types, named NTTable. See 
+ * the EPICS V4 document
  * <a hreh="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html#nttable">
  * EPICS V4 Normative Types</a>. </p> 
  * 
  * @author Greg White SLAC/PSI, 12-Nov-2012 
- * @see [1] <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a>
- * @see [2] <a href="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html">
- * EPICS V4 Normative Types</a>
+ * @see <a href="http://www.ietf.org/rfc/rfc2396.txt">[1] http://www.ietf.org/rfc/rfc2396.txt</a>
+ * @see <a href="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html">
+ * [2] EPICS V4 Normative Types</a>
  * 
  */
 public class ServiceAPIServer {

@@ -4,7 +4,7 @@ package services.helloWorld;
  * a client/server environment using the ChannelRPC channel type of EPICS V4.  
  */
 
-import org.epics.pvaccess.client.rpc.ServiceClientImpl;
+import org.epics.pvaccess.client.rpc.RPCClientImpl;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
@@ -59,7 +59,7 @@ public class HelloClient
 		{
 			// Create an RPC client to the "helloService" service
 			// (the connection has already started in background).
-			ServiceClientImpl client = new ServiceClientImpl("helloService");
+			RPCClientImpl client = new RPCClientImpl("helloService");
 	
 			// Create the data instance used to send data to the server. That is,
 			// instantiate an instance of the "introspection interface" for the data interface of

@@ -151,10 +151,11 @@ public class RdbServiceConnection
 	}
 
 	/**
-	 * Get the SQL query (probably a SELECT statement) identified by the given query name.
+	 * Get the SQL query (probably a SELECT statement) identified by the given query name, as
+	 * it is given in the data source to which teh server connects (probably a releational database).
 	 * 
-	 * @param entity
-	 * @return
+	 * @param queryName identifier of the SQL query; what the end user entered
+	 * @return the SQL select statement that corresponds to the queryName input parameter  
 	 */
 	public String entityToQuery(String queryName) throws UnableToGetDataException
 	{

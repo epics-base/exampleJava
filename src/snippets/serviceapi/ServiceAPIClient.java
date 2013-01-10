@@ -1,4 +1,4 @@
-package illustrations.serviceapi;
+package snippets.serviceapi;
 
 import org.epics.pvaccess.easyPVA.*;
 import org.epics.pvdata.factory.FieldFactory;
@@ -10,12 +10,15 @@ import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.Structure;
 
 /**
- * ServiceAPIClient is the client side of an EPICS V4 client server system that
+ * ServiceAPIClient is the client side of a notional EPICS archive client. More specifically, ServiceAPIClient exemplifies 
+ * the client side of an EPICS V4 client server system that
  * illustrates the use of standardized EPICS V4 pvStructures for exchanging data in 
  * the classic case of a client making a parameterized request for data, and the 
  * servers response - that is, a so called "Remote Procedure Call" (or RPC). 
  * 
  * <p>The service uses the pattern of an archive client and server to make the illustration.</p>
+ * 
+ * <p>It also shows using NTURI, a specialized way exchanging URI data between EPICS V4 endpoints.</p>
  * 
  * <p> The client encodes its request in a pvStructure whose fields map to the components
  * of an internet Uniform Resource Identifier (URI, see <a href="http://www.ietf.org/rfc/rfc2396.txt">
@@ -31,15 +34,15 @@ import org.epics.pvdata.pv.Structure;
  * <p>EasyPVA (presently in alpha) is used to actually make the request call, which 
  * is a very simple calling interface API for pvAccess. The data returned is
  * in the form of another standard pvStructure type called 
- * <a hreh="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html#nttable">
+ * <a href="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html#nttable">
  * NTTable</a>. However, Also no code is spent showing
  * how the returned pvStructure NTTable may be examined and data extracted. For an example
  * of that, see the full rdbService example also in this repo. </p>
  * 
  * @author Greg White SLAC/PSI, 12-Nov-2012 
- * @see [1] <a href="http://www.ietf.org/rfc/rfc2396.txt">http://www.ietf.org/rfc/rfc2396.txt</a>
- * @see [2] <a href="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html">
- * EPICS V4 Normative Types</a>
+ * @see <a href="http://www.ietf.org/rfc/rfc2396.txt">[1] http://www.ietf.org/rfc/rfc2396.txt</a>
+ * @see <a href="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html">
+ * [2] EPICS V4 Normative Types</a>
  */
 public class ServiceAPIClient 
 {

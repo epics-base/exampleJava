@@ -8,7 +8,9 @@ import java.util.logging.Logger;   // Prerequisite of ConsoleLogHandler pvAccess
 
 import org.epics.pvaccess.util.logging.ConsoleLogHandler;    // Logging.
 import org.epics.pvaccess.ClientFactory;                     // Client side constructor.
-import org.epics.pvaccess.client.rpc.ServiceClientImpl;
+import org.epics.pvaccess.client.rpc.RPCClient;
+import org.epics.pvaccess.client.rpc.RPCClientImpl;
+import org.epics.pvaccess.client.rpc.RPCClientRequester;
 import org.epics.pvaccess.server.rpc.RPCRequestException;    // Standard EPICS service exception.
 import org.epics.pvdata.factory.FieldFactory;                // 
 import org.epics.pvdata.factory.PVDataFactory;
@@ -110,9 +112,12 @@ public class RdbClient
 		
 		
 		// Start pvAccess and instantiate RPC client of the rdb service's single V4 channel.
+		// This form creates a synchronous EPICS V4 pvAccess RPC client; see pvAccess, in 
+		// particular the the test folder org.epics.pvaccess.client.rpc.test package, for an
+		// example of an asynchronous client.
 		//
 		ClientFactory.start();
-		ServiceClientImpl client = new ServiceClientImpl(CHANNEL_NAME);
+		RPCClientImpl client = new RPCClientImpl(CHANNEL_NAME);
 		
 		// Retrieve introspection interface of the service's input argument structure, 
 		// i.e. the API for setting the arguments of the service. It is a PVStructure 

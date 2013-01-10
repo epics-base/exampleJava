@@ -52,8 +52,7 @@ public abstract class NamedValuesFormatter
      * 
      * @param style If style is given and is valued NamedValuesFormatter.STYLE_ROWS (1) then 
      * a row formatter is created, otherwise a column formatter is created.
-     * @see STYLE_ROWS
-     * @see STYLE_COLUMNS
+     * 
      * @return An instance of a NamedValuesFormatter of the given style.
      */
     public static NamedValuesFormatter create( int style )
@@ -130,7 +129,7 @@ public abstract class NamedValuesFormatter
      * will include headings. If so, the names in the names/values 
      * system will be used as the heading labels.
      * 
-     * @see setWhetherDisplaylabels
+     * @see #setWhetherDisplayLabels(boolean)
      * 
      * @return true if the formatter will print the labels, and false otherwise. See 
      * setWhetherDisplayLabels to change the value of the print labels setting.
