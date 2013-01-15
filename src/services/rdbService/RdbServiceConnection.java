@@ -207,6 +207,10 @@ public class RdbServiceConnection
 		ArrayList<Field> myArr = new ArrayList<Field>();
 		ResultSet rs = null;
 
+		PVStructure pvValue = pvTop.getStructureField("value");
+		PVStringArray labelsArray = (PVStringArray) 
+				pvTop.getScalarArrayField("labels",ScalarType.pvString);
+		
 		try
 		{
 			// Replace values of any passed arguments for matched arg names
@@ -333,8 +337,13 @@ public class RdbServiceConnection
 
 			} // For each column
 			
+			
 			// Append all the fields we created for each column, to the top level structure to be returned.
-			pvTop.appendPVFields(columnNames, pvFields);
+			pvValue.appendPVFields(columnNames, pvFields);
+			/* PVStringArray labelsArray = (PVStringArray) 
+					pvTop.getScalarArrayField("labels",ScalarType.pvString);	
+			*/
+			labelsArray.put(0, columnNames.length, columnNames, 0);
 			
 		} // try block processing ResultSet
 

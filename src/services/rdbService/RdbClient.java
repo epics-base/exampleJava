@@ -22,6 +22,7 @@ import org.epics.pvdata.pv.PVStringArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarArray;
 import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.StringArrayData;
 import org.epics.pvdata.pv.Structure;
 import org.epics.pvdata.pv.Type;
 import org.epics.pvdata.util.namedValues.NamedValues;
@@ -34,6 +35,8 @@ import org.epics.pvdata.util.pvDataHelper.GetHelper;
  * via EPICS V4. 
  * 
  * @author Greg White (greg@slac.stanford.edu) 22-Sep-2011
+ * @version Greg White (greg@slac.stanford.edu) 15-Jan-2013 Updated for 
+ * conformance to NTTable. 
  *
  */
 public class RdbClient 
@@ -137,10 +140,13 @@ public class RdbClient
 		PVStructure pvResult = null;
 		try
 		{
+			// Actual wire i/o to get the data from the server
 			pvResult = client.request( pvRequest, TIMEOUT_SEC );
 			
+			// Verify result validity, unpack and display it.
 			if (pvResult != null)
 			{
+				// Check the result PVStructure is of the type we expect. It should be an NTTABLE.
 				String type = pvResult.getStructure().getID();
 				if (!type.equals(NTTABLE_TYPE_NAME))	
 				{
@@ -157,18 +163,21 @@ public class RdbClient
 				 * is, pvResult is a PVStructure whose specific shape conforms to
 				 * the definition NTTable
 				 * (http://epics-pvdata.sourceforge.net/normative_types_specification
-				 * .html). Therefore it can be unpacked assuming such structure (a
-				 * PVStructure containing a PVStructure containing a number of
-				 * arrays of potentially different type). Further, we know that
+				 * .html). NTTable is composed of two fields; a string array field of
+				 * column titles, and a structure containing N array fields each being
+				 * one column of data. Further, we know that
 				 * rdbService only returns columns of type PVDoubleArray,
 				 * PVLongArray, PVByteArray, or PVStringArray. We use the
-				 * introspection interface of PVStructure to determine which of
-				 * these types is each <array> member of the NTTable.
+				 * introspection interface of PVStructure to determine which.
 				 */	
-				int N_dataFields = pvResult.getNumberFields();
+				
+				PVStringArray pvColumnTitles = (PVStringArray) 
+						pvResult.getScalarArrayField("labels", ScalarType.pvString);
+				PVStructure pvTableData = pvResult.getStructureField("value");
+				int Ncolumns = pvTableData.getNumberFields();
 					
-				PVField[] pvFields = pvResult.getPVFields();
-				if ( N_dataFields <= 0 || pvFields.length <= 0)
+				PVField[] pvColumns = pvTableData.getPVFields();
+				if ( Ncolumns <= 0 || pvColumns.length <= 0)
 				{
 					logger.log(Level.SEVERE, "No data fields returned from " + CHANNEL_NAME + ".");
 					System.exit(NODATARETURNED);
@@ -181,36 +190,43 @@ public class RdbClient
 				// provisions of NamedValues to print that data in a familiar looking table
 				// format.
 				//
+				StringArrayData data = new StringArrayData();
+				int labelOffset=0;
 				NamedValues namedValues = new NamedValues();
-				for (PVField pvFielde : pvFields)
+				for (PVField pvColumnIterator : pvColumns)
 				{
-					// Get the label attached to the field. This will be the
-					// column name from the ResultSet
-					// of the SQL SELECT query.
-					String fieldName = pvFielde.getFieldName();
-
-					if (pvFielde.getField().getType() == Type.scalarArray)
+					// Get the column name. This will be the
+					// column name from the ResultSet of the SQL SELECT query.
+					// The column name should be taken from the returned NTTable labels
+					// field, as opposed to the names of the value structure fields, though the
+					// field names of the value structure are, in the case of rdbService
+					// exactly the same values as the labels field.
+					pvColumnTitles.get(labelOffset,1,data);
+					String fieldName = data.data[labelOffset++];
+					/* pvColumnIterator.getFieldName(); - could have been used instead */
+					
+					if (pvColumnIterator.getField().getType() == Type.scalarArray)
 					{
-						ScalarArray scalarArray = (ScalarArray) pvFielde
+						ScalarArray scalarArray = (ScalarArray) pvColumnIterator
 								.getField();
 						if (scalarArray.getElementType() == ScalarType.pvDouble)
 						{
-							PVDoubleArray pvDoubleArray = (PVDoubleArray) pvFielde;
+							PVDoubleArray pvDoubleArray = (PVDoubleArray) pvColumnIterator;
 							namedValues.add(fieldName,
 									GetHelper.getDoubleVector(pvDoubleArray));
 						} else if (scalarArray.getElementType() == ScalarType.pvLong)
 						{
-							PVLongArray pvLongArray = (PVLongArray) pvFielde;
+							PVLongArray pvLongArray = (PVLongArray) pvColumnIterator;
 							namedValues.add(fieldName,
 									GetHelper.getLongVector(pvLongArray));
 						} else if (scalarArray.getElementType() == ScalarType.pvByte)
 						{
-							PVByteArray pvByteArray = (PVByteArray) pvFielde;
+							PVByteArray pvByteArray = (PVByteArray) pvColumnIterator;
 							namedValues.add(fieldName,
 									GetHelper.getByteVector(pvByteArray));
 						} else if (scalarArray.getElementType() == ScalarType.pvString)
 						{
-							PVStringArray pvStringArray = (PVStringArray) pvFielde;
+							PVStringArray pvStringArray = (PVStringArray) pvColumnIterator;
 							namedValues.add(fieldName,
 									GetHelper.getStringVector(pvStringArray));
 						} else
@@ -228,7 +244,7 @@ public class RdbClient
 					} else
 					{
 						logger.log( Level.SEVERE, "Unexpected non-array field returned from "+ CHANNEL_NAME
-								+ ".\n Field named "+ fieldName + " is not of scalarArray type, "
+								+ ".\n Field named \'"+ fieldName + "\' is not of scalarArray type, "
 								+ "and so can not be interpretted as a data column.");
 					}
 				}	

@@ -19,6 +19,8 @@ import org.epics.pvdata.pv.FieldCreate;
 import org.epics.pvdata.pv.PVDataCreate;
 import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.ScalarType;
+import org.epics.pvdata.pv.Structure;
 import org.epics.pvdata.pv.Status.StatusType;
 
 /**
@@ -44,6 +46,8 @@ import org.epics.pvdata.pv.Status.StatusType;
  * being driven by this project).
  * 
  * @author Greg White, 13-Oct-2011 (greg@slac.stanford.edu)
+ * @version 15-Jan-2013, Greg White (greg@slac.stanford.edu) 
+ *          Updated for conformance to NTTable.
  * @version 2-Nov-2012, Greg White (greg@slac.stanford.edu) 
  *          Added use of NTURI normative type. Hence rdbService is Normative Types
  *          compliant, since input is by NNTRI and output by NTTAable, all I/O is 
@@ -118,10 +122,23 @@ public class RdbService
 			// string given - that is how a receiver knows it's received an NTTable (as
 			// NTTable was defined at the time of definition of the given namespace). 
 			//
-			PVStructure pvTop = pvDataCreate.createPVStructure(fieldCreate
+			
+			/* PVStructure pvTop = pvDataCreate.createPVStructure(fieldCreate
 					.createStructure("uri:ev4:nt/2012/pwd:NTTable",
 							new String[0], new Field[0]));
-
+		    */
+			
+			Structure valueStructure = fieldCreate.createStructure(
+					new String[0],  /* Will hold field names of column data */
+ 					new Field[0] ); /* Will hold field values of column data */
+			Structure resultStructure = 
+					fieldCreate.createStructure( "uri:ev4:nt/2012/pwd:NTTable", 
+							new String[] { "labels", "value" },
+							new Field[] { fieldCreate.createScalarArray(ScalarType.pvString),
+									       valueStructure } );
+			PVStructure pvTop = PVDataFactory.getPVDataCreate().createPVStructure(resultStructure);
+			
+			
 			// Look up the actual SQL to run on the DB given the name of the SQL query
 			// "key" given by the user. Then execute it on the DB, and return the result.
 			try
