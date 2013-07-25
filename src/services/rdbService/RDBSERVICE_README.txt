@@ -59,7 +59,8 @@ UnableToGetDataException        A simple Exception class used to indicate inabil
 REQUISITES
 ----------
 EPICS V4 components. Basically, check these repos out of EPICS V4 Mercurial
-1. common  - for source/pvCommon_setup.bash
+1. caj and jca, prerequisities of pvAccessJava. If you acquired pvAccessJava by
+   by maven, you will have the right versions in your maven repo.
 2. pvAccessJava - for PVAccess 
 3. pvDataJava   - for PVData 
 4. exampleJava   - for the rdbService java classes and config files.
@@ -166,34 +167,5 @@ Eg:
     F10BC-VCHA24010    F10BC    VCHA                             dipole chamber     Lothar Schulz  
        F10BC-MBND10    F10BC    MBND                                     dipole    Marco Negrazus   
 <rows and columns snipped for clarity>
-
-PERFORMANCE
------------
-No serious performance measurements have been done. Note that the server side has been
-written for illustrative clarity as an EPICS V4 example, not for performance. But for example, 
-see the mid-sized sample below: *including* client image startup (ie starting a java vm and executing the 
-client), this SwissFel ORACLE db query took about 3/4s user time, to request, execute 
-the SQL, get ResultSet from oracle, return it to the client as a PVStructure, and client 
-side to format, about 560 rows of data.
-
-* Small size sample: 2610 characters, 18 rows, takes 1/2 second. Probably mostly image startup.
-[gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner swissfeltest:sectiontree > /dev/null
-0.541u 0.104s 0:02.20 29.0%     0+0k 9+2io 373pf+0w
-[gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner swissfeltest:sectiontree | wc
-      18     188    2610
-* Mid size sample: ~600 rows in 3/4 second.
-[gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner swissfeltest:alldevices > /dev/null
-0.774u 0.076s 0:00.61 137.7%    0+0k 0+0io 8pf+0w
-[gregsmac:exampleJava/src/rdbService] greg% ./rdbClientRunner swissfeltest:alldevices | wc
-     567    9556  120204
-* Large size sample: 60M characters (all the pvname data) in SLS, took 13 seconds:
-[gregsmac:exampleJava/src/rdbService] greg% time ./rdbClientRunner sls:allpvnames >/dev/null
-13.270u 2.201s 0:38.66 40.0%    0+0k 21+72io 8pf+0w
-[gregsmac:exampleJava/src/rdbService] greg% ./rdbClientRunner sls:allpvnames | wc
-  348848 3136676 60350704
-
-So, extremely roughly speaking, a rdbClient user sees 1/2 Megabyte query result data per second, 
-based on simple unoptimized Oracle queries executed by unoptimized JDBC, and, importantly, including the 
-reformatting for printing that application would probably skip or do itself.
 
 
