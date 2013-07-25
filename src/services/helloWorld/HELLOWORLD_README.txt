@@ -11,8 +11,8 @@ EXMAPLE
 -------
 The following is an example of running the client, giving the argument "Jessica"
 
-          % ./helloClientRunner Jessica
-          Hello Jessica
+          % ./helloClientRunner Stefania
+          Hello Stefania
 
 SUMMARY
 -------
@@ -34,19 +34,24 @@ helloWorld_setup.bash             A unix (bash) source script which initializes 
 PREREQUISITES
 -------------
 EPICS V4 components:
-1. common  - for source/pvCommon_setup.bash
+0. caj and jca, prerequisities of pvAccessJava. If you acquired pvAccessJava by
+   by maven, you will have the right versions in your maven repo.
 2. pvAccessJava - for PVAccess 
 3. pvDataJava   - for PVData 
 4. exampleJava      - for the example java classes and config files.
 
 SETUP
 -----
-Visit your version of exampleJava/src/helloWorld/helloWorld_setup.bash and edit for your environment.
+Visit your version of exampleJava/src/services/helloWorld/helloWorld_setup.bash 
+and edit for your environment. 
+
+In particular, set the WORKSPACE variable to the name of the directory 
+containing the exampleJava, pvDataJava and pvAccessJava modules. 
 
 EXECUTION
 ---------
-This section describes how you start server and client sides of the hello Service. 
-Start the server side first.
+This section describes how you start server and client sides of the 
+hello Service. Start the server side first.
 
 To start the Hello World server
 -------------------------------
@@ -58,8 +63,9 @@ To start the Hello World server
 
    E.g. % ./helloServerRunner
   
- * Terminate the server with a SIGTERM (like CTRL-C in its process window) - after
-   you've tested it with the client below of course.
+   [You can terminate the server with a SIGTERM (like CTRL-C in its 
+    process window) - after you've tested it with the client below of 
+    course.]
    
    
 To run a Hello World Client

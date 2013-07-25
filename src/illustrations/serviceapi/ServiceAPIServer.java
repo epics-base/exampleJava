@@ -5,7 +5,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import org.epics.pvaccess.CAException;
+import org.epics.pvaccess.PVAException;
 
 // Import pvaccess Remote Procedure Call interface
 import org.epics.pvaccess.server.rpc.RPCRequestException;
@@ -201,7 +201,7 @@ public class ServiceAPIServer {
 
 	}
 	
-	public static void main(String[] args) throws CAException
+	public static void main(String[] args) throws PVAException
 	{
 		RPCServer server = new RPCServer();
 

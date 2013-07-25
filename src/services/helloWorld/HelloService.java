@@ -4,7 +4,7 @@
  */
 package services.helloWorld;
 
-import org.epics.pvaccess.CAException;
+import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvaccess.server.rpc.RPCServer;
 import org.epics.pvaccess.server.rpc.RPCService;
@@ -79,7 +79,7 @@ public class HelloService
 	 * @param args None
 	 * @throws CAException
 	 */
-	public static void main(String[] args) throws CAException
+	public static void main(String[] args) throws PVAException
 	{
 		RPCServer server = new RPCServer();
 
