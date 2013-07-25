@@ -42,7 +42,7 @@ public class RdbServiceConnection
 	//
 	private static volatile Connection m_Conn = null; // JDBC connection for queries
 	private static final String CONNECTION_URI_DEFAULT = 
-		"jdbc:oracle:thin:@gfadb05s.psi.ch:1521:GFAPRD";
+		"jdbc:oracle:thin:@yourdbs.host.name:1521:YOURDBNAME";
 	private static final String CONNECTION_USERID_DEFAULT = "eida";
 	private static final String CONNECTION_PWD_DEFAULT = "nicetry";
 	private static final String NORESULTSETMETADATA = 
