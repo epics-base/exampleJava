@@ -6,8 +6,8 @@
 -->   
    <modelVersion>4.0.0</modelVersion>
 
-    <groupId>epics</groupId>
-    <version>2.1.1</version>
+    <groupId>org.epics</groupId>
+    <version>2.1.2</version>
     <artifactId>exampleJava</artifactId>
     <packaging>jar</packaging>
 
@@ -28,12 +28,12 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvDataJava</artifactId>
-            <version>3.0.2</version>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
-        	<groupId>${project.groupId}</groupId>
-        	<artifactId>pvAccessJava</artifactId>
-        	<version>3.0.4</version>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvAccessJava</artifactId>
+            <version>3.1.0</version>
         </dependency>
 <!--        <dependency>
         	<groupId>${project.groupId}</groupId>
