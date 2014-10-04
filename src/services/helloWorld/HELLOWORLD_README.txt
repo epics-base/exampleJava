@@ -34,7 +34,7 @@ helloWorld_setup.bash             A unix (bash) source script which initializes 
 PREREQUISITES
 -------------
 EPICS V4 components:
-0. caj and jca, prerequisities of pvAccessJava. If you acquired pvAccessJava by
+0. caj and jca, prerequisites of pvAccessJava. If you acquired pvAccessJava by
    by maven, you will have the right versions in your maven repo.
 2. pvAccessJava - for PVAccess 
 3. pvDataJava   - for PVData 
