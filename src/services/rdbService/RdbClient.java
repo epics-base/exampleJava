@@ -51,8 +51,8 @@ public class RdbClient
 
 	// The rdbClient expects to get returned in a PVStructure which conforms to the 
 	// definition of the NTTable Normative Type. See EPICS V4 Normative Types for definition. 
-	private static String NTNAMESPACE="uri:ev4:nt/2012/pwd";
-	private static String NTTABLE_TYPE_NAME = NTNAMESPACE + ":" + "NTTable";
+	private static String NTNAMESPACE="ev4:nt";
+	private static String NTTABLE_TYPE_NAME = NTNAMESPACE + "/" + "NTTable:1.0";
 	
 	// Error exit codes
 	@SuppressWarnings("unused")
@@ -83,7 +83,7 @@ public class RdbClient
 			new String[] {"rdbqueryname"},
 			new Field[] { fieldCreate.createScalar(ScalarType.pvString)});
 	private final static Structure uriStructure =
-		fieldCreate.createStructure("uri:ev4:nt/2012/pwd:NTURI",
+		fieldCreate.createStructure("ev4:nt/NTURI:1.0",
 			new String[] { "scheme", "query" },
 			new Field[] { fieldCreate.createScalar(ScalarType.pvString), queryStructure } );
 

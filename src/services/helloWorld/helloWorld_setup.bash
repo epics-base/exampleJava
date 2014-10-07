@@ -23,7 +23,8 @@
 # Set the antecedent dependency locations, used to 
 # set the classpath, and in startup to find setup data like xmls.
 #
-WORKSPACE=$HOME/Development/epicsV4/workspace_hg_beta3
+#WORKSPACE=$HOME/Development/epicsV4/workspace_hg_beta3
+WORKSPACE=/home/hg
 EXAMPLES=${WORKSPACE}/exampleJava
 
 PVDATA=${WORKSPACE}/pvDataJava

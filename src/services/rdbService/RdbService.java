@@ -123,20 +123,8 @@ public class RdbService
 			// NTTable was defined at the time of definition of the given namespace). 
 			//
 			
-			/* PVStructure pvTop = pvDataCreate.createPVStructure(fieldCreate
-					.createStructure("uri:ev4:nt/2012/pwd:NTTable",
-							new String[0], new Field[0]));
-		    */
 			
-			Structure valueStructure = fieldCreate.createStructure(
-					new String[0],  /* Will hold field names of column data */
- 					new Field[0] ); /* Will hold field values of column data */
-			Structure resultStructure = 
-					fieldCreate.createStructure( "uri:ev4:nt/2012/pwd:NTTable", 
-							new String[] { "labels", "value" },
-							new Field[] { fieldCreate.createScalarArray(ScalarType.pvString),
-									       valueStructure } );
-			PVStructure pvTop = PVDataFactory.getPVDataCreate().createPVStructure(resultStructure);
+			PVStructure pvTop = null;
 			
 			
 			// Look up the actual SQL to run on the DB given the name of the SQL query
@@ -154,7 +142,7 @@ public class RdbService
 				// the query string to getData, which will populate the pvTop for us
 				// with the data in Oracle.
 				//
-				connection.getData(query, pvTop);
+				pvTop = connection.getData(query);
 
 				logger.finer("pvTop = " + pvTop);
 

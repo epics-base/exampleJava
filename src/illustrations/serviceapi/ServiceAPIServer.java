@@ -89,7 +89,7 @@ public class ServiceAPIServer {
 			new Field[] { fieldCreate.createScalarArray(ScalarType.pvString),
 					      fieldCreate.createScalarArray(ScalarType.pvDouble)});
 	private final static Structure resultStructure = 
-			fieldCreate.createStructure( "uri:ev4:nt/2012/pwd:NTTable", 
+			fieldCreate.createStructure( "ev4:nt/NTTable:1.0", 
 					new String[] { "labels", "value" },
 					new Field[] { fieldCreate.createScalarArray(ScalarType.pvString),
 							       valueStructure } );
