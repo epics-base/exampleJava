@@ -285,7 +285,7 @@ public class RdbServiceConnection
 			topNames[1] = "value";
 			topFields[0] = fieldCreate.createScalarArray(ScalarType.pvString);
 			topFields[1] = fieldCreate.createStructure(columnNames,fields);
-			Structure top = fieldCreate.createStructure("ev4:nt/NTTable:1.0", topNames, topFields);
+			Structure top = fieldCreate.createStructure("epics:nt/NTTable:1.0", topNames, topFields);
 			pvTop = pvDataCreate.createPVStructure(top);
 			PVStructure pvValue = pvTop.getStructureField("value");
 	        PVStringArray labelsArray = (PVStringArray) 

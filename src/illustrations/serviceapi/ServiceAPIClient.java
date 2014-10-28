@@ -56,7 +56,7 @@ public class ServiceAPIClient
 						      fieldCreate.createScalar(ScalarType.pvString),
 						      fieldCreate.createScalar(ScalarType.pvString) });
 	private final static Structure uriStructure =
-		fieldCreate.createStructure("ev4:nt/NTURI:1.0",
+		fieldCreate.createStructure("epics:nt/NTURI:1.0",
 				new String[] { "scheme", "path", "query" },
 				new Field[] { fieldCreate.createScalar(ScalarType.pvString),
 				              fieldCreate.createScalar(ScalarType.pvString),
