@@ -100,7 +100,6 @@ public class ServiceAPIServer {
 		private Date calStarttime;       // The input starttime as a Date
 		private Date calEndtime;         // The input enddate param as a Date
 
-		@Override
 		public PVStructure request(PVStructure uri) throws RPCRequestException {
 
 			// Strings that will hold the values of the arguments sent from the client.
