@@ -98,14 +98,13 @@ To start the rdbService server
    E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
   
 2. If you have never started the server before (for instance you are deploying a fresh install), 
-   then you'll need to edit rdb_setup.bash to change values of WORKSPACE and RDBXML (possibly others).
+   then you'll need to edit rdb_setup.bash to change value of WORKSPACE.
 
 3. Start the server in one terminal 
 
    E.g. % ./rdbServerRunner
    
-   Verify that the line beginning "installed records.." shows records from rdbService.xml, 
-   and it looks successful. You should see, at the end of the startup echos, "Running server ..."
+   You should see, at the end of the startup echos, "Running server ..."
   
 4. Terminate the server with a SIGTERM (like CTRL-C in its process window) - after
    you've tested it with the client below of course.

@@ -9,12 +9,17 @@ There are 2 main examples under src/services/
 
 1. helloWorld
 
+Start with its HELLOWORLD_README.txt. 
+
 helloWorld is the classic hello world idea, implemented as a server and a client.
 The client sends an argument "you name" to the server, which replies just 
 saying "hello <that name>". The server is built on top of the RPCSever framework 
-in pvAccessJava. Start with its HELLOWORLD_README.txt. 
+in pvAccessJava. 
+
 
 2. rdbService
+
+Start with its RDBSERVICE_README.txt. 
 
 The rdbService example is a complete functional server for accessing SQL databases 
 such Oracle via an EPICS V4 server, and returning the resulting table ResultSet 
@@ -39,6 +44,7 @@ h. Helpers for transformation of array pvData to Java Vectors
 i. Formatting pvStructure encoded data for printing.
 j. Use of the NTURI normative type, the EPICS V4 standard for passing requests for 
    data and arguments.
+
  
 src/illustrations/
 
@@ -47,3 +53,4 @@ client, and is intended to illustrate the principles of RPC comms in EPICS V4. I
 how one defines and populates the pvStructure conforming to the NTURI Normative Type, for making 
 an RPC query to a pvAccess server, and it shows how the server defines and populates a table of data 
 conforming to the NTTable Normative Type for encoding the reply. 
+
