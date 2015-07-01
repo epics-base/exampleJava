@@ -201,7 +201,7 @@ public abstract class NamedValuesFormatter
      * Thinking of the namedValues system as a matrix of strings, return a given cell's string data
      * @param row Specifies the index of the vector of values that were added to the NamedValues system,
      * starting from 0 being the first name and value vector added.
-     * @param col Specifies the index of a column, where 0 indicates the name, and >0 indicates one of
+     * @param col Specifies the index of a column, where 0 indicates the name, and &gt;0 indicates one of
      * the values associated with that name.
      * @return The cell's string data.
      */
@@ -213,7 +213,7 @@ public abstract class NamedValuesFormatter
      * or row formatting.
      * @param row Specifies the index of the vector of values that were added to the NamedValues system,
      * starting from 0 being the first name and value vector added.
-     * @param col Specifies the index of a column, where 0 indicates the name, and >0 indicates one of
+     * @param col Specifies the index of a column, where 0 indicates the name, and &gt;0 indicates one of
      * the values associated with that name.
      * @return The cell's string data, formatted appropriately as being printed for the system as a whole.
      */
