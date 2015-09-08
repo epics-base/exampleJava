@@ -46,6 +46,9 @@ import org.epics.pvdata.pv.Status.StatusType;
  * being driven by this project).
  * 
  * @author Greg White, 13-Oct-2011 (greg@slac.stanford.edu)
+ * @version 08-Sep-2015, Greg White (greg@slac.stanford.edu) 
+ *          Move construction of introspection interface for returned data down into 
+ *          getData method, in keeping with new v4 API.
  * @version 15-Jan-2013, Greg White (greg@slac.stanford.edu) 
  *          Updated for conformance to NTTable.
  * @version 2-Nov-2012, Greg White (greg@slac.stanford.edu) 
@@ -116,16 +119,8 @@ public class RdbService
 			String queryname = pvRbbQueryName.get();
 
 
-			// Construct the return data structure "pvTop" conforming to NTTable.
-			// This NTTable will encode the ResultSet we got from JDBC as a pvStructure.
-			// To be Normative Types compliant, we MUST name our NTTable with exactly the
-			// string given - that is how a receiver knows it's received an NTTable (as
-			// NTTable was defined at the time of definition of the given namespace). 
-			//
-			
-			
+			// Declare top level PVStructure that will be returned to client.
 			PVStructure pvTop = null;
-			
 			
 			// Look up the actual SQL to run on the DB given the name of the SQL query
 			// "key" given by the user. Then execute it on the DB, and return the result.
@@ -138,15 +133,14 @@ public class RdbService
 							"The query name '" + queryname + "' was not recognized.");
 				}
 
-				// All gone well, so, pass the pvTop introspection interface and
-				// the query string to getData, which will populate the pvTop for us
-				// with the data in Oracle.
+				// All gone well getting the SQL query, so get the data of the query,
+				// populate the return structure with it. 
 				//
 				pvTop = connection.getData(query);
 
 				logger.finer("pvTop = " + pvTop);
 
-				// Return the data from Oracle, in the pvTop, to the client.
+				// Return the data so acquired and populated, in the pvTop, to the client.
 				return pvTop;
 				
 			} catch (UnableToGetDataException ex)

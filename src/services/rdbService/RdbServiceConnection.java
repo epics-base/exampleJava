@@ -30,6 +30,9 @@ import org.epics.pvdata.pv.*;
 
 /**
  * RdbServiceConnection implements JDBC connection logic.
+ *
+ * @version 08-Sep-2015, Greg White, move introspection interface into getData method per new V4 API;
+ *          and correct indentation (bsd style)
  */
 public class RdbServiceConnection
 {
@@ -210,7 +213,6 @@ public class RdbServiceConnection
 		{
 			// Replace values of any passed arguments for matched arg names
 			// in the query
-			// String query = substituteArgs( args, query );
 			rs = executeQuery(query);
 			ResultSetMetaData rsmd = rs.getMetaData();
 			if (rsmd == null)
@@ -226,59 +228,59 @@ public class RdbServiceConnection
 			Field[] fields = new Field[columnsN];
 			logger.finer("Num Columns = " + columnsN);
 
-			// For each column, extract all the rows of the column from the
-			// ResultSet and add the whole column to what we return. So we're
-			// transposing the ResultSet where the slow moving index is row, 
-			// to a PVStructure.
+			// Construct the pvData introspection interface of a Structure that can
+			// represent the table returned by the database query. The introspection
+			// interface is like a dynamically constructed structured variable.
+			// After we've created the introspection interface (the structure),
+			// we'll populate it (see below).
 			//
-			
-			// first create introspection interface
 			for (int colj = 1; colj <= columnsN; colj++)
-            {
-                rs.beforeFirst(); // Reset cursor to first row.
-                columnNames[colj-1] = rsmd.getColumnName(colj);
-                logger.finer("Column Name = " + columnNames[colj-1]);
+			{
+				rs.beforeFirst(); // Reset cursor to first row.
+				columnNames[colj-1] = rsmd.getColumnName(colj);
+				logger.finer("Column Name = " + columnNames[colj-1]);
 
-                switch (rsmd.getColumnType(colj)) {
-                case java.sql.Types.DECIMAL:
-                case java.sql.Types.DOUBLE:
-                case java.sql.Types.REAL:
-                case java.sql.Types.NUMERIC:
-                case java.sql.Types.FLOAT:
-                {
-                    fields[colj] = fieldCreate.createScalarArray(ScalarType.pvDouble);
-                    break;
-                }
-                case java.sql.Types.INTEGER:
-                case java.sql.Types.SMALLINT:
-                case java.sql.Types.BIGINT:
-                {
-                    fields[colj] = fieldCreate.createScalarArray(ScalarType.pvInt);
-                    break;
-                }
+				switch (rsmd.getColumnType(colj)) {
+				case java.sql.Types.DECIMAL:
+				case java.sql.Types.DOUBLE:
+				case java.sql.Types.REAL:
+				case java.sql.Types.NUMERIC:
+				case java.sql.Types.FLOAT:
+				{
+					fields[colj] = fieldCreate.createScalarArray(ScalarType.pvDouble);
+					break;
+				}
+				case java.sql.Types.INTEGER:
+				case java.sql.Types.SMALLINT:
+				case java.sql.Types.BIGINT:
+				{
+					fields[colj] = fieldCreate.createScalarArray(ScalarType.pvInt);
+					break;
+				}
 
-                case java.sql.Types.TINYINT:
-                case java.sql.Types.BIT:
-                {
-                    fields[colj] = fieldCreate.createScalarArray(ScalarType.pvByte);
-                    break;
-                }
-                case java.sql.Types.VARCHAR:
-                case java.sql.Types.CHAR:
-                case java.sql.Types.LONGVARCHAR:
-                {
-                    fields[colj] = fieldCreate.createScalarArray(ScalarType.pvString);
-                    break;
-                }
-                default:
-                {
-                    fields[colj] = fieldCreate.createScalarArray(ScalarType.pvString);
-                    break;
-                }
-                } // column type
+				case java.sql.Types.TINYINT:
+				case java.sql.Types.BIT:
+				{
+					fields[colj] = fieldCreate.createScalarArray(ScalarType.pvByte);
+					break;
+				}
+				case java.sql.Types.VARCHAR:
+				case java.sql.Types.CHAR:
+				case java.sql.Types.LONGVARCHAR:
+				{
+					fields[colj] = fieldCreate.createScalarArray(ScalarType.pvString);
+					break;
+				}
+				default:
+				{
+					fields[colj] = fieldCreate.createScalarArray(ScalarType.pvString);
+					break;
+				}
+				} // column type
 
-            } // For each column
-			
+			} // For each column
+			// Now put the individual column introspection interfaces together into a structure
+			// that conforms to an EPICS V4 NTTable.
 			String[] topNames = new String[2];
 			Field[] topFields = new Field[2];
 			topNames[0] = "labels";
@@ -286,12 +288,15 @@ public class RdbServiceConnection
 			topFields[0] = fieldCreate.createScalarArray(ScalarType.pvString);
 			topFields[1] = fieldCreate.createStructure(columnNames,fields);
 			Structure top = fieldCreate.createStructure("epics:nt/NTTable:1.0", topNames, topFields);
+
+			// Populate the structure created above from the data found in the database.
+			//
 			pvTop = pvDataCreate.createPVStructure(top);
 			PVStructure pvValue = pvTop.getStructureField("value");
-	        PVStringArray labelsArray = (PVStringArray) 
-	                pvTop.getScalarArrayField("labels",ScalarType.pvString);
-	        labelsArray.put(0, columnNames.length, columnNames, 0);
-	        PVField[] pvFields = pvValue.getPVFields();
+			PVStringArray labelsArray = (PVStringArray) 
+				pvTop.getScalarArrayField("labels",ScalarType.pvString);
+			labelsArray.put(0, columnNames.length, columnNames, 0);
+			PVField[] pvFields = pvValue.getPVFields();
 			for (int colj = 1; colj <= columnsN; colj++)
 			{
 				rs.beforeFirst(); // Reset cursor to first row.
@@ -377,8 +382,7 @@ public class RdbServiceConnection
 				} // column type
 
 			} // For each column
-			
-			
+						
 		} // try block processing ResultSet
 
 		catch (SQLException e)
@@ -465,6 +469,5 @@ public class RdbServiceConnection
 		else
 			throw new SQLException("Unable to execute query.");
 	}
-
 	
 }
