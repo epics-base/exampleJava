@@ -42,7 +42,7 @@ import org.epics.pvdata.factory.StatusFactory;
  * <p> The server encodes its response in a pvStructure whose fields map to the components 
  * as defined in one of the EPICS V4 standard (aka "normative") types, named NTTable. See 
  * the EPICS V4 document
- * <a hreh="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html#nttable">
+ * <a href="http://epics-pvdata.sourceforge.net/alpha/normativeTypes/normativeTypes.html#nttable">
  * EPICS V4 Normative Types</a>. </p> 
  * 
  * @author Greg White SLAC/PSI, 12-Nov-2012 

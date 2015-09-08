@@ -77,7 +77,7 @@ public class HelloService
 	/**
 	 * Main is the entry point of the HelloService server side executable. 
 	 * @param args None
-	 * @throws CAException
+	 * @throws PVAException
 	 */
 	public static void main(String[] args) throws PVAException
 	{

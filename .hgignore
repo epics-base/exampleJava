@@ -1,7 +1,0 @@
-bin
-doc
-syntax: regexp
-^target$
-^src/rdbService/rdbServerRunner$
-syntax: regexp
-^src/rdbService/rdbServerRunner$
