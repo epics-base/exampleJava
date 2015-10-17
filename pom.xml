@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <!-- Mod:
        16-Oct-2015, Greg White, SLAC
-       Updated dependency versions for EPICS v4.5.0 release, and so also bumped dot release to 4.0.5
+       Updated dependency versions for EPICS v4.5.0 release, and so also bumped version to 4.0.5
        08-Sep-2015, Greg White, SLAC
        Updated dependency versions for EPICS v4.5-pre1 release, and so also bumped dot release to 4.0.4
        15-Aug-2013, Greg White, SLAC
@@ -11,7 +11,7 @@
    <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.epics</groupId>
-    <version>4.0.4</version>
+    <version>4.0.5</version>
     <artifactId>exampleJava</artifactId>
     <packaging>jar</packaging>
 
