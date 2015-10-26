@@ -1,8 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<!-- Mod: 15-Aug-2013, Greg White
-     Removed dependency on pvIOC.
--->   
+  <!-- Mod:
+       26-Oct-2015, Greg White, SLAC
+       Resolve merge conflict for merging 4.0.5 to master, accepting new SNAPSHOT version at 4.1.0. 
+       16-Oct-2015, Greg White, SLAC
+       Updated dependency versions for EPICS v4.5.0 release, and so also bumped version to 4.0.5
+       08-Sep-2015, Greg White, SLAC
+       Updated dependency versions for EPICS v4.5-pre1 release, and so also bumped dot release to 4.0.4
+       15-Aug-2013, Greg White, SLAC
+       Removed dependency on pvIOC.
+  -->   
    <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.epics</groupId>
@@ -27,12 +34,12 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvDataJava</artifactId>
-            <version>3.1.0</version>
+            <version>5.0.2</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvAccessJava</artifactId>
-            <version>3.1.0</version>
+            <version>4.1.2</version>
         </dependency>
     </dependencies>
     

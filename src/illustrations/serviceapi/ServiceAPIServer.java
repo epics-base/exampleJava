@@ -89,7 +89,7 @@ public class ServiceAPIServer {
 			new Field[] { fieldCreate.createScalarArray(ScalarType.pvString),
 					      fieldCreate.createScalarArray(ScalarType.pvDouble)});
 	private final static Structure resultStructure = 
-			fieldCreate.createStructure( "uri:ev4:nt/2012/pwd:NTTable", 
+			fieldCreate.createStructure( "epics:nt/NTTable:1.0", 
 					new String[] { "labels", "value" },
 					new Field[] { fieldCreate.createScalarArray(ScalarType.pvString),
 							       valueStructure } );
@@ -100,7 +100,6 @@ public class ServiceAPIServer {
 		private Date calStarttime;       // The input starttime as a Date
 		private Date calEndtime;         // The input enddate param as a Date
 
-		@Override
 		public PVStructure request(PVStructure uri) throws RPCRequestException {
 
 			// Strings that will hold the values of the arguments sent from the client.
