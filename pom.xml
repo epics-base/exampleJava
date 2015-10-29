@@ -1,6 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <!-- Mod:
+       29-Oct-2015, Greg White, SLAC
+       Set java back to 1.7 as default. 
        26-Oct-2015, Greg White, SLAC
        Resolve merge conflict for merging 4.0.5 to master, accepting new SNAPSHOT version at 4.1.0. 
        16-Oct-2015, Greg White, SLAC
@@ -71,8 +73,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
