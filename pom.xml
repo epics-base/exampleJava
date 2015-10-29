@@ -1,6 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <!-- Mod:
+       29-Oct-2015, Greg White, SLAC
+       Set pom on release/4.0 branch for development (SNAPSHOT)
        16-Oct-2015, Greg White, SLAC
        Updated dependency versions for EPICS v4.5.0 release, and so also bumped version to 4.0.5
        08-Sep-2015, Greg White, SLAC
@@ -11,7 +13,7 @@
    <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.epics</groupId>
-    <version>4.0.5</version>
+    <version>4.0.6-SNAPSHOT</version>
     <artifactId>exampleJava</artifactId>
     <packaging>jar</packaging>
 
@@ -69,8 +71,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
             </plugin>
 
