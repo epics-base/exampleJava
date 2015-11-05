@@ -1,1 +1,4 @@
-/target/
+*/target
+documentation/html
+*/.classpath
+
