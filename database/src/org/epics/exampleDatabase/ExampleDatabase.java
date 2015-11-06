@@ -155,7 +155,9 @@ static void createDumbPowerSupplyRecord(
     public static void main(String[] args)
     {
         PVDatabase master = PVDatabaseFactory.getMaster();
-
+        ContextLocal context = new ContextLocal();
+        context.start(false);
+        
         String  properties = "alarm,timeStamp";
         createRecords(master,ScalarType.pvByte,"PVRbyte01",properties);
 
@@ -199,9 +201,13 @@ static void createDumbPowerSupplyRecord(
         
         RPCServer rpcServer = new RPCServer();
         rpcServer.registerService("helloRPC", new ExampleHelloRPC());
-        
-        ContextLocal context = new ContextLocal();
-        context.start(true);
+        while(true) {
+            System.out.print("waiting for exit: ");
+            String value = System.console().readLine();
+            if(value.equals("exit")) break;
+        }
+        context.destroy();
+        master.destroy();
         System.out.println("ExampleDatabase exiting");
     }
 }

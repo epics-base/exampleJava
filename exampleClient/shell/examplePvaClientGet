@@ -1,5 +1,3 @@
 #! /bin/bash
 source source
-export CLASSPATH=${CLASSPATH}:${PVEXAMPLETEST}/bin
-env | grep CLASSPATH
 java org.epics.exampleClient.ExamplePvaClientGet
