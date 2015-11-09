@@ -6,6 +6,7 @@ This example implements a PVRecord that accesses another PVRecord.
 
 In the example directory
 
+    source ../pomenv
     mvn package
 
 
