@@ -14,6 +14,7 @@ import org.epics.pvaClient.PvaClient;
 import org.epics.pvaClient.PvaClientChannel;
 import org.epics.pvaClient.PvaClientPut;
 import org.epics.pvaClient.PvaClientPutData;
+import org.epics.pvdata.pv.Status;
 
 
 public class ExamplePvaClientPut
@@ -22,7 +23,7 @@ public class ExamplePvaClientPut
 
     static void exampleDouble(PvaClient pva)
     {
-        System.out.println("example put via provider pva");
+        System.out.println("__exampleDouble__");
         PvaClientChannel channel = pva.channel("PVRdouble");
         PvaClientPut put = channel.put();
         PvaClientPutData putData = put.getData();
@@ -38,7 +39,7 @@ public class ExamplePvaClientPut
     
     static void exampleDoubleArray(PvaClient pva)
     {
-        System.out.println("example put array via provider pva");
+        System.out.println("__exampleDoubleArray__");
         PvaClientChannel channel = pva.channel("PVRdoubleArray");
         PvaClientPut put = channel.put();
         PvaClientPutData putData = put.getData();
@@ -57,7 +58,7 @@ public class ExamplePvaClientPut
     
     static void exampleCADouble(PvaClient pva)
     {
-        System.out.println("example put via provider ca");
+        System.out.println("__exampleCADouble__");
         PvaClientChannel channel = pva.channel("DBRdouble00","ca",5.0);
         PvaClientPut put = channel.put();
         PvaClientPutData putData = put.getData();
@@ -73,7 +74,7 @@ public class ExamplePvaClientPut
     
     static void exampleCADoubleArray(PvaClient pva)
     {
-        System.out.println("example put array via provider ca");
+        System.out.println("__exampleCADoubleArray__");
         PvaClientChannel channel = pva.channel("DBRdoubleArray","ca",5.0);
         PvaClientPut put = channel.put();
         PvaClientPutData putData = put.getData();
@@ -92,11 +93,20 @@ public class ExamplePvaClientPut
 
     public static void main( String[] args )
     {
+        System.out.println("_____examplePvaClientPut starting_______");
         PvaClient pva= PvaClient.get();
         exampleDouble(pva);
         exampleDoubleArray(pva);
-//        exampleCADouble(pva);
-//        exampleCADoubleArray(pva);
+        PvaClientChannel pvaChannel = pva.createChannel("DBRdouble00","ca");
+        pvaChannel.issueConnect();
+        Status status = pvaChannel.waitConnect(2.0);
+        if(status.isOK()) {
+            exampleCADouble(pva);
+            exampleCADoubleArray(pva);
+        } else {
+            System.out.println("DBRdouble00 not found");
+        }
+        System.out.println("_____examplePvaClientPut done_______");
     }
 
 }

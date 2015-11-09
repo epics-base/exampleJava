@@ -2,7 +2,7 @@
  * helloWorld is meant to illustrate the simplest example of a remote procedure call (RPC)
  * style interaction between a client and a server using EPICS V4. 
  */
-package services.helloWorld;
+package org.epics.helloService;
 
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.server.rpc.RPCRequestException;

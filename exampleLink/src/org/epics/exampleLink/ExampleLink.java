@@ -45,5 +45,6 @@ public class ExampleLink {
         context.destroy();
         master.destroy();
         System.out.println("ExampleLink exiting");
+        System.exit(0);
     }
 }

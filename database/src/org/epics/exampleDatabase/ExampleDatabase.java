@@ -209,5 +209,6 @@ static void createDumbPowerSupplyRecord(
         context.destroy();
         master.destroy();
         System.out.println("ExampleDatabase exiting");
+        System.exit(0);
     }
 }

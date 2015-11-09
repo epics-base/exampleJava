@@ -1,4 +1,4 @@
-package services.helloWorld;
+package org.epics.helloService;
 /**
  * HelloClient is a simple example of an EPIVS V4 client, demonstrating support for a
  * a client/server environment using the ChannelRPC channel type of EPICS V4.  
