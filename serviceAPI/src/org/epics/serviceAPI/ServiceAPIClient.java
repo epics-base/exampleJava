@@ -1,4 +1,4 @@
-package illustrations.serviceapi;
+package org.epics.serviceAPI;
 
 import org.epics.pvaccess.client.rpc.RPCClientImpl;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
