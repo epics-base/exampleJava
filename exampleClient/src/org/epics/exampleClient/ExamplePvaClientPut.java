@@ -107,6 +107,7 @@ public class ExamplePvaClientPut
             System.out.println("DBRdouble00 not found");
         }
         System.out.println("_____examplePvaClientPut done_______");
+        pva.destroy();
     }
 
 }

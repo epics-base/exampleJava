@@ -55,7 +55,7 @@ public class ExampleLinkClient
             System.exit(1);;
         }
         System.out.println("_____exampleLinkClient done_______");
-        System.exit(0);
+        pva.destroy();
     }
 
 }

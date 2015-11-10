@@ -90,5 +90,6 @@ public class ExamplePvaClientMultiDouble
             System.out.println("DBRdouble00 not found");
         }
         System.out.println("_____examplePvaClientMultiDouble done_______");
+        pva.destroy();
     }
 }

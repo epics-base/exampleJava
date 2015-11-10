@@ -51,6 +51,7 @@ public class HelloWorldPutGet
     {
         PvaClient pva= PvaClient.get();
         exampleSimple(pva);
+        pva.destroy();
     }
 
 }

@@ -42,6 +42,7 @@ public class HelloWorldRPC
             RPCClient rpcClient = RPCClientFactory.create("helloRPC");
             PVStructure pvResult = rpcClient.request(pvRequest, 2.0);
             System.out.println(pvResult);
+            rpcClient.destroy();
         } catch (RPCRequestException e) {
             System.out.println("exception " + e.getMessage());
         }

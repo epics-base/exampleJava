@@ -38,6 +38,7 @@ public class ExamplePvaClientProcess
     {
         PvaClient pva= PvaClient.get();
         exampleProcess(pva);
+        pva.destroy();
     }
 
 }

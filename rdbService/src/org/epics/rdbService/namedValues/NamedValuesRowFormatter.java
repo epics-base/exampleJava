@@ -1,4 +1,4 @@
-package services.rdbService.namedValues;
+package org.epics.rdbService.namedValues;
 
 public class NamedValuesRowFormatter extends NamedValuesFormatter
 {

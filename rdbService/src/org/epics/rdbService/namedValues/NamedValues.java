@@ -1,4 +1,4 @@
-package services.rdbService.namedValues;
+package org.epics.rdbService.namedValues;
 
 import java.util.*;
 

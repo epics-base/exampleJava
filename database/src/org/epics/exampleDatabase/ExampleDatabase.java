@@ -7,7 +7,8 @@
 
 package org.epics.exampleDatabase;
 
-import org.epics.pvaccess.server.rpc.RPCServer;
+import org.epics.pvaccess.server.rpc.*;
+import org.epics.pvaccess.PVAException;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.factory.StandardFieldFactory;
@@ -208,7 +209,11 @@ static void createDumbPowerSupplyRecord(
         }
         context.destroy();
         master.destroy();
+        try {
+             rpcServer.destroy();
+        } catch (PVAException e) {
+            throw new RuntimeException("rpcServer.destroy exception " + e.getMessage());
+        }
         System.out.println("ExampleDatabase exiting");
-        System.exit(0);
     }
 }

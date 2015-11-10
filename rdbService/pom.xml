@@ -3,12 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.epics</groupId>
-    <artifactId>exampleLink</artifactId>
+    <artifactId>rdbService</artifactId>
     <version>4.2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>exampleJava - database</name>
-    <url>https://github.com/epics-base/exampleJava/exampleLink</url>
+    <url>https://github.com/epics-base/exampleJava/rdbService</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -24,37 +24,37 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvDataJava</artifactId>
-            <version>${env.PVDATAVERSION}</version>
+            <version>5.1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>normativeTypesJava</artifactId>
-         <version>${env.NORMATIVETYPESVERSION}</version>
+         <version>0.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvAccessJava</artifactId>
-            <version>${env.PVACCESSVERSION}</version>
+            <version>4.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvaClientJava</artifactId>
-            <version>${env.PVACLIENTVERSION}</version>
+            <version>4.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>pvDatabaseJava</artifactId>
-            <version>${env.PVDATABASEVERSION}</version>
+            <version>4.2.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>jca</artifactId>
-            <version>${env.JCAVERSION}</version>
+            <version>2.3.6</version>
         </dependency>
         <dependency>
             <groupId>org.epics</groupId>
             <artifactId>caj</artifactId>
-            <version>${env.CAJVERSION}</version>
+            <version>1.1.15</version>
         </dependency>
     </dependencies>
     

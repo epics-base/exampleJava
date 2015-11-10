@@ -1,4 +1,4 @@
-package services.rdbService.namedValues;
+package org.epics.rdbService.namedValues;
 
 /**
  * NamedValuesColumnFormatter is utility class

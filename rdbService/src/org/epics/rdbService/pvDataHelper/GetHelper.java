@@ -1,4 +1,4 @@
-package services.rdbService.pvDataHelper;
+package org.epics.rdbService.pvDataHelper;
 
 import java.util.Vector;
 
