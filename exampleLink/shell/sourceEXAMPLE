@@ -1,4 +1,3 @@
-# The following assumes that pvData, pvAccess, and javaIOC are in /home/epicsv4/master
 if [ -v EPICSV4 ]
 then
     echo "EPICSV4 already defined as " + $EPICSV4

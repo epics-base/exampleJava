@@ -1,4 +1,3 @@
-# The following assumes that pvData, pvAccess, and javaIOC are in /home/epicsv4/master
 if [ -v EPICSV4 ]
 then
     echo "EPICSV4 already defined as " + $EPICSV4
@@ -10,11 +9,11 @@ export PVACCESS=${EPICSV4}/pvAccessJava
 export PVACLIENT=${EPICSV4}/pvaClientJava
 export NORMATIVETYPES=${EPICSV4}/normativeTypesJava
 export PVDATABASE=${EPICSV4}/pvDatabaseJava
-export EXAMPLELINK=${EPICSV4}/exampleJava/exampleLink
+export HELLOSERVICE=${EPICSV4}/exampleJava/helloService
 export CLASSPATH=${PVDATA}/target/classes
 export CLASSPATH=${CLASSPATH}:${PVACCESS}/target/classes
 export CLASSPATH=${CLASSPATH}:${PVACLIENT}/target/classes
 export CLASSPATH=${CLASSPATH}:${NORMATIVETYPES}/target/classes
 export CLASSPATH=${CLASSPATH}:${PVDATABASE}/target/classes
-export CLASSPATH=${CLASSPATH}:${EXAMPLELINK}/target/classes
+export CLASSPATH=${CLASSPATH}:${HELLOSERVICE}/target/classes
 

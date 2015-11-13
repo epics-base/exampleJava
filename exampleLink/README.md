@@ -4,10 +4,14 @@ This example implements a PVRecord that accesses another PVRecord.
 
 ## Building
 
-In the example directory
+In the exampleLink directory
 
     source ../pomenv
     mvn package
+    cd shell
+    cp sourceEXAMPLE source
+    #edit source - Normally only the definition of EPICSV4 needs to be changed
+
 
 
 ## To start the exampleLink
