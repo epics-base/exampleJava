@@ -8,6 +8,9 @@ A pvAccess server that has PVRecords
 In the example directory
 
     mvn package
+    cd shell
+    cp sourceEXAMPLE source
+    # edit source so that EPICSV4 is correctly defined
 
 
 

@@ -9,9 +9,9 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>serviceAPI</artifactId>
+    <artifactId>exampleJava_serviceAPI</artifactId>
     <packaging>jar</packaging>
-    <name>serviceAPI</name>
+    <name>exampleJava serviceAPI</name>
     
     <dependencies>
         <dependency>

@@ -9,6 +9,9 @@ The service is the classical "hello world" implemented as a client executable, w
 In the hellowService directory
 
     mvn package
+    cd shell
+    cp sourceEXAMPLE source
+    # edit source so that EPICSV4 is correctly defined
 
 
 ## To start helloService

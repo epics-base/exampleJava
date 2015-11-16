@@ -9,9 +9,9 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>rdbService</artifactId>
+    <artifactId>exampleJava_rdbService</artifactId>
     <packaging>jar</packaging>
-    <name>rdbService</name>
+    <name>exampleJava rdbService</name>
     
     <dependencies>
        <dependency>

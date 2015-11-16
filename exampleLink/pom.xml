@@ -10,9 +10,9 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>exampleLink</artifactId>
+    <artifactId>exampleJava_exampleLink</artifactId>
     <packaging>jar</packaging>
-    <name>exampleLink</name>
+    <name>exampleJava exampleLink</name>
 
     <dependencies>
         <dependency>

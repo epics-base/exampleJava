@@ -16,6 +16,9 @@ In order to run the examples, **database** must also be built and then the IOC d
 In the example directory
 
     mvn package
+    cd shell
+    cp sourceEXAMPLE source
+    # edit source so that EPICSV4 is correctly defined
 
 ## examplePvaClientGet
 

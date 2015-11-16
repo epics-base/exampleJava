@@ -9,9 +9,9 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>database</artifactId>
+    <artifactId>exampleJava_database</artifactId>
     <packaging>jar</packaging>
-    <name>database</name>
+    <name>exampleJava database</name>
 
     <dependencies>
         <dependency>

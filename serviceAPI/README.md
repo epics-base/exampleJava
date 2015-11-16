@@ -11,6 +11,9 @@ making the example, so it's completely self contained and aims for simplicity.
 In the example directory
 
     mvn package
+    cd shell
+    cp sourceEXAMPLE source
+    # edit source so that EPICSV4 is correctly defined
 
 
 ## To start the server
