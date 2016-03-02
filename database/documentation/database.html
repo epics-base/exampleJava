@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>EPICS exampleCPP/database</title>
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/base.css" />
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/epicsv4.css" />
+  <style type="text/css">
+/*<![CDATA[*/
+     .about { margin-left: 3em; margin-right: 3em; font-size: .83em}
+     table { margin-left: auto; margin-right: auto }
+     .diagram { text-align: center; margin: 2.5em 0 }
+     body { margin-right: 10% }
+/*]]>*/</style>
+
+ <!-- Script that generates the Table of Contents -->
+  <script type="text/javascript" src="http://epics-pvdata.sourceforge.net/script/tocgen.js"></script>
+
+</head>
+
+<body>
+
+<div class="head">
+<h1>EPICS exampleJava/database</h1>
+<h2 class="nocount">Release 1.0 - 2015.11.23</h2>
+
+<h2 class="nocount">Abstract</h2>
+<p>database provides a set of PVRecords as defined by pvDatabaseJava.
+</p>
+  <!-- last para of Abstract is boilerplate reference to EPICS -->
+      <p>For more information about EPICS generally, please refer to the home page of the <a
+       href="http://www.aps.anl.gov/epics/">Experimental Physics and Industrial
+      Control System</a>.</p>
+
+
+</div> <!-- head -->
+
+<div id="toc">
+  <h2 class="nocount">Table of Contents</h2>
+</div>
+
+<!-- Place what you would like in the Table of Contents, inside the contents div -->
+<div id="contents" class="contents">	  
+<hr />
+
+<h2>Overview</h2>
+<p>In directory database/shell there is a file <b>sourceEXAMPLE</b>.
+Before you can start the example database you must create a file <b>source</b>.
+To do this copy <b>sourceEXAMPLE</b> to <b>source</b> and
+edit it so that <b>EPICSV4</b> is defined correctly.
+</p>
+<p>The database can then be started as follows:</p>
+<pre>
+mrk&gt; pwd
+/home/epicsv4/master/exampleJava/database/shell
+mrk&gt; ./exampleDatabase
+</pre>
+<p>The example database has the following PVRecords:</p>
+<pre>
+PVRboolean
+PVRbooleanArray
+PVRbyte
+PVRbyteArray
+PVRdouble
+PVRdouble01
+PVRdouble01Array
+PVRdouble02
+PVRdouble02Array
+PVRdouble03
+PVRdouble03Array
+PVRdouble04
+PVRdouble04Array
+PVRdouble05
+PVRdouble05Array
+PVRdoubleArray
+PVRdumbPowerSupply
+PVRenum
+PVRfloat
+PVRfloatArray
+PVRhelloPutGet
+PVRint
+PVRintArray
+PVRlong
+PVRlongArray
+PVRrestrictedUnion
+PVRrestrictedUnionArray
+PVRshort
+PVRshortArray
+PVRstring
+PVRstringArray
+PVRstructureArray
+PVRubyte
+PVRubyteArray
+PVRuint
+PVRuintArray
+PVRulong
+PVRulongArray
+PVRushort
+PVRushortArray
+PVRvariantUnion
+PVRvariantUnionArray
+helloRPC
+</pre>
+<h2>database/src/org/epics/exampleDatabase</h2>
+<p>This directory has the following files:</p>
+<dl>
+  <dt>ExampleHelloRecord.java</dt>
+    <dd>Code for an example that is accessed via channelPutGet</dd>
+  <dt>ExampleHelloRPC.java</dt>
+    <dd>Code for an example that is accesed via channelRPC</dd>
+   <dt>ExampleDatabase..java</dt> 
+     <dd>Code that creates many PVRecords.
+       Most are soft records but also exampleHello and exampleHelloRPC.
+       The code is described in the following sub - section.
+       It also has the main program</dd>
+</dl>
+<h3>ExampleDatabase.java</h3>
+<p>This has a number of private methods:</p>
+<dl>
+   <dt>createRecords</dt>
+     <dd>Given a scalarType this creates an NTScalar and an NTScalarArray record
+       of the specified type.</dd>
+   <dt>createStructureArrayRecord</dt>
+      <dd>Creates a record with a value field that is a structureArray.</dd>
+   <dt>createRestrictedUnionRecord</dt>
+      <dd>Creates a record with a value field that is a regulav.</dd>
+   <dt>createVariantUnionRecord</dt>
+      <dd>Creates a record with a value field that a structureArray.</dd>
+   <dt>createRestrictedUnionArrayRecord</dt>
+      <dd>Creates a record with a value field that a structureArray.</dd>
+   <dt>createVariantUnionArrayRecord</dt>
+      <dd>Creates a record with a value field that a structureArray.</dd>
+   <dt>createDumbPowerSupplyRecord</dt>
+      <dd>Creates a record with a value field that a structureArray.</dd>
+</dl>
+
+<p><b>ExampleDatabase::main</b>
+creates all the PVRecords that make up the
+example database.</p>
+<p>It:</p>
+<dl>
+   <dt>createRecords</dt>
+     <dd>This is called for each scalarType.</dd>
+   <dt>addRecord for PVRenum</dt>
+      <dd>Creates <b>PVRenum</b> </dd>
+   <dt>createStructureArrayRecord</dt>
+      <dd>Creates <b>PVRstructureArray</b> </dd>
+   <dt>createRestrictedUnionRecord</dt>
+      <dd>Creates <b>PVRrestrictedUnion</b> </dd>
+   <dt>createVariantUnionRecord</dt>
+       <dd>Creates <b>PVRvariantUnion</b> </dd>
+   <dt>createRestrictedUnionArrayRecord</dt>
+       <dd>Creates <b>PVRrestrictedUnionArray</b> </dd>
+   <dt>createVariantUnionArrayRecord</dt>
+       <dd>Creates <b>PVRvariantUnionArray</b> </dd>
+   <dt>createDumbPowerSupplyRecord</dt>
+       <dd>Creates <b>PVRdumbPowerSupply</b> </dd>
+   <dt>addRecord for PVRhelloPutGet</dt>
+        <dd>Creates <b>PVRhelloPutGet</b> </dd>
+   <dt>registerService for helloRPC</dt>
+        <dd>Creates <b>helloRPC</b> </dd>
+</dl>
+
+</div> <!-- class="contents" -->
+</body>
+</html>
