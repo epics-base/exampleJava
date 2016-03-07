@@ -85,8 +85,9 @@ public class LongArrayPut implements RunnableReady {
             long[] data = new long[arraySize];
             for(int i=0; i< arraySize; ++i) data[i] = numChannelPut;
             pvLongArray.put(0,arraySize, data,0);
+            pvLongArray.setLength(arraySize);
             pvaPut.put();
-            bitSet.set(pvLongArray.getNextFieldOffset());
+            bitSet.set(pvLongArray.getFieldOffset());
             timeStamp.getCurrentTime();
             double diff = timeStamp.diff(timeStamp,timeStampLast);
             if(diff>=1.0) {

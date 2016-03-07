@@ -141,6 +141,7 @@ public class ArrayPerformance extends PVRecord implements RunnableReady {
                 value += 1.0;
                 beginGroupPut();
                 pvValue.put(0,size, data, 0);
+                pvValue.setLength(size);
                 process();
                 endGroupPut();
             }catch(Exception ex){
