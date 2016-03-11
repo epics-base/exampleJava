@@ -1,3 +1,3 @@
 #! /bin/bash
 source source
-java org.epics.exampleLink.ExampleLinkClient
+java org.epics.exampleJava.exampleLink.ExampleLinkClient

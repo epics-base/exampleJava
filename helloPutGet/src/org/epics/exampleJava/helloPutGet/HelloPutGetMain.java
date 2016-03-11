@@ -5,12 +5,8 @@
  */
 
 
-package org.epics.exampleLink;
+package org.epics.exampleJava.helloPutGet;
 
-import org.epics.pvdata.factory.StandardPVFieldFactory;
-import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvdata.pv.StandardPVField;
 import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
@@ -21,21 +17,15 @@ import org.epics.pvdatabase.pva.ContextLocal;
  * @author Marty Kraimer
  *
  */
-public class ExampleLink {
-    private static final StandardPVField standardPVField  = StandardPVFieldFactory.getStandardPVField();
-
+public class HelloPutGetMain {
 
     public static void main(String[] args)
     {
         PVDatabase master = PVDatabaseFactory.getMaster();
         ContextLocal context = new ContextLocal();
         context.start(false);
-        String  properties = "alarm,timeStamp";
-        String recordName = "doubleArray";
-        PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble,properties);
-        PVRecord pvRecord = new PVRecord(recordName,pvStructure);
-        master.addRecord(pvRecord);
-        pvRecord = ExampleLinkRecord.create("exampleLink",recordName);
+        String recordName = "helloPutGet";
+        PVRecord pvRecord = HelloPutGetRecord.create(recordName);
         master.addRecord(pvRecord);
         while(true) {
             System.out.print("waiting for exit: ");

@@ -1,0 +1,24 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building exampleJava arrayPerformance 4.2.0-SNAPSHOT
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- build-helper-maven-plugin:1.9.1:add-source (add-source) @ exampleJava_arrayPerformance ---
+[INFO] Source directory: /home/epicsv4/master/exampleJava/powerSupply/example added.
+[INFO] Source directory: /home/epicsv4/master/exampleJava/powerSupply/shell added.
+[INFO] 
+[INFO] --- maven-resources-plugin:2.6:resources (default-resources) @ exampleJava_arrayPerformance ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/epicsv4/master/exampleJava/powerSupply/src/main/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.2:compile (default-compile) @ exampleJava_arrayPerformance ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 2 source files to /home/epicsv4/master/exampleJava/powerSupply/target/classes
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 2.062 s
+[INFO] Finished at: 2016-03-08T15:13:23-05:00
+[INFO] Final Memory: 17M/201M
+[INFO] ------------------------------------------------------------------------

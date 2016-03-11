@@ -7,7 +7,7 @@
 /**
  * @author mrk
  */
-package org.epics.exampleLink;
+package org.epics.exampleJava.exampleLink;
 
 import org.epics.pvaClient.PvaClient;
 import org.epics.pvaClient.PvaClientMonitor;

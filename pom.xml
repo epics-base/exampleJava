@@ -23,10 +23,12 @@
     </properties>
 
     <modules>
+        <module>arrayPerformance</module>
         <module>database</module>
         <module>exampleClient</module>
         <module>exampleLink</module>
-        <module>helloService</module>
+        <module>helloRPC</module>
+        <module>powerSupply</module>
         <module>rdbService</module>
         <module>serviceAPI</module>
     </modules>

@@ -1,4 +1,10 @@
-package org.epics.exampleLink;
+/**
+ * Copyright - See the COPYRIGHT that is included with this distribution.
+ * EPICS pvData is distributed subject to a Software License Agreement found
+ * in file LICENSE that is included with this distribution.
+ */
+
+package org.epics.exampleJava.exampleLink;
 
 import org.epics.pvaClient.PvaClient;
 import org.epics.pvaClient.PvaClientChannel;
@@ -27,25 +33,23 @@ public class ExampleLinkRecord extends PVRecord
     private static final CreateRequest createRequest = CreateRequest.create();
     private static Convert convert = ConvertFactory.getConvert();
     
-    private String channelName = null;
     private PVDoubleArray pvValue = null;
     private PvaClientChannel pvaClientChannel = null;
     private Monitor monitor = null;
 
-    public static PVRecord create(String recordName,String channelName)
+    public static PVRecord create(String recordName,String provider,String channelName)
     {
         PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble, "timeStamp");
-        ExampleLinkRecord pvRecord = new ExampleLinkRecord(recordName,channelName,pvStructure);
-        if(!pvRecord.init()) return null;
+        ExampleLinkRecord pvRecord = new ExampleLinkRecord(recordName,pvStructure);
+        if(!pvRecord.init(channelName,provider)) return null;
         return pvRecord;
     }
-    public ExampleLinkRecord(String recordName,String channelName,PVStructure pvStructure)
+    public ExampleLinkRecord(String recordName,PVStructure pvStructure)
     {
         super(recordName,pvStructure);
-        this.channelName = channelName;
     }
     
-    private boolean init()
+    private boolean init(String channelName,String provider)
     {
         PVStructure pvStructure = getPVRecordStructure().getPVStructure();
         pvValue = pvStructure.getSubField(PVDoubleArray.class,"value");
@@ -53,7 +57,7 @@ public class ExampleLinkRecord extends PVRecord
             return false;
         }
         PvaClient pva = PvaClient.get();
-        pvaClientChannel = pva.channel(channelName);
+        pvaClientChannel = pva.channel(channelName,provider,5.0);
         Channel channel = pvaClientChannel.getChannel();
         PVStructure pvRequest = createRequest.createRequest("value");
         monitor = channel.createMonitor(this, pvRequest);
@@ -66,7 +70,7 @@ public class ExampleLinkRecord extends PVRecord
     }
  
     public String getRequesterName() {
-        return channelName;
+        return pvaClientChannel.getChannelName();
     }
    
     public void message(String message, MessageType messageType) {
