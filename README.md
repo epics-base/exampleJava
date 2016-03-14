@@ -24,6 +24,16 @@ In the example directory
 
 ## Brief summary of examples.
 
+## Brief summary of examples.
+
+### helloRPC
+
+A very simple example of an EPICS V4 RPC service: This implements a
+"Hello World" example of a service that is accessed via Channel RPC.
+
+This is a good starting point for writing an RPC service.
+
+
 ### database
 
 A pvAccess server that has PVRecords
@@ -31,17 +41,21 @@ A pvAccess server that has PVRecords
 
 ### exampleClient
 
-pvaClientJava examples that access the PVRecords in the database,
+pvaClientJava examples that access the PVRecords in **database**.
+
+In order to run the examples, **database** must also be built and then the
+IOC database must be started as follows:
+
+    mrk> pwd
+    /home/epicsv4/master/exampleJava/database/shell
+    mrk> ./exampleDatabase
+
+### helloPutGet
+
+An example of a PVRecord that implements a "Hello World" service that can be
+accessed via ChannelPutGet.
 
 
-### exampleServer
-
-Implements a PVRecord that is an example of a PVRecord intended to ba accessed via channelPutGet.
-It is a simple HelloWorld example.
-
-### HelloWorld
-
-This implements HelloWorld that is accessed via channelRPC.
 
 ### exampleLink
 
@@ -49,19 +63,13 @@ This implements a pvAccess server that has a PVRecord doubleArray and a PVRecord
 
 
 
-### examplePowerSupply
+### powerSupply
 
 This is an example of creating a PVRecord that uses a somewhat complicated top level PVStructure.
 It simulates a power supply.
 
 The example also has an example pvaClient for accessing the PVRecord.
 
-
-### test
-
-This is an example that tests pvDatabase and pvaClient.   
-
-When this is done it starts the example database and then executes various client tests.
 
 ###  arrayPerformance
 
@@ -71,5 +79,13 @@ arrayPerformanceMain implement a PVRecord that is a double array.
 It has a process method with code that causes the array to be updated at selectable rates and sizes.!
 
 It also has pvaClient examples that can get, put, and monitor the double array record.
+
+### serviceAPI
+
+Greg please describe.
+
+### rdbService
+
+Greg please describe.
 
 

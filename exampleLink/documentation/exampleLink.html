@@ -26,7 +26,7 @@
 
 <div class="head">
 <h1>EPICS exampleJava/exampleLink</h1>
-<h2 class="nocount">Release 1.0 - 2016.03.07</h2>
+<h2 class="nocount">Release 1.0 - 2016.03.14</h2>
 
 <h2 class="nocount">Abstract</h2>
 <p>
@@ -127,111 +127,11 @@ i. e. a main program, or can be part of a V3IOC.</p>
 </pre>
 
 
-<h2>ExampleLink.java</h2>
-<p>ExampleLink contains the following:</p>
-<pre>public class ExampleLink {
-    private static final StandardPVField standardPVField  = StandardPVFieldFactory.getStandardPVField();
-    public static void main(String[] args)
-    {
-        PVDatabase master = PVDatabaseFactory.getMaster();
-        ContextLocal context = new ContextLocal();
-        context.start(false);
-        String  properties = "alarm,timeStamp";
-        String recordName = "doubleArray";
-        PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble,properties);
-        PVRecord pvRecord = new PVRecord(recordName,pvStructure);
-        master.addRecord(pvRecord);
-        pvRecord = ExampleLinkRecord.create("exampleLink",recordName);
-        master.addRecord(pvRecord);
-        while(true) {
-            System.out.print("waiting for exit: ");
-            String value = System.console().readLine();
-            if(value.equals("exit")) break;
-        }
-        context.destroy();
-        master.destroy();
-        System.out.println("ExampleLink exiting");
-    }
-}
+
 
 </pre>
-<h2>exampleLink/src</h2>
-<h3>exampleLink.cpp</h3>
-<p>All the non-static methods are either PVRecord or PVAccess methods
-and will not be discussed further.
-The create method is called to create a new PVRecord instance with code that will issue
-a ChannelGet::get request every time the process method of the instance is called.
-Some other pvAccess client can issue a channelGet, to the record instance, with a request
-to process in order to test the example.</p>
-<p>All of the initialization is done by a combination of the create and init methods so
-lets look at them:</p>
-<pre>
-ExampleLinkPtr ExampleLink::create(
-    String const &amp; recordName,
-    String const &amp; providerName,
-    String const &amp; channelName)
-{
-    PVStructurePtr pvStructure = getStandardPVField()-&gt;scalarArray(
-        pvDouble,"alarm.timeStamp");
-    ExampleLinkPtr pvRecord(
-        new ExampleLink(
-           recordName,providerName,channelName,pvStructure));
-    if(!pvRecord-&gt;init()) pvRecord.reset();
-    return pvRecord;
-}
-</pre>
-<p>This first creates a new ExampleLink instance,
-and then calls the init method and the returns a ExampleLinkPtr.
-Note that if init returns false it returns a pointer to NULL.</p>
-<p>The init method is:</p>
-<pre>
-bool ExampleLink::init()
-{
-    initPVRecord();
+<h2>exampleLink/src/org/epics/exampleJava/exampleLink</h2>
 
-    PVStructurePtr pvStructure = getPVRecordStructure()-&gt;getPVStructure();
-    pvValue = static_pointer_cast&lt;PVDoubleArray&gt;(
-        pvStructure-&gt;getScalarArrayField("value",pvDouble));
-    if(pvValue==NULL) {
-        return false;
-    }
-    ChannelProvider::shared_pointer provider =
-        getChannelProviderRegistry()->getProvider(providerName);
-    if(!provider) {
-         cout &lt;&lt; getRecordName() &lt;&lt; " provider "
-              &lt;&lt; providerName &lt;&lt; " does not exist" &lt;&lt; endl;
-        return false;
-    }
-    ChannelRequester::shared_pointer channelRequester =
-        dynamic_pointer_cast&lt;ChannelRequester&gt;(getPtrSelf());
-    channel = provider-&gt;createChannel(channelName,channelRequester);
-    event.wait();
-    if(!status.isOK()) {
-        cout &lt;&lt; getRecordName() &lt;&lt; " createChannel failed "
-             &lt;&lt; status.getMessage() &lt;&lt; endl;
-        return false;
-    }
-    PVStructurePtr pvRequest = getCreateRequest()-&gt;createRequest(
-        "value");
-    MonitorRequester::shared_pointer  monitorRequester =
-        dynamic_pointer_cast&lt;MonitorRequester&gt;(getPtrSelf());
-    monitor = channel-&gt;createMonitor(monitorRequester,pvRequest);
-    return true;
-}
-</pre>
-<p>This first makes sure the pvStructure has the fields it requires:</p>
-<dl>
-  <dt>value</dt>
-     <dd>This must be a scalarArray of type double.
-       It is where data is copied when the channelGet is issued.</dd>
-</dl>
-<p>Next it makes sure the channelProvider exists.</p>
-<p>Next it creates the channel and waits until it connects.</p>
-<p>Next creates a monitors</p>
-<p>If anything goes wrong during initialization it returns false.
-This a return of true means that it has successfully created a channelGet and is ready
-to issue gets when process is called.</p>
-<p>Look at the code for more details.</p>
 <h3>ExampleLinkRecord.cpp</h3>
 <pre>
 public class ExampleLinkRecord extends PVRecord
@@ -335,21 +235,32 @@ public class ExampleLinkRecord extends PVRecord
 <h3>exampleLinkMain.cpp</h3>
 <p>This is a main program for starting the example.</p>
 <pre>
-public class ExampleLink {
-    private static final StandardPVField standardPVField  = StandardPVFieldFactory.getStandardPVField();
-
+public class ExampleLinkMain {
 
     public static void main(String[] args)
     {
+        int argc = args.length;
+        String provider = "pva";
+        if(argc==1 && args[0].endsWith("-help")) {
+            System.out.println("provider");
+            System.out.println("default");
+            System.out.println(provider);
+            System.exit(0);
+        }
+        if(argc>0) provider = args[0];
         PVDatabase master = PVDatabaseFactory.getMaster();
         ContextLocal context = new ContextLocal();
         context.start(false);
-        String  properties = "alarm,timeStamp";
+        NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
+        PVStructure pvStructure = builder.
+            value(ScalarType.pvDouble).
+            addAlarm().
+            addTimeStamp().
+            createPVStructure();
         String recordName = "doubleArray";
-        PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble,properties);
         PVRecord pvRecord = new PVRecord(recordName,pvStructure);
         master.addRecord(pvRecord);
-        pvRecord = ExampleLinkRecord.create("exampleLink",recordName);
+        pvRecord = ExampleLinkRecord.create("exampleLink",provider,recordName);
         master.addRecord(pvRecord);
         while(true) {
             System.out.print("waiting for exit: ");
@@ -364,123 +275,95 @@ public class ExampleLink {
 </pre>
 <p>The statements</p>
 <pre>
-    string provider("pva");
-    if(argc&gt;1) provider = argv[1];
+int argc = args.length;
+String provider = "pva";
 </pre>
 <p>allow the caller to provide the name of the provider or use the default.</p>
 <p>The statements</p>
 <pre>
-    PVDatabasePtr master = PVDatabase::getMaster();
-    NTScalarArrayBuilderPtr ntScalarArrayBuilder = NTScalarArray::createBuilder();
-    PVStructurePtr pvStructure = ntScalarArrayBuilder-&gt;
-        value(pvDouble)-&gt;
-        addAlarm()-&gt;
-        addTimeStamp()-&gt;
-        createPVStructure();
-    master-&gt;addRecord(PVRecord::create("doubleArray",pvStructure));
+ContextLocal context = new ContextLocal();
+context.start(false);
+</pre>
+<p><b>NEEDS DISCUSSION</b></p>
+<p>The statements</p>
+<pre>
+        PVDatabase master = PVDatabaseFactory.getMaster();
+        NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
+        PVStructure pvStructure = builder.
+            value(ScalarType.pvDouble).
+            addAlarm().
+            addTimeStamp().
+            createPVStructure();
+        String recordName = "doubleArray";
+        PVRecord pvRecord = new PVRecord(recordName,pvStructure);
+        master.addRecord(pvRecord);
 </pre>
 <p>creates a single PVRecord and adds it to master database.</p>
 <p>The statements</p>
 <pre>
-    ChannelProviderLocalPtr channelProvider = getChannelProviderLocal();
-    if(provider=="pva") ClientFactory::start();
-</pre>
-<p>starts the local channelProvider and if the desired provider for the example is <b>pva</b>
-starts clientFactory. Then pvAccess server is started.
-Note that all this must be done before the next set of code:</p>
-<pre>
-    ExampleLinkPtr pvRecord(
-        ExampleLink::create(
-           "exampleLink",provider,"doubleArray")); 
-    master-&gt;addRecord(pvRecord);
+pvRecord = ExampleLinkRecord.create("exampleLink",provider,recordName);
+master.addRecord(pvRecord);
 </pre>
 <p>This creates the <b>exampleLink</b> record</p>
 <p>The remaining code</p>
 <pre>
-    ServerContext::shared_pointer ctx =
-        startPVAServer(PVACCESS_ALL_PROVIDERS,0,true,true);
-    string str;
-    while(true) {
-        cout &lt;&lt; "Type exit to stop: \n";
-        getline(cin,str);
-        if(str.compare("exit")==0) break;
-
-    }
-    ctx-&gt;destroy();
-    return 0;
+while(true) {
+    System.out.print("waiting for exit: ");
+    String value = System.console().readLine()
+    if(value.equals("exit")) break;
+}
+context.destroy();
+master.destroy();
+System.out.println("ExampleLink exiting");
 </pre>
 <p>waits for the caller to enter exit and then terminates</p>
-<h3>exampleLinkRegister.dbd and exampleLinkRegister.cpp</h3>
-<p>This is the code that supports the <b>exampleLinkCreateRecord</b>
-        shell command in <b>exampleLink/iocBoot/exampleLink/st.*</b>.
-</p>
-<p>The following is from <b>exampleLinkRegister.cpp</b>
-</p>
+
+<h3>ExampleLinkClient.Java</h3>
 <pre>
-static void exampleLinkCallFunc(const iocshArgBuf *args)
+public class ExampleLinkClient
 {
-    PVDatabasePtr master = PVDatabase::getMaster();
-    PVRecordPtr pvRecord;
-    bool result(false);
-    string recordName;
-    NTScalarArrayBuilderPtr ntScalarArrayBuilder = NTScalarArray::createBuilder();
-    PVStructurePtr pvStructure = ntScalarArrayBuilder-&gt;
-        value(pvDouble)-&gt;
-        addAlarm()-&gt;
-        addTimeStamp()-&gt;
-        createPVStructure();
-    result = master-&gt;addRecord(PVRecord::create("doubleArray",pvStructure));
-    if(!result) cout&lt;&lt; "record " &lt;&lt; recordName &lt;&lt; " not added" &lt;&lt; endl;
-
-    recordName = args[0].sval;
-    char *providerName = args[1].sval;
-    char *channelName = args[2].sval;
-    ExampleLinkPtr record = ExampleLink::create(recordName,providerName,channelName);
-    if(record) 
-        result = master-&gt;addRecord(record);
-    if(!result) cout &lt;&lt; "recordname" &lt;&lt; " not added" &lt;&lt; endl;
+    public static void main( String[] args )
+    {
+        System.out.println("_____exampleLinkClient starting_______");
+        PvaClient pva= PvaClient.get();
+        try {
+            PvaClientPut put = pva.channel("doubleArray").put();
+            PvaClientPutData putData = put.getData();
+            PvaClientMonitor monitor = pva.channel("exampleLink").monitor("");
+            PvaClientMonitorData pvaData = monitor.getData();
+            if(!monitor.waitEvent(0.0)) {
+                System.out.println("waitEvent returned false. Why???");
+            } else {
+                System.out.println("exampleLink\n" +pvaData.getPVStructure());
+                monitor.releaseEvent();
+            }
+            double[] data = new double[5];
+            for(int i=0; i< data.length; ++i) data[i] = 0.0;
+            putData.putDoubleArray(data); put.put();
+            if(!monitor.waitEvent(0.0)) {
+                System.out.println("waitEvent returned false. Why???");
+            } else {
+                System.out.println("exampleLink\n" +pvaData.getPVStructure());
+                monitor.releaseEvent();
+            }
+            for(int i=0; i< data.length; ++i) data[i] = .1*(i+1);
+            putData.putDoubleArray(data); put.put();
+            if(!monitor.waitEvent(0.0)) {
+                System.out.println("waitEvent returned false. Why???");
+            } else {
+                System.out.println("exampleLink\n" +pvaData.getPVStructure());
+                monitor.releaseEvent();
+            }
+        } catch (RuntimeException e) {
+            System.out.println("exception " + e.getMessage());
+            System.exit(1);;
+        }
+        System.out.println("_____exampleLinkClient done_______");
+        pva.destroy();
+    }
 }
-</pre>
-<p>Note that this is similar to the code in <b>exampleLinkMain.cpp</b>
-</p>
-<h2>exampleLink/ioc</h2>
-<p>This is standard way to create support for a V3 IOC.
-</p>
-<h3>exampleLink/ioc/Db</h3>
-<p>This is used by the example to create a DBRecord named exampleLinkAI
-</p>
-<h3>exampleLink/ioc/src</h3>
-<p><b>exampleLinkInclude.dbd</b></p>
-<pre>
-include "base.dbd"
-include "PVAServerRegister.dbd"
-include "PVAClientRegister.dbd"
-include "registerChannelProviderLocal.dbd"
-include "exampleLinkRegister.dbd"
-</pre>
-<p>Has V3 IOC includes for the example</p>
-<p><b>exampleLinkMain.cpp</b>  is standard V3 IOC code.</p>
-<h2>exampleLink/iocBoot/exampleLink</h2>
-<p>This is where a V3 IOC that includes <b>exampleLink</b> is started.
-It has two startup files.
-<b>st.local</b> is:</p>
-<pre>
-&lt; envPaths
-cd ${TOP}
-## Register all support components
-dbLoadDatabase("dbd/exampleLink.dbd")
-exampleLink_registerRecordDeviceDriver(pdbbase)
 
-## Load record instance
-dbLoadRecords("db/ai.db","name=exampleLinkAI");
-
-cd ${TOP}/iocBoot/${IOC}
-iocInit()
-startPVAServer
-exampleLinkCreateRecord exampleLink local doubleArray
 </pre>
-<p><b>st.remote</b> is the similar except that it asks for provider pva instead of local.
-It also issues iocsh command <b>startPVAClient</b></p>
 </div> <!-- class="contents" -->
 </body>
 </html>

@@ -9,7 +9,7 @@ In the exampleLink directory
     mvn package
     cd shell
     cp sourceEXAMPLE source
-    # edit source so that EPICSV4 is correctly defined
+    # edit file source so that EPICSV4 is correctly defined
 
 
 

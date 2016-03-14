@@ -7,7 +7,7 @@
  */
 
 
-package org.epics.exampleDatabase;
+package org.epics.exampleJava.exampleDatabase;
 
 import java.io.Console;
 

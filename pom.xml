@@ -29,7 +29,6 @@
         <module>exampleLink</module>
         <module>helloRPC</module>
         <module>powerSupply</module>
-        <module>rdbService</module>
         <module>serviceAPI</module>
     </modules>
 

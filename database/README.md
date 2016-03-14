@@ -10,7 +10,7 @@ In the example directory
     mvn package
     cd shell
     cp sourceEXAMPLE source
-    # edit source so that EPICSV4 is correctly defined
+    # edit file source so that EPICSV4 is correctly defined
 
 
 
@@ -20,7 +20,7 @@ In the example directory
     /home/epicsv4/master/exampleJava/database/shell
     mrk> ./exampleDatabase
 
-## database/src/org/epics/exampleDatabase
+## database/src/org/epics/exampleJava/exampleDatabase
 
 This directory has the following files:
 

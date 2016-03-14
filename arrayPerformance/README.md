@@ -9,7 +9,7 @@ In the example directory
     mvn package
     cd shell
     cp sourceEXAMPLE source
-    # edit source so that EPICSV4 is correctly defined
+    # edit file source so that EPICSV4 is correctly defined
 
 ## To understand the examples read documentation/arrayPerformance.html
 

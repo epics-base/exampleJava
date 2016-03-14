@@ -1,4 +1,13 @@
-package org.epics.exampleDatabase;
+// Copyright information and license terms for this software can be
+// found in the file LICENSE that is included with the distribution
+
+/**
+ * @author mrk
+ * @date 2013.07.24
+ */
+
+
+package org.epics.exampleJava.exampleDatabase;
 
 import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvaccess.server.rpc.RPCService;
