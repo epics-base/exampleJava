@@ -27,6 +27,7 @@
         <module>database</module>
         <module>exampleClient</module>
         <module>exampleLink</module>
+        <module>helloPutGet</module>
         <module>helloRPC</module>
         <module>powerSupply</module>
         <module>serviceAPI</module>
