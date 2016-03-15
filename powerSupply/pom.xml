@@ -9,9 +9,9 @@
         <relativePath>..</relativePath>
     </parent>
 
-    <artifactId>exampleJava_arrayPerformance</artifactId>
+    <artifactId>exampleJava_powerSupply</artifactId>
     <packaging>jar</packaging>
-    <name>exampleJava arrayPerformance</name>
+    <name>exampleJava powerSupply</name>
 
     <dependencies>
         <dependency>
