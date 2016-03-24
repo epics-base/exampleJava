@@ -50,8 +50,9 @@ public class ExampleLinkClient
                 System.out.println("exampleLink\n" +pvaData.getPVStructure());
                 monitor.releaseEvent();
             }
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("exception " + e.getMessage());
+            e.printStackTrace(System.err);
             System.exit(1);;
         }
         System.out.println("_____exampleLinkClient done_______");

@@ -35,7 +35,8 @@ public class HelloPutGetClient
             PvaClientGetData getData = putGet.getGetData();
             System.out.println(getData.getPVStructure().toString());
         } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
+            System.err.println("exception " + e.getMessage());
+            e.printStackTrace(System.err);
             System.exit(1);;
         }
         System.out.println("_____exampleLinkClient done_______");

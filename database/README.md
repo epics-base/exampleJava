@@ -24,7 +24,7 @@ In the example directory
 
 This directory has the following files:
 
-### ExampleHello.java
+### ExampleHelloRecord.java
    
 Code for an example that is accessed via channelPutGet.
 

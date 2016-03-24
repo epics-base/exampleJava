@@ -20,40 +20,31 @@ In the example directory
     cp sourceEXAMPLE source
     # edit file source so that EPICSV4 is correctly defined
 
-## examplePvaClientGet
+## ExamplePvaClientGet
 
 This has a number of examples.
+Each example connects to a server via providers **pva** and **ca**.
 
-### exampleDouble
+### ExampleDouble
 
 This shows both a short and long way to get data from a scalar channel.
 The short way throws an execption if the request fails.
 The long way allows the client more control of looking for problems and blocking.
 
 
-### exampleDoubleArray
+### ExampleDoubleArray
 
 Like exampleDouble except the data is a scalarArray.
 
-### exampleCADouble
 
-This is like exampleDouble except it uses provider <b>ca</b>.
-
-### exampleCADoubleArray
-
-
-This is like exampleDoubleArray except it uses provider <b>ca</b>.
-
-
-
-## examplePvaClientMonitor
+## ExamplePvaClientMonitor
 
 This is an example of creating a monitor on a channel.
 It monitors a scalar double field.
 It also issues puts to the same channel so that it can make the monitors occur.
 
 
-## examplePvaClientPut
+## ExamplePvaClientPut
 
 This has the folllowing examples.
 
@@ -61,31 +52,30 @@ This has the folllowing examples.
 
 This shows use of get, put, and monitor.
 
-### examplePVFieldPut
+### ExamplePvaClientPut
 
 This does a put and then a get.
 
-## examplePvaClientProcess
+## ExamplePvaClientProcess
 
 This example makes a process request to a channel
 
-## examplePvaClientMultiDouble
+## ExamplePvaClientMultiDouble
 
 This is an example of using pvaClientMultiChannel,
 pvaClientMultiGetDouble, pvaClientMultiPutDouble, and pvaClientMultiMonitorDouble.
 
 
-## examplePvaClientNTMulti
+## ExamplePvaClientNTMulti
 
 This is an example of using pvaClientMultiChannel to get data as an NTMultiChannel
 
-## helloWorldPutGet
+## HelloWorldPutGet
 
 This is an example of issuing a channelPutGet.
 
-## helloWorldRPC
+## HelloWorldRPC
 
 This is an example of issuing a channelRPC request.
 It does **not** use pva.
-S
 

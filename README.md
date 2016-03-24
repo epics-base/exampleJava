@@ -24,14 +24,6 @@ In the example directory
 
 ## Brief summary of examples.
 
-## Brief summary of examples.
-
-### helloRPC
-
-A very simple example of an EPICS V4 RPC service: This implements a
-"Hello World" example of a service that is accessed via Channel RPC.
-
-This is a good starting point for writing an RPC service.
 
 
 ### database
@@ -55,6 +47,12 @@ IOC database must be started as follows:
 An example of a PVRecord that implements a "Hello World" service that can be
 accessed via ChannelPutGet.
 
+### helloRPC
+
+A very simple example of an EPICS V4 RPC service: This implements a
+"Hello World" example of a service that is accessed via Channel RPC.
+
+This may be a good starting point for writing an RPC service without using **pvDatabaseJava**.
 
 
 ### exampleLink
@@ -69,6 +67,19 @@ This is an example of creating a PVRecord that uses a somewhat complicated top l
 It simulates a power supply.
 
 The example also has an example pvaClient for accessing the PVRecord.
+
+### pvDatabaseRPC
+
+An example of a pvDatabase PVRecord which also supports RPC services.
+
+The record represents a 2-D position, but also provides an RPC service
+which moves the position through a sequence of points before returning.
+A channel to the record supports the usual operations (such as get, put and
+monitor) but also supports Channel RPC, i.e. the RPC service has the same 
+channel name as the position PV.
+
+A client ("move") for calling the service is supplied.
+
 
 
 ###  arrayPerformance

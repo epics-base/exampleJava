@@ -59,8 +59,9 @@ public class PowerSupplyClient
             putVoltage.put(0.0);
             System.out.println("NOTE!!! an exception will be thrown because voltage is 0\n");
             putGet.putGet();
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("exception " + e.getMessage());
+            e.printStackTrace(System.err);
             System.exit(1);;
         }
         System.out.println("_____powerSupplyClient done_______");

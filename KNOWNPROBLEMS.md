@@ -1,18 +1,27 @@
-# exampleClient Known Problems
+# Known Problems
 
-## BaseV3Channel.java
+## helloRPC, rdbService, and serviceAPI
+
+These are left almost unchanged since release 4.5.
+
+**Greg:** Please look at these examples and decide what should be done.
+
+
+## exampleClient Known Problems
+
+### BaseV3Channel.java
 
 A null pointer exception is thrown when a second attempt is made to connect to the same channel.
 
 
-## examplePvaClientMultiDouble
+### examplePvaClientMultiDouble
 
 Sometimes this is successful and sometimes just shows
 
     _____examplePvaClientMultiDouble starting_______
     _example provider pva channels [Ljava.lang.String;@42a57993_
 
-## examplePvaClientNTMulti
+### examplePvaClientNTMulti
 
 Sometimes this is successful and sometimes just shows
 
@@ -71,8 +80,19 @@ I also saw the following failure
     _____examplePvaClientMultiDouble starting_______
     _example provider pva channels [Ljava.lang.String;@42a57993_
 
-## HelloWordRPC
+## exampleLink Known Problems
+
+### ExampleLinkMain
 
 Does not terminate.
+
+## powerSupply Known Problems
+
+### powerSupplyMain
+
+When client sets voltage to 0 the record throws an exception.
+In the C++ version this just passes the exception to the client.
+In the Java version it seems that the server is no longer working
+
 
 

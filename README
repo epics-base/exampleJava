@@ -1,5 +1,9 @@
-GREG Please move this info to the associated examples.
+GREG:
 
+1) Please move this info into the associated examples.
+2) Look at rdbService and serviceAP
+I left these almost untouched from release 4.5
+3) Look at KNOWNPROBLEMS.md
 
 README of exampleJava
 

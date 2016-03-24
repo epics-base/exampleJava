@@ -22,18 +22,11 @@ public class PowerSupplyMain {
     public static void main(String[] args)
     {
         PVDatabase master = PVDatabaseFactory.getMaster();
-        ContextLocal context = new ContextLocal();
-        context.start(false);
         String recordName = "powerSupply";
         PVRecord pvRecord = PowerSupplyRecord.create(recordName);
         master.addRecord(pvRecord);
-        while(true) {
-            System.out.print("waiting for exit: ");
-            String value = System.console().readLine();
-            if(value.equals("exit")) break;
-        }
-        context.destroy();
-        master.destroy();
+        ContextLocal context = new ContextLocal();
+        context.start(true);
         System.out.println("PowerSupply exiting");
     }
 }
