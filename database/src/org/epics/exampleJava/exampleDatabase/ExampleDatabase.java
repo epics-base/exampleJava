@@ -9,16 +9,12 @@
 
 package org.epics.exampleJava.exampleDatabase;
 
-import java.io.Console;
-
 import org.epics.nt.NTEnum;
 import org.epics.nt.NTEnumBuilder;
 import org.epics.nt.NTScalar;
 import org.epics.nt.NTScalarArray;
 import org.epics.nt.NTScalarArrayBuilder;
 import org.epics.nt.NTScalarBuilder;
-import org.epics.pvaccess.PVAException;
-import org.epics.pvaccess.server.rpc.RPCServer;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.factory.StandardFieldFactory;
@@ -171,8 +167,7 @@ static void createDumbPowerSupplyRecord(
     public static void main(String[] args)
     {
         PVDatabase master = PVDatabaseFactory.getMaster();
-        ContextLocal context = new ContextLocal();
-        context.start(false);
+        
         
         createRecords(master,ScalarType.pvBoolean,"PVRboolean");
         createRecords(master,ScalarType.pvByte,"PVRbyte");
@@ -216,28 +211,12 @@ static void createDumbPowerSupplyRecord(
         pvRecord = ExampleHelloRecord.create(recordName);
         master.addRecord(pvRecord);
         
-        RPCServer rpcServer = new RPCServer();
-        rpcServer.registerService("helloRPC", new ExampleHelloRPC());
-        while(true) {
-        	Console cnsl = null;
-            try{
-               cnsl = System.console();
-               if (cnsl != null) {
-                   String value = System.console().readLine("waiting for exit: ");
-                   if(value.equals("exit")) break;
-               }      
-            }catch(Exception ex){
-               // if any error occurs
-               ex.printStackTrace();      
-            }
-        }
-        context.destroy();
-        master.destroy();
-        try {
-             rpcServer.destroy();
-        } catch (PVAException e) {
-            throw new RuntimeException("rpcServer.destroy exception " + e.getMessage());
-        }
+        recordName = "helloRPC";
+        pvRecord = ExampleHelloRPC.create(recordName);
+        master.addRecord(pvRecord);
+                
+        ContextLocal context = new ContextLocal();
+        context.start(true);
         System.out.println("ExampleDatabase exiting");
     }
 }

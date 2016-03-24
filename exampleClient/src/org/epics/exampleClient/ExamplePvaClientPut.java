@@ -19,95 +19,60 @@ import org.epics.pvdata.pv.Status;
 
 public class ExamplePvaClientPut
 {
+	static void exampleDouble(PvaClient pva,String channelName,String provider)
+	{
+		System.out.println("__exampleDouble__");
+		PvaClientChannel channel = pva.channel(channelName,provider,2.0);
+		PvaClientPut put = channel.put();
+		PvaClientPutData putData = put.getData();
+		putData.putDouble(3.0); put.put();
+		System.out.println(channel.get("field()").getData().showChanged());
+		putData.putDouble(4.0); put.put();
+		System.out.println(channel.get("field()").getData().showChanged());
+	}
+	
+	static void exampleDoubleArray(PvaClient pva,String channelName,String provider)
+	{
+		System.out.println("__exampleDoubleArray__");
+		PvaClientChannel channel = pva.channel(channelName,provider,2.0);
+		PvaClientPut put = channel.put();
+		PvaClientPutData putData = put.getData();
+		double[] data = new double[5];
+		for(int i=0; i< data.length; ++i) data[i] = .1*i;
+		putData.putDoubleArray(data); put.put();
+		System.out.println(channel.get("field()").getData().showChanged());
+		for(int i=0; i< data.length; ++i) data[i] = .1*(i+1);
+		putData.putDoubleArray(data); put.put();
+		System.out.println(channel.get("field()").getData().showChanged());
+	}
 
-
-    static void exampleDouble(PvaClient pva)
-    {
-        System.out.println("__exampleDouble__");
-        PvaClientChannel channel = pva.channel("PVRdouble");
-        PvaClientPut put = channel.put();
-        PvaClientPutData putData = put.getData();
-        try {
-            putData.putDouble(3.0); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-            putData.putDouble(4.0); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
-        }
-    }
-    
-    static void exampleDoubleArray(PvaClient pva)
-    {
-        System.out.println("__exampleDoubleArray__");
-        PvaClientChannel channel = pva.channel("PVRdoubleArray");
-        PvaClientPut put = channel.put();
-        PvaClientPutData putData = put.getData();
-        try {
-            double[] data = new double[5];
-            for(int i=0; i< data.length; ++i) data[i] = .1*i;
-            putData.putDoubleArray(data); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-            for(int i=0; i< data.length; ++i) data[i] = .1*(i+1);
-            putData.putDoubleArray(data); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
-        }
-    }
-    
-    static void exampleCADouble(PvaClient pva)
-    {
-        System.out.println("__exampleCADouble__");
-        PvaClientChannel channel = pva.channel("DBRdouble00","ca",5.0);
-        PvaClientPut put = channel.put();
-        PvaClientPutData putData = put.getData();
-        try {
-            putData.putDouble(3.0); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-            putData.putDouble(4.0); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
-        }
-    }
-    
-    static void exampleCADoubleArray(PvaClient pva)
-    {
-        System.out.println("__exampleCADoubleArray__");
-        PvaClientChannel channel = pva.channel("DBRdoubleArray","ca",5.0);
-        PvaClientPut put = channel.put();
-        PvaClientPutData putData = put.getData();
-        try {
-            double[] data = new double[5];
-            for(int i=0; i< data.length; ++i) data[i] = .1*i;
-            putData.putDoubleArray(data); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-            for(int i=0; i< data.length; ++i) data[i] = .1*(i+1);
-            putData.putDoubleArray(data); put.put();
-            System.out.println(channel.get("field()").getData().showChanged());
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
-        }
-    }
-
-    public static void main( String[] args )
-    {
-        System.out.println("_____examplePvaClientPut starting_______");
-        PvaClient pva= PvaClient.get();
-        exampleDouble(pva);
-        exampleDoubleArray(pva);
-        PvaClientChannel pvaChannel = pva.createChannel("DBRdouble00","ca");
-        pvaChannel.issueConnect();
-        Status status = pvaChannel.waitConnect(2.0);
-        if(status.isOK()) {
-            exampleCADouble(pva);
-            exampleCADoubleArray(pva);
-        } else {
-            System.out.println("DBRdouble00 not found");
-        }
-        System.out.println("_____examplePvaClientPut done_______");
-        pva.destroy();
-    }
+	public static void main( String[] args )
+	{
+		System.out.println("_____examplePvaClientPut starting_______");
+		PvaClient pva= PvaClient.get();
+		try {
+			exampleDouble(pva,"PVRdouble","pva");
+			exampleDoubleArray(pva,"PVRdoubleArray","pva");
+			PvaClientChannel pvaChannel = pva.createChannel("DBRdouble00","ca");
+			pvaChannel.issueConnect();
+			Status status = pvaChannel.waitConnect(2.0);
+			if(status.isOK()) {
+				exampleDouble(pva,"DBRdouble00","pva");
+				exampleDouble(pva,"DBRdouble00","ca");
+				exampleDoubleArray(pva,"DBRdoubleArray","pva");
+				exampleDoubleArray(pva,"DBRdoubleArray","ca");
+			} else {
+				System.out.println("DBRdouble00 not found");
+			}
+			System.out.println("_____examplePvaClientPut done_______");
+		}
+		catch (Exception e)
+		{
+			System.err.println("exception " + e.getMessage());
+			e.printStackTrace(System.err);
+			System.exit(1);
+		}
+		pva.destroy();
+	}
 
 }

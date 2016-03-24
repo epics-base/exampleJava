@@ -29,6 +29,7 @@
         <module>helloPutGet</module>
         <module>helloRPC</module>
         <module>powerSupply</module>
+        <module>pvDatabaseRPC</module>
         <module>serviceAPI</module>
     </modules>
 
