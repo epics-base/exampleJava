@@ -30,32 +30,32 @@ public class HelloWorldPutGet
 
     static void exampleSimple(PvaClient pva)
     {
-    	System.out.println("helloWorldPutGet");
-    	PvaClientChannel channel = pva.channel("PVRhelloPutGet");
-    	PvaClientPutGet putGet = channel.createPutGet();
-    	putGet.connect();
-    	PvaClientPutData putData = putGet.getPutData();
-    	PVStructure arg = putData.getPVStructure();
-    	PVString pvValue = arg.getSubField(PVString.class,"argument.value");
-    	pvValue.put("World");
-    	putGet.putGet();
-    	PvaClientGetData getData = putGet.getGetData();
-    	System.out.println(getData.getPVStructure());
+        System.out.println("helloWorldPutGet");
+        PvaClientChannel channel = pva.channel("PVRhelloPutGet");
+        PvaClientPutGet putGet = channel.createPutGet();
+        putGet.connect();
+        PvaClientPutData putData = putGet.getPutData();
+        PVStructure arg = putData.getPVStructure();
+        PVString pvValue = arg.getSubField(PVString.class,"argument.value");
+        pvValue.put("World");
+        putGet.putGet();
+        PvaClientGetData getData = putGet.getGetData();
+        System.out.println(getData.getPVStructure());
     }
 
     public static void main( String[] args )
     {
-    	PvaClient pva= PvaClient.get();
-    	try {
-    		exampleSimple(pva);
-    	}
-    	catch (Exception e)
-    	{
-    		System.out.println("exception " + e.getMessage());
-    		e.printStackTrace(System.err);
-    		System.exit(1);
-    	}
-    	pva.destroy();
+        PvaClient pva= PvaClient.get();
+        try {
+            exampleSimple(pva);
+        }
+        catch (Exception e)
+        {
+            System.out.println("exception " + e.getMessage());
+            e.printStackTrace(System.err);
+            System.exit(1);
+        }
+        pva.destroy();
     }
 
 }
