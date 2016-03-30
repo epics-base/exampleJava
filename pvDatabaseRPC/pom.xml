@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.epics</groupId>
+        <artifactId>exampleJava</artifactId>
+        <version>4.2.0-SNAPSHOT</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <artifactId>exampleJava_pvDatabaseRPC</artifactId>
+    <packaging>jar</packaging>
+    <name>exampleJava pvDatabaseRPC</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvDataJava</artifactId>
+            <version>${pvDataJava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>normativeTypesJava</artifactId>
+            <version>${normativeTypesJava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvAccessJava</artifactId>
+            <version>${pvAccessJava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvaClientJava</artifactId>
+            <version>${pvaClientJava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>pvDatabaseJava</artifactId>
+            <version>${pvDatabaseJava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>jca</artifactId>
+            <version>${jca.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.epics</groupId>
+            <artifactId>caj</artifactId>
+            <version>${caj.version}</version>
+        </dependency>
+    </dependencies>
+    
+</project>

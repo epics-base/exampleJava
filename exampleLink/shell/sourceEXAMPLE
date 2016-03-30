@@ -1,0 +1,19 @@
+if [ -v EPICSV4 ]
+then
+    echo "EPICSV4 already defined as " + $EPICSV4
+else
+    export EPICSV4=/home/epicsv4/master
+fi
+export PVDATA=${EPICSV4}/pvDataJava
+export PVACCESS=${EPICSV4}/pvAccessJava
+export PVACLIENT=${EPICSV4}/pvaClientJava
+export NORMATIVETYPES=${EPICSV4}/normativeTypesJava
+export PVDATABASE=${EPICSV4}/pvDatabaseJava
+export EXAMPLELINK=${EPICSV4}/exampleJava/exampleLink
+export CLASSPATH=${PVDATA}/target/classes
+export CLASSPATH=${CLASSPATH}:${PVACCESS}/target/classes
+export CLASSPATH=${CLASSPATH}:${PVACLIENT}/target/classes
+export CLASSPATH=${CLASSPATH}:${NORMATIVETYPES}/target/classes
+export CLASSPATH=${CLASSPATH}:${PVDATABASE}/target/classes
+export CLASSPATH=${CLASSPATH}:${EXAMPLELINK}/target/classes
+

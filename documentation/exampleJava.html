@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>EPICS exampleJava</title>
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/base.css" />
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/epicsv4.css" />
+  <style type="text/css">
+/*<![CDATA[*/
+     .about { margin-left: 3em; margin-right: 3em; font-size: .83em}
+     table { margin-left: auto; margin-right: auto }
+     .diagram { text-align: center; margin: 2.5em 0 }
+     body { margin-right: 10% }
+/*]]>*/</style>
+
+ <!-- Script that generates the Table of Contents -->
+  <script type="text/javascript" src="http://epics-pvdata.sourceforge.net/script/tocgen.js"></script>
+
+</head>
+
+<body>
+
+<div class="head">
+<h1>EPICS exampleJava</h1>
+<h2 class="nocount">Release 4.1 - 2016.03.11</h2>
+
+<h2 class="nocount">Abstract</h2>
+<p>
+This project provides a set of examples of client and server code for pvAccess.
+</p>
+  <!-- last para of Abstract is boilerplate reference to EPICS -->
+      <p>For more information about EPICS generally, please refer to the home page of the <a
+       href="http://www.aps.anl.gov/epics/">Experimental Physics and Industrial
+      Control System</a>.</p>
+
+
+</div> <!-- head -->
+
+<div id="toc">
+  <h2 class="nocount">Table of Contents</h2>
+</div>
+
+<!-- Place what you would like in the Table of Contents, inside the contents div -->
+<div id="contents" class="contents">	  
+<hr />
+<h2>Overview</h2>
+<p>
+This project provides a set of examples of client and server code for pvAccess.
+Each example can be built separately by building in the example subdirectory.
+The complete set of examples can also be built by building in exampleJava itself.
+</p>
+<h3>Each Example is a template</h3>
+<p>
+Each example can be used as a template for building other applications:
+</p>
+<ul>
+  <li>Choose an example that is similar to the desired application.</li>
+  <li>Copy the complete example to where the desired application should reside.</li>
+  <li>Edit the new application</li>
+</ul>
+
+<h3>Building via exampleJava</h3>
+<p><b>TBD</b> must have standard parent pom</p>
+
+<h3>Building An Individual Example</h3>
+
+<p><b>TBD</b> must have standard parent pom</p>
+<h2>Brief summary of examples</h2>
+<h3>database</h3>
+<p>
+Provides a server that has a database of V4 PVRecords.
+</p>
+
+<h3>exampleClient</h3>
+<p>
+Provides a set of examples that use pvaClientJava.
+</p>
+<p>
+In order to run the examples, <b>database</b> must also be built and then started as follows:
+</p>
+<pre>
+mrk&gt; pwd
+/home/epicsv4/master/exampleJava/database/shell
+mrk&gt; ./exampleDatabase
+</pre>
+<h3>helloPutGet</h3>
+<p>
+Implements a PVRecord that is an example of a PVRecord intended to ba accessed via channelPutGet.
+It is a simple HelloWorld example.
+</p>
+<h3>helloRPC</h3>
+<p>
+This implements HelloWorld that is accessed via channelRPC.
+</p>
+<h3>pvDatabaseRPC</h3>
+<p>
+This is an example service that is accessed via PvAClientChannel::createChannelRPC.
+</p>
+
+<h3>exampleLink</h3>
+<p>
+This implements a V3 IOC that has a PVRecord doubleArray and a PVRecord exampleLink that monitors changes to doubleArray. PVRecord exampleLink uses pvAccess client code to monitor for changes in doubleArray. It can use either provider local or pva to connect to doubleArray.
+</p>
+
+<h3>powerSupply</h3>
+<p>
+This is an example of creating a PVRecord that uses a somewhat complicated top level PVStructure.
+It simulates a power supply.
+</p>
+<p>
+The example also has an example pvaClient for accessing the PVRecord.
+</p>
+
+
+
+<h3>arrayPerformance</h3>
+<p>
+This is an example that shows performance for an array of longs.
+</p>
+<p>
+arrayPerformanceMain implement a PVRecord that is a long array.
+It has a process method with code that causes the array to be updated at selectable rates and sizes.!
+</p>
+<p>
+It also has pvaClient examples that can get, put, and monitor the long array record.
+</p>
+
+<h3>rdbService</h3>
+
+<p><b>Greg</b> please describe.</p>
+
+<h3>serviceAPI</h3>
+
+<p><b>Greg</b> please describe.</p>
+
+</div> <!-- class="contents" -->
+</body>
+</html>
+

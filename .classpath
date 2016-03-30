@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry including="**/*.java" kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/pvAccessJava"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/pvDataJava"/>
-	<classpathentry kind="output" path="target/classes"/>
-</classpath>
