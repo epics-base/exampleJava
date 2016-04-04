@@ -16,4 +16,6 @@ export CLASSPATH=${CLASSPATH}:${PVACLIENT}/target/classes
 export CLASSPATH=${CLASSPATH}:${NORMATIVETYPES}/target/classes
 export CLASSPATH=${CLASSPATH}:${PVDATABASE}/target/classes
 export CLASSPATH=${CLASSPATH}:${EXAMPLELINK}/target/classes
+export CLASSPATH=${CLASSPATH}:${EXAMPLELINK}/shell/caj-1.1.15.jar
+export CLASSPATH=${CLASSPATH}:${EXAMPLELINK}/shell/jca-2.3.6.jar
 

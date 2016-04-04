@@ -37,11 +37,11 @@ public class ExampleLinkRecord extends PVRecord
     private PvaClientChannel pvaClientChannel = null;
     private Monitor monitor = null;
 
-    public static PVRecord create(String recordName,String provider,String channelName)
+    public static PVRecord create(PvaClient pva,String recordName,String provider,String channelName)
     {
         PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble, "timeStamp");
         ExampleLinkRecord pvRecord = new ExampleLinkRecord(recordName,pvStructure);
-        if(!pvRecord.init(channelName,provider)) return null;
+        if(!pvRecord.init(pva,channelName,provider)) return null;
         return pvRecord;
     }
     public ExampleLinkRecord(String recordName,PVStructure pvStructure)
@@ -49,14 +49,14 @@ public class ExampleLinkRecord extends PVRecord
         super(recordName,pvStructure);
     }
     
-    private boolean init(String channelName,String provider)
+    private boolean init(PvaClient pva,String channelName,String provider)
     {
         PVStructure pvStructure = getPVRecordStructure().getPVStructure();
         pvValue = pvStructure.getSubField(PVDoubleArray.class,"value");
         if(pvValue == null) {
             return false;
         }
-        PvaClient pva = PvaClient.get();
+        
         pvaClientChannel = pva.channel(channelName,provider,5.0);
         Channel channel = pvaClientChannel.getChannel();
         PVStructure pvRequest = createRequest.createRequest("value");

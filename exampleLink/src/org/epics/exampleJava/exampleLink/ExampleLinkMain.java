@@ -52,13 +52,11 @@ public class ExampleLinkMain {
 			String val = args[3];
 			if(val=="false") generateLinkedRecord = false;
 		}
-//		PvaClient pva= PvaClient.get();
 		PVDatabase master = PVDatabaseFactory.getMaster();
-
 		ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
-		ServerContextImpl context = null;
 		try {
-			context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
+			ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
+            PvaClient pva= PvaClient.get();
 			if(generateLinkedRecord) {
 				NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
 				PVStructure pvStructure = builder.
@@ -68,8 +66,9 @@ public class ExampleLinkMain {
 						createPVStructure();
 				master.addRecord(new PVRecord(linkedRecordName,pvStructure));
 			}
-			PVRecord pvRecord = ExampleLinkRecord.create(exampleLinkRecordName,provider,linkedRecordName);
+			PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);
 			master.addRecord(pvRecord);
+//			ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
 			while(true) {
 				System.out.print("waiting for exit: ");
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -84,7 +83,7 @@ public class ExampleLinkMain {
 			context.destroy();
 			master.destroy();
 			channelProvider.destroy();
-//			pva.destroy();
+			pva.destroy();
 			System.out.println("ExampleLink exiting");
 		} catch (PVAException e) {
 			System.err.println(e.getMessage());
