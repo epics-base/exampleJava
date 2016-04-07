@@ -41,15 +41,12 @@ public class PowerSupplyRecord extends PVRecord
             add("timeStamp",standardField.timeStamp()).
             addNestedStructure("power").
                add("value",ScalarType.pvDouble).
-               add("alarm",standardField.alarm()).
                endNested().
             addNestedStructure("voltage").
                add("value",ScalarType.pvDouble).
-               add("alarm",standardField.alarm()).
                endNested().
             addNestedStructure("current").
                add("value",ScalarType.pvDouble).
-               add("alarm",standardField.alarm()).
                endNested().
             createStructure();
         PVStructure pvStructure = pvDataCreate.createPVStructure(topStructure);
@@ -92,6 +89,9 @@ public class PowerSupplyRecord extends PVRecord
                 System.out.println("no power");
                 return false;
         }
+        alarm.setMessage("bad voltage");
+        alarm.setSeverity(AlarmSeverity.MAJOR);
+        pvAlarm.set(alarm);
         return true;
     }
 

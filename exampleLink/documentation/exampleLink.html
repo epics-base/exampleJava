@@ -26,7 +26,7 @@
 
 <div class="head">
 <h1>EPICS exampleJava/exampleLink</h1>
-<h2 class="nocount">Release 1.0 - 2016.03.14</h2>
+<h2 class="nocount">Release 4.1 - 2016.03.14</h2>
 
 <h2 class="nocount">Abstract</h2>
 <p>
@@ -51,17 +51,17 @@
 <h2>Overview</h2>
 <h3>Start as a main program</h3>
 <pre>
-mrk&gt; pwd
+mrk> pwd
 /home/epicsv4/master/exampleJava/exampleLink/shell
-mrk&gt; ./exampleLink
+mrk> ./exampleLink
 </pre>
 <h3>exampleLinkClient</h3>
 <p>A pvaClient test is available to test exampleLink.
 Start the exampleLink and then:</p>
 <pre>
-mrk&gt; pwd
-/home/epicsv4/master/exampleCPP/exampleLink/shell
-mrk&gt; ./exampleLinkClient
+mrk> pwd
+/home/epicsv4/master/exampleJava/exampleLink/shell/shell
+mrk> ./exampleLinkClient
 </pre>
 <h2>Discussion</h2>
 <h3>Access Alternatives</h3>
@@ -72,15 +72,12 @@ mrk&gt; ./exampleLinkClient
     If the other PVRecord is accessed via the master PVDatabase then
     threading issues are up to the implementation.
     For now this method will not be discussed.</dd>
-  <dt>Access via pvAccess</dt>
+  <dt>Access via channelProvider pva or ca</dt>
     <dd>
-      If access is via pvAccess then locking is handled by pvAccess.</dd>
-</dl>
-<p>Access via pvAccess can be done either by local or remote channel provider.</p>
-<dl>
-  <dt>Access via channelProviderLocal</dt>
+      If  provider  <b>pva</b> or <b>ca</b> is used then locking is handled by pvAccess.</dd>
+  <dt>Access via channelProvider local</dt>
     <dd>
-    If the local pvAccess server is used the implementation must be careful that it does not
+    If provider  <b>local</b> is used the implementation must be careful that it does not
     cause deadlocks.
     When the process method is called the pvRecord for the process method is locked.
     When it makes a pvAccess get, put, etc request the other record is locked.
@@ -91,13 +88,10 @@ mrk&gt; ./exampleLinkClient
     be used.
     But this results in more context switches.
     </dd>
-   <dt>Access via remote pvAccess</dt>
-      <dd>If remote pvAccess is used then all locking issues are handled by pvAccess.
-      The linked channel can be a pvRecord in the local pvDatabase or can be implemented
-      by a remote pvAccess server.</dd>
 </dl>
+
 <h3>Data synchronization</h3>
-<p>If pvAccess is used then it handles data synchronization.
+<p>If pvAccess (provider  <b>pva</b> or <b>ca</b>) is used then it handles data synchronization.
 This is done by making a copy of the data that is transferred between the two pvRecords.
 This is true if either remote or local pvAccess is used.
 Each get, put, etc request results in data being copied between the two records.</p>
@@ -117,253 +111,99 @@ i. e. a main program, or can be part of a V3IOC.</p>
 <pre>
 ...
     PVDatabase master = PVDatabaseFactory.getMaster();
-    ContextLocal context = new ContextLocal();
-    context.start(false);
+    ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+    ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
+    PvaClient pva= PvaClient.get();  // only needed if records access other records via pva or ca
 ... 
     master.addRecord(...
 ...
     context.destroy();
 ...
 </pre>
-
-
-
-
-</pre>
-<h2>exampleLink/src/org/epics/exampleJava/exampleLink</h2>
-
-<h3>ExampleLinkRecord.cpp</h3>
+<h2>Using exampleLinkMain to test providers local, pva, and ca</h2>
+<h3>Options</h3>
+<p>The options supported by exampleLinkMain are shown by:</p>
 <pre>
-public class ExampleLinkRecord extends PVRecord
-    implements  MonitorRequester, Requester
-{
-    private static final StandardPVField standardPVField = StandardPVFieldFactory.getStandardPVField();
-    private static final CreateRequest createRequest = CreateRequest.create();
-    private static Convert convert = ConvertFactory.getConvert();
-    
-    private String channelName = null;
-    private PVDoubleArray pvValue = null;
-    private PvaClientChannel pvaClientChannel = null;
-    private Monitor monitor = null;
+mrk> pwd
+/home/epicsv4/master/exampleJava/exampleLink/shell
+mrk> ./exampleLinkMain -help
+provider exampleLinkRecordName . generateLinkedRecord
+default
+pva exampleLink doubleArray true
+mrk> 
+</pre>
+<p>
+Thus to run it with default options:
+</p>
+<pre>
+./exampleLinkMain 
+</pre>
+<p>exampleLinkMain creates an instance of ExampleLinkRecord.
+The record name is <b>exampleLinkRecordName</b>.
+The ExampleLinkRecord monitors <b>linkedRecordName</b> using the specified <b>provider</b>.
+</p>
+<h3>Monitor exampleLink</h3>
+<p>After exampleLinkMain is started then in another window:</p>
+<pre>
+pvget -m -r "field()" exampleLink
+</pre>
+<p>This can be kept running while exampleLinkMain is stopped and then restarted with
+other options as long as <b>exampleLinkRecordName</b> is doubleArray.
+</p>
+<h3>exampleLinkClient</h3>
+<p>This makes changes to the record that exampleLink monitors.
+It has the options:
+</p>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleJava/exampleLink/shell
+mrk> ./exampleLinkClient -help
+provider
+default
+pva
+</pre>
+<p><b>NOTE:</b> If exampleLinkMain is stated with provider <b>ca</b>
+then exampleLinkClient must also be run with provider <b>ca</b>
+</p>
 
-    public static PVRecord create(String recordName,String channelName)
-    {
-        PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble, "timeStamp");
-        ExampleLinkRecord pvRecord = new ExampleLinkRecord(recordName,channelName,pvStructure);
-        if(!pvRecord.init()) return null;
-        return pvRecord;
-    }
-    public ExampleLinkRecord(String recordName,String channelName,PVStructure pvStructure)
-    {
-        super(recordName,pvStructure);
-        this.channelName = channelName;
-    }
-    
-    private boolean init()
-    {
-        PVStructure pvStructure = getPVRecordStructure().getPVStructure();
-        pvValue = pvStructure.getSubField(PVDoubleArray.class,"value");
-        if(pvValue == null) {
-            return false;
-        }
-        PvaClient pva = PvaClient.get();
-        pvaClientChannel = pva.channel(channelName);
-        Channel channel = pvaClientChannel.getChannel();
-        PVStructure pvRequest = createRequest.createRequest("value");
-        monitor = channel.createMonitor(this, pvRequest);
-        return true;
-    }
-    
-    public void process()
-    {
-        super.process();
-    }
- 
-    public String getRequesterName() {
-        return channelName;
-    }
-   
-    public void message(String message, MessageType messageType) {
-        System.out.println("Why is ExampleLink::message called");
-    }
-    
-    public void monitorConnect(
-            Status status,
-            Monitor monitor,
-            Structure structure)
-    {
-        monitor.start();
-    }
-   
-    public void monitorEvent(Monitor monitor)
-    {
-        while(true) {
-            MonitorElement monitorElement = monitor.poll();
-            if(monitorElement==null) break;
-            PVStructure pvStructure = monitorElement.getPVStructure();
-            PVDoubleArray pvDoubleArray = pvStructure.getSubField(PVDoubleArray.class,"value");
-            if(pvDoubleArray==null) throw new RuntimeException("value is not a double array");
-          
-            lock();
-            try {
-                beginGroupPut();
-                convert.copy(pvDoubleArray,pvValue);
-                process();
-                endGroupPut();
-            } finally {
-                unlock();
-            }
-            
-            monitor.release(monitorElement);
-        } 
-    }
-    
-    public void unlisten(Monitor monitor) {
-        destroy();
-    }
+<p>exampleLinkClient only works if <b>linkedRecordName</b> is doubleArray.
+</p>
+<h3>Testing via provider local</h3>
+<p>This can be tested via:</p>
+<pre>
+./exampleLinkMain local 
+</pre>
+<h3>Testing via provider pva</h3>
+<p>This can be done via the default options:</p>
+<pre>
+./exampleLinkMain 
+</pre>
 
-    
-    public void destroy()
-    {
-        monitor.destroy();
-        pvaClientChannel.destroy();
-         super.destroy();   
-    }
-}
+<p>It can also be run with pva accessing a record in another IOC:</p>
+<pre>
+./exampleLinkMain pva exampleLink doubleArray  false
+</pre>
+<p>But this only starts running when the following is also started:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleJava/exampleLink/shell
+mrk> ./doubleArrayMain 
+</pre>
+<p><b>NOTE</b> do not leave this running for other exampleLinkMain options.
+</p>
+<h3>Testing via provider ca</h3>
+<p>This can be tested as follows:</p>
+<pre>
+./exampleLinkMain ca exampleLink doubleArray  false
+</pre>
 
-</pre>
-<h3>exampleLinkMain.cpp</h3>
-<p>This is a main program for starting the example.</p>
+<p>But a softIoc for record doubleArray must also be started:</p>
 <pre>
-public class ExampleLinkMain {
+mrk> pwd
+/home/epicsv4/master/exampleJava/exampleLink/v3IOC
+mrk> softIoc st.cmd
+</pre>
 
-    public static void main(String[] args)
-    {
-        int argc = args.length;
-        String provider = "pva";
-        if(argc==1 && args[0].endsWith("-help")) {
-            System.out.println("provider");
-            System.out.println("default");
-            System.out.println(provider);
-            System.exit(0);
-        }
-        if(argc>0) provider = args[0];
-        PVDatabase master = PVDatabaseFactory.getMaster();
-        ContextLocal context = new ContextLocal();
-        context.start(false);
-        NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
-        PVStructure pvStructure = builder.
-            value(ScalarType.pvDouble).
-            addAlarm().
-            addTimeStamp().
-            createPVStructure();
-        String recordName = "doubleArray";
-        PVRecord pvRecord = new PVRecord(recordName,pvStructure);
-        master.addRecord(pvRecord);
-        pvRecord = ExampleLinkRecord.create("exampleLink",provider,recordName);
-        master.addRecord(pvRecord);
-        while(true) {
-            System.out.print("waiting for exit: ");
-            String value = System.console().readLine();
-            if(value.equals("exit")) break;
-        }
-        context.destroy();
-        master.destroy();
-        System.out.println("ExampleLink exiting");
-    }
-}
-</pre>
-<p>The statements</p>
-<pre>
-int argc = args.length;
-String provider = "pva";
-</pre>
-<p>allow the caller to provide the name of the provider or use the default.</p>
-<p>The statements</p>
-<pre>
-ContextLocal context = new ContextLocal();
-context.start(false);
-</pre>
-<p><b>NEEDS DISCUSSION</b></p>
-<p>The statements</p>
-<pre>
-        PVDatabase master = PVDatabaseFactory.getMaster();
-        NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
-        PVStructure pvStructure = builder.
-            value(ScalarType.pvDouble).
-            addAlarm().
-            addTimeStamp().
-            createPVStructure();
-        String recordName = "doubleArray";
-        PVRecord pvRecord = new PVRecord(recordName,pvStructure);
-        master.addRecord(pvRecord);
-</pre>
-<p>creates a single PVRecord and adds it to master database.</p>
-<p>The statements</p>
-<pre>
-pvRecord = ExampleLinkRecord.create("exampleLink",provider,recordName);
-master.addRecord(pvRecord);
-</pre>
-<p>This creates the <b>exampleLink</b> record</p>
-<p>The remaining code</p>
-<pre>
-while(true) {
-    System.out.print("waiting for exit: ");
-    String value = System.console().readLine()
-    if(value.equals("exit")) break;
-}
-context.destroy();
-master.destroy();
-System.out.println("ExampleLink exiting");
-</pre>
-<p>waits for the caller to enter exit and then terminates</p>
-
-<h3>ExampleLinkClient.Java</h3>
-<pre>
-public class ExampleLinkClient
-{
-    public static void main( String[] args )
-    {
-        System.out.println("_____exampleLinkClient starting_______");
-        PvaClient pva= PvaClient.get();
-        try {
-            PvaClientPut put = pva.channel("doubleArray").put();
-            PvaClientPutData putData = put.getData();
-            PvaClientMonitor monitor = pva.channel("exampleLink").monitor("");
-            PvaClientMonitorData pvaData = monitor.getData();
-            if(!monitor.waitEvent(0.0)) {
-                System.out.println("waitEvent returned false. Why???");
-            } else {
-                System.out.println("exampleLink\n" +pvaData.getPVStructure());
-                monitor.releaseEvent();
-            }
-            double[] data = new double[5];
-            for(int i=0; i< data.length; ++i) data[i] = 0.0;
-            putData.putDoubleArray(data); put.put();
-            if(!monitor.waitEvent(0.0)) {
-                System.out.println("waitEvent returned false. Why???");
-            } else {
-                System.out.println("exampleLink\n" +pvaData.getPVStructure());
-                monitor.releaseEvent();
-            }
-            for(int i=0; i< data.length; ++i) data[i] = .1*(i+1);
-            putData.putDoubleArray(data); put.put();
-            if(!monitor.waitEvent(0.0)) {
-                System.out.println("waitEvent returned false. Why???");
-            } else {
-                System.out.println("exampleLink\n" +pvaData.getPVStructure());
-                monitor.releaseEvent();
-            }
-        } catch (RuntimeException e) {
-            System.out.println("exception " + e.getMessage());
-            System.exit(1);;
-        }
-        System.out.println("_____exampleLinkClient done_______");
-        pva.destroy();
-    }
-}
-
-</pre>
 </div> <!-- class="contents" -->
 </body>
 </html>

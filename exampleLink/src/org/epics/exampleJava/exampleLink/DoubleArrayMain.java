@@ -5,36 +5,55 @@
  */
 
 
-package org.epics.exampleJava.helloPutGet;
+package org.epics.exampleJava.exampleLink;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import org.epics.nt.NTScalarArray;
+import org.epics.nt.NTScalarArrayBuilder;
 import org.epics.pvaccess.PVAConstants;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.server.impl.remote.ServerContextImpl;
+import org.epics.pvdata.pv.PVStructure;
+import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
 import org.epics.pvdatabase.pva.ChannelProviderLocalFactory;
+import org.epics.pvaClient.*;
 
 
 /**
  * @author Marty Kraimer
  *
  */
-public class HelloPutGetMain {
+public class DoubleArrayMain {
 
 	public static void main(String[] args)
 	{
+		int argc = args.length;
+		String doubleArrayRecordName = "doubleArray";
+		if(argc==1 && args[0].endsWith("-help")) {
+			System.out.println("doubleArrayRecordName");
+			System.out.println("default");
+			System.out.println(doubleArrayRecordName);
+			System.exit(0);
+		}
+		if(argc>0) doubleArrayRecordName = args[0];
 		try {
 			PVDatabase master = PVDatabaseFactory.getMaster();
 			ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
-			String recordName = "helloPutGet";
-			PVRecord pvRecord = HelloPutGetRecord.create(recordName);
-			master.addRecord(pvRecord);
+			NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
+			PVStructure pvStructure = builder.
+					value(ScalarType.pvDouble).
+					addAlarm().
+					addTimeStamp().
+					createPVStructure();
+			master.addRecord(new PVRecord(doubleArrayRecordName,pvStructure));
+
 			ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
 			while(true) {
 				System.out.print("waiting for exit: ");
@@ -50,10 +69,10 @@ public class HelloPutGetMain {
 			context.destroy();
 			master.destroy();
 			channelProvider.destroy();
+			System.out.println("ExampleLink exiting");
 		} catch (PVAException e) {
 			System.err.println(e.getMessage());
 			System.exit(1);
 		}
-		System.out.println("ExampleLink exiting");
 	}
 }

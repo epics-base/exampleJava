@@ -50,13 +50,11 @@ public class ExampleLinkMain {
 		if(argc>2) linkedRecordName = args[2];
 		if(argc>3) {
 			String val = args[3];
-			if(val=="false") generateLinkedRecord = false;
+			if(val.equals("false")) generateLinkedRecord = false;
 		}
-		PVDatabase master = PVDatabaseFactory.getMaster();
-		ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
 		try {
-			ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
-            PvaClient pva= PvaClient.get();
+			PVDatabase master = PVDatabaseFactory.getMaster();
+			ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
 			if(generateLinkedRecord) {
 				NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
 				PVStructure pvStructure = builder.
@@ -66,6 +64,8 @@ public class ExampleLinkMain {
 						createPVStructure();
 				master.addRecord(new PVRecord(linkedRecordName,pvStructure));
 			}
+			ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
+            PvaClient pva= PvaClient.get();
 			PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);
 			master.addRecord(pvRecord);
 //			ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
