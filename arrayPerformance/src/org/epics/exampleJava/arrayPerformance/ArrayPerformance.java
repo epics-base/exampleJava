@@ -13,12 +13,9 @@ import org.epics.pvdata.property.TimeStampFactory;
 import org.epics.pvdata.pv.PVLongArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvdatabase.PVDatabase;
-import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
 
 public class ArrayPerformance extends PVRecord implements RunnableReady {
-    private static PVDatabase master = PVDatabaseFactory.getMaster();
     private static ThreadCreate threadCreate = ThreadCreateFactory.getThreadCreate();
     private AtomicBoolean runStop = new AtomicBoolean(false);
     private AtomicBoolean runReturn = new AtomicBoolean(false);
@@ -31,13 +28,7 @@ public class ArrayPerformance extends PVRecord implements RunnableReady {
     {
         PVStructure pvs = StandardPVFieldFactory.getStandardPVField().scalarArray(
             ScalarType.pvLong,"value,timeStamp.alarm");
-        ArrayPerformance arrayPerformace =  new ArrayPerformance(recordName,pvs,size,delay);
-        boolean result = master.addRecord(arrayPerformace);
-        if(!result) {
-            throw new RuntimeException("addRecord failed");
-        }
-        arrayPerformace.startThread();
-        return arrayPerformace;
+        return  new ArrayPerformance(recordName,pvs,size,delay);
     }
 
     private ArrayPerformance(String recordName,PVStructure pvStructure,int size,double delay) {

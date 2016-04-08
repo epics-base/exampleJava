@@ -9,12 +9,6 @@ These are left almost unchanged since release 4.5.
 
 ## exampleClient Known Problems
 
-### BaseV3Channel.java
-
-**Good News** Matej fixed this problem
-
-A null pointer exception is thrown when a second attempt is made to connect to the same channel.
-
 
 ### examplePvaClientMultiDouble and examplePvaClientNTMulti
 
@@ -50,26 +44,18 @@ The Java implementation only shows fields that have actually changed.
 1) The CPP version allows a client to issueConnect and waitConnect.
 The Java version does not support this.
 
-2) The Java implemantation does not terminate.ex
+2) The Java implemantation does not terminate.
 
 
 ### examplePvaClientNTMulti
 
 When the Java implementation uses provider **ca** numeric arrays are filled out with 0s.
 
-## exampleLink Known Problems
-
-### ExampleLinkMain
-
-Does not terminate.
-
 ## helloRPC Known Problems
 
 ### HelloService
 
 Does not terminate on either Java or C++.
-
-
 
 ## powerSupply Known Problems
 
