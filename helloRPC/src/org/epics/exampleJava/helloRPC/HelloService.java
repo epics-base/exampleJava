@@ -77,17 +77,18 @@ public class HelloService
 	/**
 	 * Main is the entry point of the HelloService server side executable. 
 	 * @param args None
-	 * @throws PVAException
 	 */
-	public static void main(String[] args) throws PVAException
+	public static void main(String[] args) 
 	{
 		RPCServer server = new RPCServer();
-
 		// register our service as "helloService"
 		server.registerService("helloService", new HelloServiceImpl());
-
 		server.printInfo();
-		server.run(0);
+		try {
+			server.run(0);
+		} catch (PVAException e) {
+			System.err.println(e.getMessage());
+			System.exit(1);
+		}
 	}
-
 }
