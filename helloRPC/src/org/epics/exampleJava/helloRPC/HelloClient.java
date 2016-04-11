@@ -50,7 +50,7 @@ public class HelloClient
 	 * 
 	 * @param args - the name of person to greet
 	 */
-	public static void main(String[] args) throws Throwable
+	public static void main(String[] args) 
 	{
 		// Start the pvAccess client side.
 		org.epics.pvaccess.ClientFactory.start();
