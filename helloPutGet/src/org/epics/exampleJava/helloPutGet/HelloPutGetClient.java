@@ -22,9 +22,9 @@ public class HelloPutGetClient
 {
     public static void main( String[] args )
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva");
         try {
-        	PvaClientChannel channel = pva.channel("helloPutGet");
+            PvaClientChannel channel = pva.channel("helloPutGet");
             PvaClientPutGet putGet = channel.createPutGet();
             putGet.connect();
             PvaClientPutData putData = putGet.getPutData();

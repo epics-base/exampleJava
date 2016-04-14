@@ -22,12 +22,12 @@ public class ArrayPerformance extends PVRecord implements RunnableReady {
 
     private int size;
     private long delayMilli;
-    
+
 
     public static ArrayPerformance  create(String recordName,int size,double delay)
     {
         PVStructure pvs = StandardPVFieldFactory.getStandardPVField().scalarArray(
-            ScalarType.pvLong,"value,timeStamp.alarm");
+                ScalarType.pvLong,"value,timeStamp.alarm");
         return  new ArrayPerformance(recordName,pvs,size,delay);
     }
 
@@ -40,7 +40,7 @@ public class ArrayPerformance extends PVRecord implements RunnableReady {
 
     public void startThread()
     {
-        
+
         threadCreate.create("arrayPerformance",ThreadPriority.getJavaPriority(ThreadPriority.middle), this);
     }
 

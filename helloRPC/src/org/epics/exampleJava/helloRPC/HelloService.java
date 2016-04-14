@@ -31,64 +31,64 @@ import org.epics.pvdata.pv.Structure;
 public class HelloService
 {
 
-	// All EPICS V4 services return PVData objects (by definition). Create the
-	// factory object that will allow you to create the returned PVData object
-	// later.
-	//
-	private static final PVDataCreate pvDataCreate = 
-		PVDataFactory.getPVDataCreate();
-	private static final FieldCreate fieldCreate = 
-		FieldFactory.getFieldCreate();
+    // All EPICS V4 services return PVData objects (by definition). Create the
+    // factory object that will allow you to create the returned PVData object
+    // later.
+    //
+    private static final PVDataCreate pvDataCreate = 
+            PVDataFactory.getPVDataCreate();
+    private static final FieldCreate fieldCreate = 
+            FieldFactory.getFieldCreate();
 
-	// This service result structure type definition.
-	private final static Structure resultStructure = fieldCreate
-			.createStructure(
-					new String[] { "greeting" },
-					new Field[] { fieldCreate.createScalar(ScalarType.pvString) });
+    // This service result structure type definition.
+    private final static Structure resultStructure = fieldCreate
+            .createStructure(
+                    new String[] { "greeting" },
+                    new Field[] { fieldCreate.createScalar(ScalarType.pvString) });
 
-	/**
-	 * Implementation of RPC service.
-	 */
-	static class HelloServiceImpl implements RPCService
-	{
-		public PVStructure request(PVStructure args) throws RPCRequestException
-		{
-			// Extract the arguments. Just one in this case.
-			// Report an error by throwing a RPCRequestException.
-			PVString inputPersonNameField = args.getStringField("personsname");
-			if (inputPersonNameField == null)
-				throw new RPCRequestException(StatusType.ERROR,
-						"PVString field with name 'personsname' expected.");
+    /**
+     * Implementation of RPC service.
+     */
+    static class HelloServiceImpl implements RPCService
+    {
+        public PVStructure request(PVStructure args) throws RPCRequestException
+        {
+            // Extract the arguments. Just one in this case.
+            // Report an error by throwing a RPCRequestException.
+            PVString inputPersonNameField = args.getStringField("personsname");
+            if (inputPersonNameField == null)
+                throw new RPCRequestException(StatusType.ERROR,
+                        "PVString field with name 'personsname' expected.");
 
-			// Create the result structure of the data interface.
-			PVStructure result = pvDataCreate
-					.createPVStructure(resultStructure);
+            // Create the result structure of the data interface.
+            PVStructure result = pvDataCreate
+                    .createPVStructure(resultStructure);
 
-			// Extract from the constructed data interface the value of
-			// "greeting" field. The value we'll return, is "Hello" concatenated
-			// to the value of the input parameter called "personsname".
-			PVString greetingvalueField = result.getStringField("greeting");
-			greetingvalueField.put("Hello " + inputPersonNameField.get());
+            // Extract from the constructed data interface the value of
+            // "greeting" field. The value we'll return, is "Hello" concatenated
+            // to the value of the input parameter called "personsname".
+            PVString greetingvalueField = result.getStringField("greeting");
+            greetingvalueField.put("Hello " + inputPersonNameField.get());
 
-			return result;
-		}
-	}
+            return result;
+        }
+    }
 
-	/**
-	 * Main is the entry point of the HelloService server side executable. 
-	 * @param args None
-	 */
-	public static void main(String[] args) 
-	{
-		RPCServer server = new RPCServer();
-		// register our service as "helloService"
-		server.registerService("helloService", new HelloServiceImpl());
-		server.printInfo();
-		try {
-			server.run(0);
-		} catch (PVAException e) {
-			System.err.println(e.getMessage());
-			System.exit(1);
-		}
-	}
+    /**
+     * Main is the entry point of the HelloService server side executable. 
+     * @param args None
+     */
+    public static void main(String[] args) 
+    {
+        RPCServer server = new RPCServer();
+        // register our service as "helloService"
+        server.registerService("helloService", new HelloServiceImpl());
+        server.printInfo();
+        try {
+            server.run(0);
+        } catch (PVAException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+    }
 }

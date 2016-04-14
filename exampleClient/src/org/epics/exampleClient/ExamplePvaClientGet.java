@@ -90,7 +90,7 @@ public class ExamplePvaClientGet
     public static void main( String[] args )
     {
         System.out.println("_____examplePvaClientGet starting_______");
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva ca");
         try {
             exampleDouble(pva,"PVRdouble","pva");
             exampleDoubleArray(pva,"PVRdoubleArray","pva");

@@ -20,7 +20,7 @@ public class PowerSupplyMonitor {
 
     public static void main(String[] args)
     {   
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva");
         try {
             PvaClientMonitor monitor = pva.channel("powerSupply").monitor("");
             while(true) {

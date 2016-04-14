@@ -11,7 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.epics.pvaccess.PVAConstants;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.server.impl.remote.ServerContextImpl;
@@ -35,7 +34,7 @@ public class PowerSupplyMain {
             String recordName = "powerSupply";
             PVRecord pvRecord = PowerSupplyRecord.create(recordName);
             master.addRecord(pvRecord);
-            ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
+            ServerContextImpl context = ServerContextImpl.startPVAServer(channelProvider.getProviderName(),0,true,null);
             while(true) {
                 System.out.print("waiting for exit: ");
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

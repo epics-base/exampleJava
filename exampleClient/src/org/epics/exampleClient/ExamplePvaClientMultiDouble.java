@@ -78,7 +78,7 @@ public class ExamplePvaClientMultiDouble
     public static void main( String[] args )
     {
         System.out.println("_____examplePvaClientMultiDouble starting_______");
-        PvaClient pva = PvaClient.get();
+        PvaClient pva = PvaClient.get("pva ca");
         try {
             int num = 5;
             String[] names = new String[num];
