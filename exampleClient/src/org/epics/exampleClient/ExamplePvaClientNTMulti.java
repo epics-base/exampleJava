@@ -153,7 +153,7 @@ public class ExamplePvaClientNTMulti
     public static void main( String[] args )
     {
         System.out.println( "_____examplePvaClientNTMulti starting_______");  
-        PvaClient pva = PvaClient.get();
+        PvaClient pva = PvaClient.get("pva ca");
         try {
             int num = 4;
             String[] channelNames = new String[num];

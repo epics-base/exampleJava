@@ -31,7 +31,7 @@ public class ExamplePvaClientProcess
 
     public static void main( String[] args )
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva");
         try {
             exampleProcess(pva);
         }

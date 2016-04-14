@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.epics.pvaClient.PvaClient;
-import org.epics.pvaccess.PVAConstants;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.server.impl.remote.ServerContextImpl;
@@ -44,37 +43,37 @@ public class ArrayPerformanceMain {
         System.out.print(providerName + " ");
         System.out.println(nMonitor);
         try {
-        	PVDatabase master = PVDatabaseFactory.getMaster();
-        	ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
-        	ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
-        	PvaClient pva= PvaClient.get();
-        	ArrayPerformance arrayPerformance = ArrayPerformance.create(recordName,size,delay);
-        	master.addRecord(arrayPerformance);
-        	arrayPerformance.startThread();
-        	LongArrayMonitor[] longArrayMonitor = new LongArrayMonitor[nMonitor];
-        	for(int i=0; i<nMonitor; ++i) longArrayMonitor[i]= new LongArrayMonitor(providerName,recordName);
-        	while(true) {
-        		System.out.print("waiting for exit: ");
-        		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        		String value = null;
-        		try {
-        			value = br.readLine();
-        		} catch (IOException ioe) {
-        			System.out.println("IO error trying to read input!");
-        		}
-        		if(value.equals("exit")) break;
-        	}
-        	for(int i=0; i<nMonitor; ++i) {
+            PVDatabase master = PVDatabaseFactory.getMaster();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ServerContextImpl context = ServerContextImpl.startPVAServer("local",0,true,null);
+            PvaClient pva= PvaClient.get(providerName);
+            ArrayPerformance arrayPerformance = ArrayPerformance.create(recordName,size,delay);
+            master.addRecord(arrayPerformance);
+            arrayPerformance.startThread();
+            LongArrayMonitor[] longArrayMonitor = new LongArrayMonitor[nMonitor];
+            for(int i=0; i<nMonitor; ++i) longArrayMonitor[i]= new LongArrayMonitor(providerName,recordName);
+            while(true) {
+                System.out.print("waiting for exit: ");
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                String value = null;
+                try {
+                    value = br.readLine();
+                } catch (IOException ioe) {
+                    System.out.println("IO error trying to read input!");
+                }
+                if(value.equals("exit")) break;
+            }
+            for(int i=0; i<nMonitor; ++i) {
                 longArrayMonitor[i].stop();
             }
             arrayPerformance.stop();
-        	context.destroy();
-        	master.destroy();
-        	channelProvider.destroy();
-        	pva.destroy();
+            context.destroy();
+            master.destroy();
+            channelProvider.destroy();
+            pva.destroy();
         } catch (PVAException e) {
-        	System.out.println("exception " + e.getMessage());
-        	System.exit(1);
+            System.out.println("exception " + e.getMessage());
+            System.exit(1);
         }
         System.out.println("arrayPerformance exiting");
     }

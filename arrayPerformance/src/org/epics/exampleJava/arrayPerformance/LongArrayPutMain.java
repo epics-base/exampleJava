@@ -14,7 +14,7 @@ public class LongArrayPutMain {
         double delayTime = 1.0;
         if(argc==1 && args[0].endsWith("-help")) {
             System.out.println("channelName arraySize iterBetweenCreateChannel "
-                 + "iterBetweenCreateChannelPut delayTime");
+                    + "iterBetweenCreateChannelPut delayTime");
             System.out.println("default");
             System.out.print(channelName);
             System.out.print(" " + arraySize);
@@ -30,12 +30,12 @@ public class LongArrayPutMain {
         if(argc>4) delayTime = Double.parseDouble(args[4]);
         try {
             LongArrayPut longArrayPut = new LongArrayPut(
-                "pva",
-                channelName,
-                arraySize,
-                iterBetweenCreateChannel,
-                iterBetweenCreateChannelPut,
-                delayTime);
+                    "pva",
+                    channelName,
+                    arraySize,
+                    iterBetweenCreateChannel,
+                    iterBetweenCreateChannelPut,
+                    delayTime);
             while(true) {
                 Console cnsl = null;
                 try{

@@ -45,7 +45,7 @@ public class HelloWorldPutGet
 
     public static void main( String[] args )
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva");
         try {
             exampleSimple(pva);
         }

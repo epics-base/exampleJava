@@ -26,7 +26,7 @@ public class LongArrayGetMain {
         if(argc>3) delayTime = Double.parseDouble(args[3]);
         try {
             LongArrayGet longArrayGet = new LongArrayGet(
-                "pva",channelName,iterBetweenCreateChannel,iterBetweenCreateChannelGet,delayTime);
+                    "pva",channelName,iterBetweenCreateChannel,iterBetweenCreateChannelGet,delayTime);
             while(true) {
                 Console cnsl = null;
                 try{

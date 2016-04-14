@@ -18,7 +18,7 @@ import org.epics.pvdata.pv.PVStructure;
 
 public class LongArrayPut implements RunnableReady {
 
-    
+
     private static ThreadCreate threadCreate = ThreadCreateFactory.getThreadCreate();
     private String providerName;
     private String channelName;
@@ -28,12 +28,12 @@ public class LongArrayPut implements RunnableReady {
     private double delayTime;
     private AtomicBoolean runStop = new AtomicBoolean(false);
     private AtomicBoolean runReturn = new AtomicBoolean(false);
-    
+
 
     public LongArrayPut(
             String providerName, String channelName,
-         int arraySize,
-         int iterBetweenCreateChannel,int iterBetweenCreateChannelPut,double delayTime)
+            int arraySize,
+            int iterBetweenCreateChannel,int iterBetweenCreateChannelPut,double delayTime)
     {
         this.providerName = providerName;
         this.channelName = channelName;
@@ -42,7 +42,7 @@ public class LongArrayPut implements RunnableReady {
         this.iterBetweenCreateChannelPut = iterBetweenCreateChannelPut;
         this.delayTime = delayTime;
         threadCreate.create(
-            "longArrayPut",ThreadPriority.getJavaPriority(ThreadPriority.middle), this);
+                "longArrayPut",ThreadPriority.getJavaPriority(ThreadPriority.middle), this);
     }
 
     public void stop()
@@ -60,7 +60,7 @@ public class LongArrayPut implements RunnableReady {
 
     public void run(ThreadReady threadReady)
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get(providerName);
         PvaClientChannel pvaChannel = pva.channel(channelName,providerName,5.0);
         PvaClientPut pvaPut = pvaChannel.createPut("value");
         TimeStamp timeStamp = TimeStampFactory.create();
@@ -125,9 +125,9 @@ public class LongArrayPut implements RunnableReady {
                 if(numChannelPut>=iterBetweenCreateChannelPut) createPut = true;
             }
             if(createPut) {
-                 pvaPut.destroy();
-                 pvaPut = pvaChannel.createPut("value,timeStamp,alarm");
-                 numChannelPut = 0;
+                pvaPut.destroy();
+                pvaPut = pvaChannel.createPut("value,timeStamp,alarm");
+                numChannelPut = 0;
             }
             ++numChannelCreate;
             if(iterBetweenCreateChannel!=0) {

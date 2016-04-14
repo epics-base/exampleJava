@@ -28,7 +28,7 @@ public class ExampleHelloRecord extends PVRecord {
     private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
     private static final PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
     private static final StandardField standardField = StandardFieldFactory.getStandardField();
-    
+
     private PVString arg;
     private PVString result;
 
@@ -36,18 +36,18 @@ public class ExampleHelloRecord extends PVRecord {
     {
         FieldBuilder fb = fieldCreate.createFieldBuilder();
         Structure structure = 
-            fb.addNestedStructure("argument").
+                fb.addNestedStructure("argument").
                 add("value",ScalarType.pvString).
                 endNested().
-            addNestedStructure("result").
+                addNestedStructure("result").
                 add("value",ScalarType.pvString).
                 endNested().
-            add("timeStamp",standardField.timeStamp()).
-            createStructure();
-       PVRecord pvRecord = new ExampleHelloRecord(recordName,pvDataCreate.createPVStructure(structure));
-       PVDatabase master = PVDatabaseFactory.getMaster();
-       master.addRecord(pvRecord);
-       return pvRecord;
+                add("timeStamp",standardField.timeStamp()).
+                createStructure();
+        PVRecord pvRecord = new ExampleHelloRecord(recordName,pvDataCreate.createPVStructure(structure));
+        PVDatabase master = PVDatabaseFactory.getMaster();
+        master.addRecord(pvRecord);
+        return pvRecord;
     }
     public ExampleHelloRecord(String recordName,PVStructure pvStructure) {
         super(recordName,pvStructure);
@@ -55,9 +55,9 @@ public class ExampleHelloRecord extends PVRecord {
         if(arg==null) throw new IllegalArgumentException("arg not found");
         result = pvStructure.getSubField(PVString.class, "result.value");
         if(result==null) throw new IllegalArgumentException("result not found");
-        
+
     }
-    
+
     public void process()
     {
         int level = getTraceLevel();

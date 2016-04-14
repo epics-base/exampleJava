@@ -21,16 +21,16 @@ public class ExampleLinkClient
     public static void main( String[] args )
     {
         int argc = args.length;
-		String provider = "pva";
-		if(argc==1 && args[0].endsWith("-help")) {
-			System.out.println("provider");
-			System.out.println("default");
-			System.out.println(provider);
-			System.exit(0);
-		}
-		System.out.println("_____exampleLinkClient starting_______");
-	    if(argc>0) provider = args[0];
-        PvaClient pva= PvaClient.get();
+        String provider = "pva";
+        if(argc==1 && args[0].endsWith("-help")) {
+            System.out.println("provider");
+            System.out.println("default");
+            System.out.println(provider);
+            System.exit(0);
+        }
+        System.out.println("_____exampleLinkClient starting_______");
+        if(argc>0) provider = args[0];
+        PvaClient pva= PvaClient.get(provider);
         try {
             PvaClientPut put = pva.channel("doubleArray",provider,5.0).put();
             PvaClientPutData putData = put.getData();

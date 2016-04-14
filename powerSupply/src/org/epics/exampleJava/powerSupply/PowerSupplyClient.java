@@ -21,21 +21,21 @@ public class PowerSupplyClient
 {
     public static void main( String[] args )
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva");
         try {
-        	PvaClientChannel pvaChannel = pva.channel("powerSupply");
-        	PvaClientPutGet putGet =pvaChannel.createPutGet(
-        	    "putField(power.value,voltage.value)getField()");
-        	putGet.connect();
-        	PvaClientPutData putData = putGet.getPutData();
-        	PvaClientGetData getData = putGet.getGetData();
-        	PVStructure pvStructure = putData.getPVStructure();
-        	PVDouble putPower = pvStructure.getSubField(PVDouble.class,"power.value");
-        	PVDouble putVoltage = pvStructure.getSubField(PVDouble.class,"voltage.value");
-        	putPower.put(5.0);
+            PvaClientChannel pvaChannel = pva.channel("powerSupply");
+            PvaClientPutGet putGet =pvaChannel.createPutGet(
+                    "putField(power.value,voltage.value)getField()");
+            putGet.connect();
+            PvaClientPutData putData = putGet.getPutData();
+            PvaClientGetData getData = putGet.getGetData();
+            PVStructure pvStructure = putData.getPVStructure();
+            PVDouble putPower = pvStructure.getSubField(PVDouble.class,"power.value");
+            PVDouble putVoltage = pvStructure.getSubField(PVDouble.class,"voltage.value");
+            putPower.put(5.0);
             putVoltage.put(5.0);
             putGet.putGet();
-            
+
             pvStructure = getData.getPVStructure();
             PVDouble getPower = pvStructure.getSubField(PVDouble.class,"power.value");
             PVDouble getVoltage = pvStructure.getSubField(PVDouble.class,"voltage.value");
@@ -46,7 +46,7 @@ public class PowerSupplyClient
 
             putPower.put(10.0);
             putGet.putGet();
-            
+
             pvStructure = getData.getPVStructure();
             getPower = pvStructure.getSubField(PVDouble.class,"power.value");
             getVoltage = pvStructure.getSubField(PVDouble.class,"voltage.value");

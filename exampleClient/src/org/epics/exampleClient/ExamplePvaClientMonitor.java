@@ -46,7 +46,7 @@ public class ExamplePvaClientMonitor
     public static void main( String[] args )
     {
         System.out.println("_____examplePvaClientMonitor starting_______");
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get("pva ca");
         try {
             exampleMonitor(pva,"PVRdouble","pva");
             PvaClientChannel pvaChannel = pva.createChannel("DBRdouble00","ca");

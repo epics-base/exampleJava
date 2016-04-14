@@ -57,49 +57,49 @@ public class ExampleRPCRecord extends PVRecord {
         private ExampleRPCRecord pvRecord;
 
         RPCServiceImpl(ExampleRPCRecord record) {
-                pvRecord = record;
+            pvRecord = record;
         }
 
-	    public PVStructure request(PVStructure args) throws RPCRequestException
+        public PVStructure request(PVStructure args) throws RPCRequestException
         {
             boolean haveControl = pvRecord.takeControl();
             if (!haveControl)
                 throw new RPCRequestException(StatusType.ERROR,
-                "Device busy");
+                        "Device busy");
 
             PVStructureArray valueField = args.getSubField(PVStructureArray.class,
-                  "value");
+                    "value");
             if (valueField == null)
                 throw new RPCRequestException(StatusType.ERROR,
-                    "No structure array value field");
+                        "No structure array value field");
 
             Structure valueFieldStructure = valueField.
-                getStructureArray().getStructure();
+                    getStructureArray().getStructure();
 
             Scalar xField = valueFieldStructure.getField(Scalar.class, "x");
             if (xField == null || xField.getScalarType() != ScalarType.pvDouble)
-                 throw new RPCRequestException(StatusType.ERROR,
-                    "value field's structure has no double field x");
+                throw new RPCRequestException(StatusType.ERROR,
+                        "value field's structure has no double field x");
 
             Scalar yField = valueFieldStructure.getField(Scalar.class, "y");
             if (yField == null || yField.getScalarType() != ScalarType.pvDouble)
-                 throw new RPCRequestException(StatusType.ERROR,
-                    "value field's structure has no double field y");
+                throw new RPCRequestException(StatusType.ERROR,
+                        "value field's structure has no double field y");
 
             int length = valueField.getLength();
             StructureArrayData sad = new StructureArrayData();
             valueField.get(0, length, sad);
-        
+
             for (int i = 0; i < length; i++)
             {
-        	    double x = sad.data[i].getSubField(PVDouble.class, "x").get();
-        	    double y = sad.data[i].getSubField(PVDouble.class, "y").get();
+                double x = sad.data[i].getSubField(PVDouble.class, "x").get();
+                double y = sad.data[i].getSubField(PVDouble.class, "y").get();
                 pvRecord.put(x,y);
                 try {
                     Thread.sleep(1000);
                 } catch (Exception e) {
                     throw new RPCRequestException(StatusType.ERROR,
-                       "Error in thread sleeping");
+                            "Error in thread sleeping");
                 }
             }
 
@@ -111,15 +111,15 @@ public class ExampleRPCRecord extends PVRecord {
     static class RPCServiceAsyncImpl implements RPCServiceAsync {
 
         private ExampleRPCRecord pvRecord;
-	    private final static Status statusOk = StatusFactory.
-            getStatusCreate().getStatusOK();
+        private final static Status statusOk = StatusFactory.
+                getStatusCreate().getStatusOK();
 
         RPCServiceAsyncImpl(ExampleRPCRecord record) {
-                pvRecord = record;
+            pvRecord = record;
 
         }
 
-	    public void request(PVStructure args, RPCResponseCallback callback)
+        public void request(PVStructure args, RPCResponseCallback callback)
         {
             boolean haveControl = pvRecord.takeControl();
             if (!haveControl)
@@ -129,7 +129,7 @@ public class ExampleRPCRecord extends PVRecord {
             }
 
             PVStructureArray valueField = args.getSubField(PVStructureArray.class,
-                  "value");
+                    "value");
             if (valueField == null)
             {
                 handleError("No structure array value field", callback, haveControl);
@@ -137,7 +137,7 @@ public class ExampleRPCRecord extends PVRecord {
             }
 
             Structure valueFieldStructure = valueField.
-                getStructureArray().getStructure();
+                    getStructureArray().getStructure();
 
             Scalar xField = valueFieldStructure.getField(Scalar.class, "x");
             if (xField == null || xField.getScalarType() != ScalarType.pvDouble)
@@ -156,17 +156,17 @@ public class ExampleRPCRecord extends PVRecord {
             int length = valueField.getLength();
             StructureArrayData sad = new StructureArrayData();
             valueField.get(0, length, sad);
-        
+
             for (int i = 0; i < length; i++)
             {
-        	    double x = sad.data[i].getSubField(PVDouble.class, "x").get();
-        	    double y = sad.data[i].getSubField(PVDouble.class, "y").get();
+                double x = sad.data[i].getSubField(PVDouble.class, "x").get();
+                double y = sad.data[i].getSubField(PVDouble.class, "y").get();
                 pvRecord.put(x,y);
                 try {
                     Thread.sleep(1000);
                 } catch (Exception e) {
-                   handleError("Error in thread sleeping", callback, haveControl);
-                   return;
+                    handleError("Error in thread sleeping", callback, haveControl);
+                    return;
                 }
             }
 
@@ -179,7 +179,7 @@ public class ExampleRPCRecord extends PVRecord {
             if (haveControl)
                 pvRecord.releaseControl();
             Status status = StatusFactory.getStatusCreate().
-                createStatus(StatusType.ERROR, message, null);
+                    createStatus(StatusType.ERROR, message, null);
             callback.requestDone(status, null);
         }
     }
@@ -188,14 +188,14 @@ public class ExampleRPCRecord extends PVRecord {
     {
         FieldBuilder fb = fieldCreate.createFieldBuilder();
         Structure structure = fb.
-            add("x",ScalarType.pvDouble).
-            add("y",ScalarType.pvDouble).
-            add("timeStamp",standardField.timeStamp()).
-            createStructure();
-       ExampleRPCRecord pvRecord = new ExampleRPCRecord(recordName, pvDataCreate.createPVStructure(structure));
-       PVDatabase master = PVDatabaseFactory.getMaster();
-       master.addRecord(pvRecord);
-       return pvRecord;
+                add("x",ScalarType.pvDouble).
+                add("y",ScalarType.pvDouble).
+                add("timeStamp",standardField.timeStamp()).
+                createStructure();
+        ExampleRPCRecord pvRecord = new ExampleRPCRecord(recordName, pvDataCreate.createPVStructure(structure));
+        PVDatabase master = PVDatabaseFactory.getMaster();
+        master.addRecord(pvRecord);
+        return pvRecord;
     }
 
     public ExampleRPCRecord(String recordName, PVStructure pvStructure) {

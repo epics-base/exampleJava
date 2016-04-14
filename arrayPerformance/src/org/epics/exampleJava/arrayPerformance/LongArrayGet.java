@@ -19,7 +19,7 @@ import org.epics.pvdata.pv.PVStructure;
 
 public class LongArrayGet implements RunnableReady {
 
-    
+
     private static ThreadCreate threadCreate = ThreadCreateFactory.getThreadCreate();
     private String providerName;
     private String channelName;
@@ -28,14 +28,14 @@ public class LongArrayGet implements RunnableReady {
     private double delayTime;
     private AtomicBoolean runStop = new AtomicBoolean(false);
     private AtomicBoolean runReturn = new AtomicBoolean(false);
-   
+
 
     public LongArrayGet(
-         String providerName,
-         String channelName,
-         int iterBetweenCreateChannel,
-         int iterBetweenCreateChannelGet,
-         double delayTime)
+            String providerName,
+            String channelName,
+            int iterBetweenCreateChannel,
+            int iterBetweenCreateChannelGet,
+            double delayTime)
     {
         this.providerName = providerName;
         this.channelName = channelName;
@@ -45,7 +45,7 @@ public class LongArrayGet implements RunnableReady {
         threadCreate.create(
                 "longArrayGet",ThreadPriority.getJavaPriority(ThreadPriority.middle), this);
     }
-    
+
     public void stop()
     {
         if(!runStop.compareAndSet(false, true)) return;
@@ -61,7 +61,7 @@ public class LongArrayGet implements RunnableReady {
 
     public void run(ThreadReady threadReady)
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get(providerName);
         PvaClientChannel pvaChannel = pva.channel(channelName,providerName,5.0);
         PvaClientGet pvaGet = pvaChannel.createGet("value,alarm,timeStamp");
         TimeStamp timeStamp = TimeStampFactory.create();
@@ -128,9 +128,9 @@ public class LongArrayGet implements RunnableReady {
                 if(numChannelGet>=iterBetweenCreateChannelGet) createGet = true;
             }
             if(createGet) {
-                 numChannelGet = 0;
-                 pvaGet.destroy();
-                 pvaGet = pvaChannel.createGet("value,alarm,timeStamp");
+                numChannelGet = 0;
+                pvaGet.destroy();
+                pvaGet = pvaChannel.createGet("value,alarm,timeStamp");
             }
             ++numChannelCreate;
             if(iterBetweenCreateChannel!=0) {

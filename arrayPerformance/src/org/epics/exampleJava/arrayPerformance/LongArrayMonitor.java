@@ -18,7 +18,7 @@ import org.epics.pvdata.pv.PVStructure;
 
 public class LongArrayMonitor implements RunnableReady {
 
-    
+
     private static ThreadCreate threadCreate = ThreadCreateFactory.getThreadCreate();
     private AtomicBoolean runStop = new AtomicBoolean(false);
     private AtomicBoolean runReturn = new AtomicBoolean(false);
@@ -31,7 +31,7 @@ public class LongArrayMonitor implements RunnableReady {
         this.channelName = channelName;
         threadCreate.create("longArrayMonitor",ThreadPriority.getJavaPriority(ThreadPriority.middle), this);
     }
-     
+
     public void stop()
     {
         if(!runStop.compareAndSet(false, true)) return;
@@ -44,10 +44,10 @@ public class LongArrayMonitor implements RunnableReady {
             }
         }
     }
-    
+
     public void run(ThreadReady threadReady)
     {
-        PvaClient pva= PvaClient.get();
+        PvaClient pva= PvaClient.get(providerName);
         PvaClientMonitor monitor = pva.channel(channelName,providerName,5.0).monitor("value,timeStamp,alarm");
         TimeStamp timeStamp = TimeStampFactory.create();
         TimeStamp timeStampLast = TimeStampFactory.create();
