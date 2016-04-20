@@ -53,7 +53,9 @@ implements  PvaClientMonitorRequester
 
     @Override
     public void event(PvaClientMonitor monitor) {
+System.out.println("ExampleLinkRecord::event");
         while(monitor.poll()) {
+System.out.println("ExampleLinkRecord::event after poll");
             PVStructure pvStructure = monitor.getData().getPVStructure();
             PVDoubleArray pvDoubleArray = pvStructure.getSubField(PVDoubleArray.class,"value");
             if(pvDoubleArray==null) throw new RuntimeException("value is not a double array");
@@ -67,6 +69,7 @@ implements  PvaClientMonitorRequester
             } finally {
                 unlock();
             }
+System.out.println("ExampleLinkRecord::event after poll and calling monitor->releaseEvent");
             monitor.releaseEvent();
         } 
     }
