@@ -66,8 +66,7 @@ public class ExampleLinkMain {
             }
             ServerContextImpl context = ServerContextImpl.startPVAServer("local",0,true,System.out);
             PvaClient pva= PvaClient.get(provider);
-            PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);
-pvRecord.setTraceLevel(3);            
+            PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);           
             master.addRecord(pvRecord);
             while(true) {
                 System.out.print("waiting for exit: ");
