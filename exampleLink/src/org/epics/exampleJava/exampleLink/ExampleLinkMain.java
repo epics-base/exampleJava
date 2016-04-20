@@ -61,11 +61,12 @@ public class ExampleLinkMain {
                         addAlarm().
                         addTimeStamp().
                         createPVStructure();
-                master.addRecord(new PVRecord(linkedRecordName,pvStructure));
+                PVRecord pvRecord = new PVRecord(linkedRecordName,pvStructure);
+                master.addRecord(pvRecord);
             }
             ServerContextImpl context = ServerContextImpl.startPVAServer("local",0,true,System.out);
             PvaClient pva= PvaClient.get(provider);
-            PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);
+            PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);           
             master.addRecord(pvRecord);
             while(true) {
                 System.out.print("waiting for exit: ");

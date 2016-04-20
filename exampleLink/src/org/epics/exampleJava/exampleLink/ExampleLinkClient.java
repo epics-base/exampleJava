@@ -30,7 +30,9 @@ public class ExampleLinkClient
         }
         System.out.println("_____exampleLinkClient starting_______");
         if(argc>0) provider = args[0];
-        PvaClient pva= PvaClient.get(provider);
+        String providers = "pva";
+        if(provider.equals("ca")) providers = "pva ca";
+        PvaClient pva= PvaClient.get(providers);
         try {
             PvaClientPut put = pva.channel("doubleArray",provider,5.0).put();
             PvaClientPutData putData = put.getData();

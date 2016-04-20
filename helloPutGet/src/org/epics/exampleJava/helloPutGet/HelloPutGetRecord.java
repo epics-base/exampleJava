@@ -31,14 +31,14 @@ public class HelloPutGetRecord extends PVRecord
         FieldCreate fieldCreate = FieldFactory.getFieldCreate();
         PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
         Structure topStructure = fieldCreate.createFieldBuilder().
-                addNestedStructure("argument").
+            add("timeStamp",standardField.timeStamp()) .
+            addNestedStructure("argument").
                 add("value",ScalarType.pvString).
-                endNested().
-                addNestedStructure("result") .
+            endNested().
+            addNestedStructure("result") .
                 add("value",ScalarType.pvString) .
-                add("timeStamp",standardField.timeStamp()) .
-                endNested().
-                createStructure();
+            endNested().
+            createStructure();
         PVStructure pvStructure = pvDataCreate.createPVStructure(topStructure);
 
         HelloPutGetRecord pvRecord =
