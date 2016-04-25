@@ -1,29 +1,21 @@
 # Known Problems
 
-## helloRPC
+## exampleClient
 
-* This is left almost unchanged since release 4.5.
-* helloService does not terminate.
+### helloRPC
 
-## rdbService and serviceAPI
+helloWorldRPC does not terminate.
 
-These are left almost unchanged since release 4.5.
-
-**Greg:** Please look at these examples and decide what should be done.
-
-
-
-## examplePvaClientMultiDouble
+### examplePvaClientMultiDouble
 
 The C++ implementation allows a mixture of any numeric scaler.
 The Java version currently only supports double.
 
 ## helloRPC
 
-1) The CPP version allows a client to issueConnect and waitConnect.
-The Java version does not support this.
-
-2) The Java implemantation does not terminate.
+* This is left almost unchanged since release 4.5.
+* helloService does not terminate.
+* The CPP version allows a client to issueConnect and waitConnect.The Java version does not support this.
 
 
 ## Use of provider ca
@@ -37,6 +29,17 @@ The powerSupplyClient ends with setting voltage to 0.
 This causes the PVRecord to throw an exception, which pvAccess passes back to the client.
 All appears OK except that if another client has a monitor on the PVRecord,
 that client no longer gets an monitor updates.
+
+
+## rdbService and serviceAPI
+
+These are left almost unchanged since release 4.5.
+
+**Greg:** Please look at these examples and decide what should be done.
+
+
+
+
 
 
 

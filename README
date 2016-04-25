@@ -1,64 +1,9 @@
 GREG:
 
-1) Please move this info into the associated examples.
-2) Look at rdbService and serviceAP
-I left these almost untouched from release 4.5
-3) Look at KNOWNPROBLEMS.md
+1) I moved this info README.md
+2) helloWorld is renamed rdbService.
+3) serviceAPI has the same name.
+4) Look at KNOWNPROBLEMS.md
 
-README of exampleJava
-
-ExampleJava is a small collection of examples of EPICS V4 servers and clients.
-
-Presently, exampleJava contains examples only of RPC style middleware - making
-a request with arguments to a server over pvAccess, and getting a synchronous reply.
-
-There are 2 main examples under src/services/
-
-
-1. helloWorld
-
-Start with its HELLOWORLD_README.txt. 
-
-helloWorld is the classic hello world idea, implemented as a server and a client.
-The client sends an argument "you name" to the server, which replies just 
-saying "hello <that name>". The server is built on top of the RPCSever framework 
-in pvAccessJava. 
-
-
-2. rdbService
-
-Start with its RDBSERVICE_README.txt. 
-
-The rdbService example is a complete functional server for accessing SQL databases 
-such Oracle via an EPICS V4 server, and returning the resulting table ResultSet 
-data back to an EPICS V4 client. rdbService illustrates a number of facets of EPICS V4's,
-use for writing high performance synchronous servers, plus some other stuff.
-a. channelRPC functionality of EPICSV4
-b. use of JDBC for accessing Oracle to execute a SQL query within a pattern that retries 
-   the query and can rebuild the connection if any query fails - for high reliability and 
-   to make sure if the database back end ever cycles, the EPICS v4 server need not be restarted.
-c. Passing string messages back to the client asynchronously - while the server is still
-   processing the query - in the event of the server detecting an 
-   error or other detecting some other diagnostic 
-d. Putting complex data into an EPICS V4 pvStructure (the basic complex data object 
-   of pvData), ready for returning results back to the EPICS V4 client. 
-   PvStructures are the basic mechanism for returning "structured" data between 
-   EPICS V4 clients and servers
-e. Client side calling the server, and getting the results. 
-f. Unpacking complex data out of a pvStructure
-g. Illustration of the idea of using the NTTable EPICS V4 "normative type" (though the 
-   definition of an NTTable is likely to change soon)
-h. Helpers for transformation of array pvData to Java Vectors
-i. Formatting pvStructure encoded data for printing.
-j. Use of the NTURI normative type, the EPICS V4 standard for passing requests for 
-   data and arguments.
-
- 
-src/illustrations/
-
-The "serviceapi" package in illustrations is composed of a single class server and a single class
-client, and is intended to illustrate the principles of RPC comms in EPICS V4. It shows
-how one defines and populates the pvStructure conforming to the NTURI Normative Type, for making 
-an RPC query to a pvAccess server, and it shows how the server defines and populates a table of data 
-conforming to the NTTable Normative Type for encoding the reply. 
+Other than package names, I left these almost untouched from release 4.5
 

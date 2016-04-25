@@ -71,7 +71,7 @@ mrk> ./exampleLinkClient
     <dd>
     If the other PVRecord is accessed via the master PVDatabase then
     threading issues are up to the implementation.
-    For now this method will not be discussed.</dd>
+    </dd>
   <dt>Access via channelProvider pva or ca</dt>
     <dd>
       If  provider  <b>pva</b> or <b>ca</b> is used then locking is handled by pvAccess.</dd>
@@ -112,8 +112,9 @@ i. e. a main program, or can be part of a V3IOC.</p>
 ...
     PVDatabase master = PVDatabaseFactory.getMaster();
     ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+    PvaClient pva= PvaClient.get("providerList");  // only needed if records access other records via pva or ca
     ServerContextImpl context = ServerContextImpl.startPVAServer(PVAConstants.PVA_ALL_PROVIDERS,0,true,null);
-    PvaClient pva= PvaClient.get();  // only needed if records access other records via pva or ca
+    
 ... 
     master.addRecord(...
 ...
