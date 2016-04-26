@@ -26,7 +26,7 @@
 
 <div class="head">
 <h1>EPICS exampleJava</h1>
-<h2 class="nocount">Release 4.1 - 2016.03.11</h2>
+<h2 class="nocount">Release 4.1 - 2016.04.22</h2>
 
 <h2 class="nocount">Abstract</h2>
 <p>
@@ -60,15 +60,27 @@ Each example can be used as a template for building other applications:
 <ul>
   <li>Choose an example that is similar to the desired application.</li>
   <li>Copy the complete example to where the desired application should reside.</li>
+  <li>Edit the pom.xml file.</li>
   <li>Edit the new application</li>
 </ul>
 
 <h3>Building via exampleJava</h3>
-<p><b>TBD</b> must have standard parent pom</p>
+<p>Just type:</p>
+<pre>
+mvn package
+</pre>
+
+<p><b>Future possible change:</b>
+Currently directory <b>exampleJava</b> has a parent pom for all of the applications and
+each example uses this parent pom.<br />
+But it may be better to have a parent pom that can be used by any EPICS V4 Java module.
+</p>
 
 <h3>Building An Individual Example</h3>
-
-<p><b>TBD</b> must have standard parent pom</p>
+<p>Just type:</p>
+<pre>
+mvn package
+</pre>
 <h2>Brief summary of examples</h2>
 <h3>database</h3>
 <p>
@@ -89,21 +101,19 @@ mrk&gt; ./exampleDatabase
 </pre>
 <h3>helloPutGet</h3>
 <p>
-Implements a PVRecord that is an example of a PVRecord intended to ba accessed via channelPutGet.
+Implements a PVRecord that is an example of a PVRecord intended to be accessed via channelPutGet.
 It is a simple HelloWorld example.
 </p>
 <h3>helloRPC</h3>
-<p>
-This implements HelloWorld that is accessed via channelRPC.
-</p>
-<h3>pvDatabaseRPC</h3>
-<p>
-This is an example service that is accessed via PvAClientChannel::createChannelRPC.
-</p>
+<p>A very simple example of an EPICS V4 RPC service: This implements a
+"Hello World" example of a service that is accessed via Channel RPC.</p>
+<p>This is a starting point for writing an RPC service without using <strong>pvDatabaseJava</strong>.</p>
+<p>But note that example <strong>database</strong> has a similar example implemented via <strong>pvDatabaseJava</strong>, which allows clients to monitor the result of each request.</p>
+
 
 <h3>exampleLink</h3>
 <p>
-This implements a V3 IOC that has a PVRecord doubleArray and a PVRecord exampleLink that monitors changes to doubleArray. PVRecord exampleLink uses pvAccess client code to monitor for changes in doubleArray. It can use either provider local or pva to connect to doubleArray.
+This implements a V3 IOC that has a PVRecord doubleArray and a PVRecord exampleLink that monitors changes to doubleArray. PVRecord exampleLink uses pvAccess client code to monitor for changes in doubleArray. It can use either provider local, pva, or ca to connect to doubleArray.
 </p>
 
 <h3>powerSupply</h3>
@@ -115,7 +125,20 @@ It simulates a power supply.
 The example also has an example pvaClient for accessing the PVRecord.
 </p>
 
-
+<h3>pvDatabaseRPC</h3>
+<p>
+An example of a pvDatabase PVRecord which also supports RPC services.
+</p>
+<p>
+The record represents a 2-D position, but also provides an RPC service
+which moves the position through a sequence of points before returning.
+A channel to the record supports the usual operations (such as get, put and
+monitor) but also supports Channel RPC, i.e. the RPC service has the same 
+channel name as the position PV.
+</p>
+<p>
+A client ("move") for calling the service is supplied.
+</p>
 
 <h3>arrayPerformance</h3>
 <p>
@@ -129,13 +152,49 @@ It has a process method with code that causes the array to be updated at selecta
 It also has pvaClient examples that can get, put, and monitor the long array record.
 </p>
 
-<h3>rdbService</h3>
-
-<p><b>Greg</b> please describe.</p>
-
 <h3>serviceAPI</h3>
+<p>Start with its RDBSERVICE_README.txt. </p>
+<p>The rdbService example is a complete functional server for accessing SQL databases 
+such Oracle via an EPICS V4 server, and returning the resulting table ResultSet 
+data back to an EPICS V4 client. rdbService illustrates a number of facets of EPICS V4's,
+use for writing high performance synchronous servers, plus some other stuff:</p>
+<ol>
+ <li>channelRPC functionality of EPICSV4</li>
+ <li>use of JDBC for accessing Oracle to execute a SQL query within a pattern that retries 
+  the query and can rebuild the connection if any query fails - for high reliability and 
+  to make sure if the database back end ever cycles, the EPICS v4 server need not be restarted.</li>
+  <li>Passing string messages back to the client asynchronously - while the server is still
+processing the query - in the event of the server detecting an 
+error or other detecting some other diagnostic.</li>
+  <li>Putting complex data into an EPICS V4 pvStructure (the basic complex data object 
+of pvData), ready for returning results back to the EPICS V4 client. 
+PvStructures are the basic mechanism for returning "structured" data between 
+EPICS V4 clients and servers.</li>
+  <li>Client side calling the server, and getting the results. </li>
+  <li>Unpacking complex data out of a pvStructure</li>
+   <li>Illustration of the idea of using the NTTable EPICS V4 "normative type" (though the 
+definition of an NTTable is likely to change soon)</li>
+  <li>Helpers for transformation of array pvData to Java Vectors</li>
+   <li>Formatting pvStructure encoded data for printing.</li>
+   <li>Use of the NTURI normative type, the EPICS V4 standard for passing requests for 
+data and arguments.</li>
+</ol>
+<p>The "serviceapi" package in <strong>src/org/epics/serviceAPI</strong> is composed of a single class server and a single class
+client, and is intended to illustrate the principles of RPC comms in EPICS V4. It shows
+how one defines and populates the pvStructure conforming to the NTURI Normative Type, for making 
+an RPC query to a pvAccess server, and it shows how the server defines and populates a table of data 
+conforming to the NTTable Normative Type for encoding the reply. </p>
 
-<p><b>Greg</b> please describe.</p>
+<h3>rdbService</h3>
+<p>
+Start with its RDBSERVICE_README.txt 
+</p>
+<p>
+rdbService is the classic hello world idea, implemented as a server and a client.
+The client sends an argument "your name" to the server, which replies just 
+saying "hello <b>that name</b>". The server is built on top of the RPCSever framework 
+in pvAccessJava. 
+</p>
 
 </div> <!-- class="contents" -->
 </body>

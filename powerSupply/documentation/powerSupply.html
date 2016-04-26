@@ -25,12 +25,12 @@
 <body>
 
 <div class="head">
-<h1>EPICS exampleJava/powerSupplyt</h1>
+<h1>EPICS exampleJava/powerSupply</h1>
 <h2 class="nocount">Release 4.1 - 2016.04.07</h2>
 
 <h2 class="nocount">Abstract</h2>
 <p>
-<b>powerSupplyt- NEEDS DOCUMENTATION</b>
+<b>powerSupply</b> is an example of creating a service that requires a somewhat complicated top level PVStructure. Look at the code for details.
 </p>
   <!-- last para of Abstract is boilerplate reference to EPICS -->
       <p>For more information about EPICS generally, please refer to the home page of the <a
@@ -48,8 +48,54 @@
 <div id="contents" class="contents">	  
 <hr />
 
+
 <h2>Overview</h2>
-<p><b>NOT YET WRITTEN</b></p>
+<p>This is an example of creating a service that requires a somewhat complicated
+           top level PVStructure.</p>
+
+<p>The example has a top level pvStructure:
+</p>
+<pre>
+structure
+    alarm_t alarm
+    time_t timeStamp
+    structure power
+        double value
+    structure voltage
+        double value
+    structure current
+        double value
+</pre>
+<p>It is designed to be accessed via a channelPutGet request.
+The client sets power.value and voltage.value
+When the record processes it computes current.value.
+In addition the timeStamp is set to the time when process is called.</p>
+<h2>Start Example</h2>
+<h3>Start Server</h3>
+<p>
+The example can be run on linux as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleCPP/powerSupply/shell
+mrk> ./powerSupplyMain
+</pre>
+<h3>Start Monitor</h3>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleCPP/powerSupply/shell
+mrk> ./powerSupplyMonitor
+</pre>
+<h3>Start Client</h3>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleCPP/powerSupply/shell
+mrk> ./powerSupplyClient
+</pre>
+<p><b>NOTE:</b> The client ends by requesting a voltage of 0.
+This results in the power supply record thowing an exception.
+This results in problems including the powerSupplyMonitor no longer updating.
+Needs investigation.
+</p>
 
 </div> <!-- class="contents" -->
 </body>

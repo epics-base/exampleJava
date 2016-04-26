@@ -30,7 +30,8 @@
 
 <h2 class="nocount">Abstract</h2>
 <p>
-<b>pvDatabaseRPCt- NEEDS DOCUMENTATION</b>
+<b>pvDatabaseRPC</b> provides an example of a pvDatabase PVRecord which also
+ support an  RPC service.
 </p>
   <!-- last para of Abstract is boilerplate reference to EPICS -->
       <p>For more information about EPICS generally, please refer to the home page of the <a
@@ -49,8 +50,36 @@
 <hr />
 
 <h2>Overview</h2>
-<p><b>NOT YET WRITTEN</b></p>
+<p>The example has a single PVRecord:</p>
+<pre>
+mydevice
+structure 
+    double x
+    double y
+    time_t timeStamp
+</pre>
 
+<p>The record has channelRPC support that implements a series of moves.
+Each move sets new values for x and y.
+A delay occures between each move.
+</p>
+<h2>Start Service</h2>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleJava/pvDatabaseRPC/shell
+mrk> ./exampleRPCMain
+</pre>
+<h2>Start Client</h2>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleJava/pvDatabaseRPC/shell
+mrk> ./move 10 20 30 40
+</pre>
+<p>This example will result in two moves.
+The first will move to x=10 and y=20.
+The second will move to x=30 and y=40.
+As many moves as desired can be specified but an even number of arguments must be given.
+</p>
 </div> <!-- class="contents" -->
 </body>
 </html>
