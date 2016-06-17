@@ -15,6 +15,15 @@
     <name>exampleJava</name>
     <url>https://github.com/epics-base/exampleJava</url>
 
+    <!-- Explicitly declare snapshot repository -->
+    <repositories>
+        <repository>
+            <id>ossrh</id>
+            <name>OSS Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>arrayPerformance</module>
         <module>database</module>
