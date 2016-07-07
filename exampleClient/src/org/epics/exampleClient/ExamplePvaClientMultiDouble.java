@@ -79,11 +79,12 @@ public class ExamplePvaClientMultiDouble
     {
         System.out.println("_____examplePvaClientMultiDouble starting_______");
         PvaClient pva = PvaClient.get("pva ca");
+//PvaClient.setDebug(true);
         try {
             int num = 5;
             String[] names = new String[num];
             names[0] = "PVRdouble01";
-            names[1] = "PVRdouble02";
+            names[1] = "PVRint";
             names[2] = "PVRdouble03";
             names[3] = "PVRdouble04";
             names[4] = "PVRdouble05";

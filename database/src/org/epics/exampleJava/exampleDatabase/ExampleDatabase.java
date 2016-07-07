@@ -34,7 +34,7 @@ import org.epics.pvdata.pv.StandardField;
 import org.epics.pvdata.pv.Structure;
 import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
-import org.epics.pvdatabase.PVRecord;
+import org.epics.pvdatabase.*;
 import org.epics.pvdatabase.pva.ChannelProviderLocalFactory;
 
 
@@ -171,11 +171,17 @@ public class ExampleDatabase {
         master.addRecord(pvRecord);
     }
 
+    /**
+     * @param args
+     */
+    /**
+     * @param args
+     */
     public static void main(String[] args)
     {
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
 
             createRecords(master,ScalarType.pvBoolean,"PVRboolean");
             createRecords(master,ScalarType.pvByte,"PVRbyte");
@@ -195,7 +201,10 @@ public class ExampleDatabase {
             createRecords(master,ScalarType.pvDouble,"PVRdouble03");
             createRecords(master,ScalarType.pvDouble,"PVRdouble04");
             createRecords(master,ScalarType.pvDouble,"PVRdouble05");
-
+            
+            master.addRecord(TraceRecord.create("PVRtraceRecord"));
+            master.addRecord(RemoveRecord.create("PVRremoveRecord"));
+            
             NTEnumBuilder ntEnumBuilder = NTEnum.createBuilder();
             PVStructure pvStructure = ntEnumBuilder.
                     addAlarm().addTimeStamp().
@@ -219,7 +228,7 @@ public class ExampleDatabase {
             pvRecord = ExampleHelloRecord.create(recordName);
             master.addRecord(pvRecord);
 
-            recordName = "helloRPC";
+            recordName = "PVRhelloRPC";
             pvRecord = ExampleHelloRPC.create(recordName);
             master.addRecord(pvRecord);
             ServerContextImpl context = ServerContextImpl.startPVAServer(channelProvider.getProviderName(),0,true,null); 

@@ -1,8 +1,9 @@
-# exampleJava RELEASE NOTES
+EPICS V4 release 4.6
+==========================
 
 
-**Greg** Do we want this?
-If so please revise.
+EPICS V4 release 4.5
+=========================
 
 ## Version 4.0
 

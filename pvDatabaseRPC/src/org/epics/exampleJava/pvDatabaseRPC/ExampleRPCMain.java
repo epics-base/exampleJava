@@ -13,7 +13,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.epics.pvaccess.PVAConstants;
 import org.epics.pvaccess.PVAException;
 import org.epics.pvaccess.client.ChannelProvider;
 import org.epics.pvaccess.server.impl.remote.ServerContextImpl;
@@ -62,7 +61,7 @@ public class ExampleRPCMain {
         }
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
             PVRecord pvRecord = ExampleRPCRecord.create(recordName);
             pvRecord.setTraceLevel(traceLevel);
             master.addRecord(pvRecord);

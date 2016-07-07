@@ -28,7 +28,7 @@ public class HelloWorldPutGet
     static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
     static final PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
 
-    static void exampleSimple(PvaClient pva)
+    static void example(PvaClient pva)
     {
         System.out.println("helloWorldPutGet");
         PvaClientChannel channel = pva.channel("PVRhelloPutGet");
@@ -47,7 +47,7 @@ public class HelloWorldPutGet
     {
         PvaClient pva= PvaClient.get("pva");
         try {
-            exampleSimple(pva);
+            example(pva);
         }
         catch (Exception e)
         {
