@@ -10,7 +10,6 @@
         <groupId>org.epics</groupId>
         <artifactId>epics-examples</artifactId>
         <version>4.2.0-SNAPSHOT</version>
-        <relativePath>..</relativePath>
     </parent>
 
     <artifactId>epics-examples-exampleClient</artifactId>
