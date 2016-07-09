@@ -30,7 +30,7 @@ public class HelloPutGetMain {
     {
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
             String recordName = "helloPutGet";
             PVRecord pvRecord = HelloPutGetRecord.create(recordName);
             master.addRecord(pvRecord);

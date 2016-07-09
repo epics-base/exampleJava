@@ -30,7 +30,7 @@ public class PowerSupplyMain {
     {
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
             String recordName = "powerSupply";
             PVRecord pvRecord = PowerSupplyRecord.create(recordName);
             master.addRecord(pvRecord);

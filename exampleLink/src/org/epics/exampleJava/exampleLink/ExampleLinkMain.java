@@ -53,7 +53,7 @@ public class ExampleLinkMain {
         }
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
             if(generateLinkedRecord) {
                 NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
                 PVStructure pvStructure = builder.

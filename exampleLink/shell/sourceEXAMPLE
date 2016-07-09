@@ -1,9 +1,4 @@
-if [ -v EPICSV4 ]
-then
-    echo "EPICSV4 already defined as " + $EPICSV4
-else
-    export EPICSV4=/home/epicsv4/master
-fi
+export EPICSV4=/home/epicsv4/master
 export PVDATA=${EPICSV4}/pvDataJava
 export PVACCESS=${EPICSV4}/pvAccessJava
 export PVACLIENT=${EPICSV4}/pvaClientJava

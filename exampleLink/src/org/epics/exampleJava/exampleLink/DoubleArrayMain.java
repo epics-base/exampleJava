@@ -44,7 +44,7 @@ public class DoubleArrayMain {
         if(argc>0) doubleArrayRecordName = args[0];
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
             NTScalarArrayBuilder builder = NTScalarArray.createBuilder();
             PVStructure pvStructure = builder.
                     value(ScalarType.pvDouble).

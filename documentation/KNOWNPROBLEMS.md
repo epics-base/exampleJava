@@ -6,11 +6,6 @@
 
 helloWorldRPC does not terminate.
 
-### examplePvaClientMultiDouble
-
-The C++ implementation allows a mixture of any numeric scaler.
-The Java version currently only supports double.
-
 ## helloRPC
 
 * This is left almost unchanged since release 4.5.
