@@ -6,7 +6,7 @@
 
 package org.epics.exampleJava.exampleLink;
 
-import org.epics.pvaClient.PvaClient;
+import org.epics.pvaClient.*;
 import org.epics.pvaClient.PvaClientChannel;
 import org.epics.pvaClient.PvaClientMonitor;
 import org.epics.pvaClient.PvaClientMonitorRequester;
@@ -19,22 +19,21 @@ import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.StandardPVField;
 import org.epics.pvdatabase.PVRecord;
 
-public class ExampleLinkRecord extends PVRecord
-implements  PvaClientMonitorRequester
+public class ExampleGetLinkRecord extends PVRecord
 {
     private static final StandardPVField standardPVField = StandardPVFieldFactory.getStandardPVField();
-    private static Convert convert = ConvertFactory.getConvert();
 
     private PVDoubleArray pvValue = null;
+    private PvaClientGet pvaClientGet = null;
 
     public static PVRecord create(PvaClient pva,String recordName,String provider,String channelName)
     {
         PVStructure pvStructure = standardPVField.scalarArray(ScalarType.pvDouble, "timeStamp");
-        ExampleLinkRecord pvRecord = new ExampleLinkRecord(recordName,pvStructure);
+        ExampleGetLinkRecord pvRecord = new ExampleGetLinkRecord(recordName,pvStructure);
         if(!pvRecord.init(pva,channelName,provider)) return null;
         return pvRecord;
     }
-    public ExampleLinkRecord(String recordName,PVStructure pvStructure)
+    public ExampleGetLinkRecord(String recordName,PVStructure pvStructure)
     {
         super(recordName,pvStructure);
     }
@@ -46,33 +45,17 @@ implements  PvaClientMonitorRequester
         if(pvValue == null) {
             return false;
         }
-        PvaClientChannel pvaClientChannel = pva.channel(channelName,provider,0.0);
-        pvaClientChannel.monitor("value",this);
+        pvaClientGet = pva.channel(channelName,provider).createGet();
         return true;
     }
 
-    @Override
-    public void event(PvaClientMonitor monitor) {
-        while(monitor.poll()) {
-            PVStructure pvStructure = monitor.getData().getPVStructure();
-            PVDoubleArray pvDoubleArray = pvStructure.getSubField(PVDoubleArray.class,"value");
-            if(pvDoubleArray==null) throw new RuntimeException("value is not a double array");
-
-            lock();
-            try {
-                beginGroupPut();
-                convert.copy(pvDoubleArray,pvValue);
-                process();
-                endGroupPut();
-            } finally {
-                unlock();
-            }
-            monitor.releaseEvent();
-        } 
-    }
 
     public void process()
     {
+        pvaClientGet.get();
+        double[] value = pvaClientGet.getData().getDoubleArray();
+        int length = value.length;
+        pvValue.put(0, length, value, 0);
         super.process();
     }
 
