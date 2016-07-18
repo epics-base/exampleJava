@@ -1,6 +1,15 @@
 EPICS V4 release 4.6
 ==========================
 
+## Version 4.2
+
+exampleJava now has examples that were in:
+
+* pvDatabaseJava
+* pvaClientJava
+
+The pom files now use the parent pom model as defined by epicsCoreJava.
+
 
 EPICS V4 release 4.5
 =========================
