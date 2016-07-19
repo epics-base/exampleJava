@@ -24,16 +24,13 @@ In the example directory
 
 This directory has the following files:
 
-### ExampleHelloRecord.java
-   
+* ExampleHelloRecord.java 
 Code for an example that is accessed via channelPutGet.
 
-### ExampleHelloRPC.java
-   
+* ExampleHelloRPC.java
 Code for an example that is accesed via channelRPC.
 
-### ExampleDatabase.java
-  
+* ExampleDatabase.java
 Code that creates many PVRecords.    
 Most are soft records but also exampleHello and exampleHelloRPC.
 

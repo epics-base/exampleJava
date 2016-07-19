@@ -82,7 +82,7 @@ public class HelloWorldRPC
                 createStructure();
         PVStructure pvRequest = pvDataCreate.createPVStructure(topStructure);
         PVString pvArgument = pvRequest.getSubField(PVString.class,"value");
-        PvaClientRPC rpc = pva.channel(channelName).createRPC(pvRequest);
+        PvaClientRPC rpc = pva.channel(channelName).createRPC();
         pvArgument.put("World");
         System.out.println("send " + pvArgument.get());
         PVStructure pvResult = rpc.request(pvRequest);
@@ -106,7 +106,7 @@ public class HelloWorldRPC
         Status status = pvaChannel.waitConnect(2.0);
         if(!status.isOK()) {System.out.println(" connect failed"); return;}
         ClientRPCRequester requester = new ClientRPCRequester();
-        PvaClientRPC rpc = pvaChannel.createRPC(pvRequest);
+        PvaClientRPC rpc = pvaChannel.createRPC();
         rpc.issueConnect();
         status = rpc.waitConnect();
         if(!status.isOK()) {System.out.println(" rpc connect failed"); return;}

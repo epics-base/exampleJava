@@ -35,20 +35,18 @@ public class ExampleLinkMain {
     {
         int argc = args.length;
         String provider = "pva";
-        String exampleLinkRecordName = "exampleLink";
         String linkedRecordName = "doubleArray";
         boolean generateLinkedRecord = true;
         if(argc==1 && args[0].endsWith("-help")) {
-            System.out.println("provider exampleLinkRecordName linkedRecordName generateLinkedRecord");
+            System.out.println("provider linkedRecordName generateLinkedRecord");
             System.out.println("default");
-            System.out.println(provider + " " + exampleLinkRecordName + " " + linkedRecordName + " " + generateLinkedRecord);
+            System.out.println(provider  + " " + linkedRecordName + " " + generateLinkedRecord);
             System.exit(0);
         }
         if(argc>0) provider = args[0];
-        if(argc>1) exampleLinkRecordName = args[1];
-        if(argc>2) linkedRecordName = args[2];
-        if(argc>3) {
-            String val = args[3];
+        if(argc>1) linkedRecordName = args[1];
+        if(argc>2) {
+            String val = args[2];
             if(val.equals("false")) generateLinkedRecord = false;
         }
         try {
@@ -66,7 +64,14 @@ public class ExampleLinkMain {
             }
             ServerContextImpl context = ServerContextImpl.startPVAServer("local",0,true,System.out);
             PvaClient pva= PvaClient.get(provider);
-            PVRecord pvRecord = ExampleLinkRecord.create(pva,exampleLinkRecordName,provider,linkedRecordName);           
+            PVRecord pvRecord = ExampleMonitorLinkRecord.create(
+                 pva,"exampleMonitorLink",provider,linkedRecordName);           
+            master.addRecord(pvRecord);
+            pvRecord = ExampleGetLinkRecord.create(
+                    pva,"exampleGetLink",provider,linkedRecordName);           
+            master.addRecord(pvRecord);
+            pvRecord = ExamplePutLinkRecord.create(
+                    pva,"examplePutLink",provider,linkedRecordName);           
             master.addRecord(pvRecord);
             while(true) {
                 System.out.print("waiting for exit: ");

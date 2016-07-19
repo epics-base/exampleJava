@@ -1,9 +1,0 @@
-GREG:
-
-1) I moved this info README.md
-2) helloWorld is renamed rdbService.
-3) serviceAPI has the same name.
-4) Look at KNOWNPROBLEMS.md
-
-Other than package names, I left these almost untouched from release 4.5
-
