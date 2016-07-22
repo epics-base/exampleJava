@@ -36,25 +36,29 @@ public class HelloWorldRPC
                 Status status,
                 PvaClientRPC pvaClientRPC,
                 PVStructure pvResponse)
-           {
-            System.out.println("response\n" + pvResponse.toString());
-               requestDoneCalled = true;
-           }
-           public void waitResponse()
-           {
-               while(true)
-               {
-                    if(requestDoneCalled) {
-                        requestDoneCalled = false;
-                        return;
-                    }
-                    try {
+        {
+            if(status.isOK()) {
+                System.out.println("response\n" + pvResponse.toString());
+                requestDoneCalled = true;
+            } else {
+                System.out.println("response error\n" + status.getMessage());
+            }
+        }
+        public void waitResponse()
+        {
+            while(true)
+            {
+                if(requestDoneCalled) {
+                    requestDoneCalled = false;
+                    return;
+                }
+                try {
                     Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        System.err.println("exception " + e.getMessage());
-                    }
-               }
-           }
+                } catch (InterruptedException e) {
+                    System.err.println("exception " + e.getMessage());
+                }
+            }
+        }
     } 
     
     static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
@@ -118,6 +122,23 @@ public class HelloWorldRPC
         System.out.println("send " + pvArgument.get());
         rpc.request(pvRequest, requester);
         requester.waitResponse();
+        rpc.setResponseTimeout(.001);
+        pvArgument.put("Once again");
+        System.out.println("send " + pvArgument.get());
+        try {
+            rpc.request(pvRequest, requester);
+            requester.waitResponse();
+        } catch (Exception e)
+        {
+            System.err.println("Expected exception " + e.getMessage());
+        }
+        try {
+            rpc.request(pvRequest, requester);
+            rpc.request(pvRequest, requester);
+        } catch (Exception e)
+        {
+            System.err.println("Expected exception " + e.getMessage());
+        }
     }
 
     public static void main( String[] args )

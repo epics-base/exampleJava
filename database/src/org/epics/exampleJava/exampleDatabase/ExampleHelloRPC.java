@@ -79,6 +79,11 @@ public class ExampleHelloRPC extends PVRecord {
         PVString pvTo = pvResult.getSubField(PVString.class,"value");
         pvTo.put("Hello " + pvFrom.get());
         process();
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            System.err.println("Unexpected exception " + e.getMessage());
+        }
         endGroupPut();
         unlock();
     }
