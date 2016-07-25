@@ -44,7 +44,7 @@ public class ArrayPerformanceMain {
         System.out.println(nMonitor);
         try {
             PVDatabase master = PVDatabaseFactory.getMaster();
-            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelServer();
+            ChannelProvider channelProvider = ChannelProviderLocalFactory.getChannelProviderLocal();
             ServerContextImpl context = ServerContextImpl.startPVAServer("local",0,true,null);
             PvaClient pva= PvaClient.get(providerName);
             ArrayPerformance arrayPerformance = ArrayPerformance.create(recordName,size,delay);

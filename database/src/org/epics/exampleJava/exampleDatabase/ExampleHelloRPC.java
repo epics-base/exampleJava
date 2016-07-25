@@ -25,58 +25,66 @@ import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
 
-public class ExampleHelloRPC extends PVRecord {
-    private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-    private static final PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
-
-
-    private final static Structure resultStructure = 
-            fieldCreate.createFieldBuilder().
-            add("value",ScalarType.pvString).createStructure();
-
-    private final static PVStructure pvResult = pvDataCreate
-            .createPVStructure(resultStructure);
-
-
-    static class RPCServiceImpl implements RPCService {
-
-        private ExampleHelloRPC pvRecord;
-
-        RPCServiceImpl(ExampleHelloRPC record) {
-            pvRecord = record;
-        }
-
-        public PVStructure request(PVStructure args) throws RPCRequestException
-        {
-            PVString pvFrom = args.getSubField(PVString.class,"value");
-            if (pvFrom == null)
-                throw new RPCRequestException(StatusType.ERROR,
-                        "PVString field with name 'value' expected.");
-            pvRecord.put(pvFrom);
-            return pvResult;
-
-        }
-    }
-
+/**
+ * A PVRecord that implements a hello service accessed via a channelRPC request.
+ *
+ */
+public class ExampleHelloRPC extends PVRecord implements RPCService{
+    /**
+     * Create an instance of ExampleHelloRecord.
+     * @param recordName The name of the record.
+     * @return The new instance.
+     */
     public static ExampleHelloRPC create(String recordName)
     {
-
-        ExampleHelloRPC pvRecord = new ExampleHelloRPC(recordName,pvResult);
+        FieldCreate fieldCreate = FieldFactory.getFieldCreate();
+        PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
+        Structure resultStructure = 
+                fieldCreate.createFieldBuilder().
+                add("value",ScalarType.pvString).createStructure();
+        PVStructure pvTop = pvDataCreate
+                .createPVStructure(resultStructure);
+        ExampleHelloRPC pvRecord = new ExampleHelloRPC(recordName,pvTop);
         PVDatabase master = PVDatabaseFactory.getMaster();
         master.addRecord(pvRecord);
         return pvRecord;
     }
-
-    public ExampleHelloRPC(String recordName, PVStructure pvStructure) {
-        super(recordName, pvStructure);
-        process();
+    
+    /**
+     * Get the ExampleRPC service.
+     */
+    public Service getService(PVStructure pvRequest)
+    {
+        return this;
     }
     
-    public void put(PVString pvFrom)
+    /**
+     * Process a request from the client
+     *
+     * @param args The request from the client
+     * @return The result.
+     */
+    public PVStructure request(PVStructure args) throws RPCRequestException
+    {
+        PVString pvFrom = args.getSubField(PVString.class,"value");
+        if (pvFrom == null)
+            throw new RPCRequestException(StatusType.ERROR,
+                    "PVString field with name 'value' expected.");
+        return put(pvFrom);
+
+    }
+    private PVStructure pvTop;
+
+    private  ExampleHelloRPC(String recordName, PVStructure pvTop) {
+        super(recordName, pvTop);
+        this.pvTop = pvTop;
+    }
+    
+    private PVStructure put(PVString pvFrom)
     {
         lock();
         beginGroupPut();
-        PVString pvTo = pvResult.getSubField(PVString.class,"value");
+        PVString pvTo = pvTop.getSubField(PVString.class,"value");
         pvTo.put("Hello " + pvFrom.get());
         process();
         try {
@@ -85,13 +93,10 @@ public class ExampleHelloRPC extends PVRecord {
             System.err.println("Unexpected exception " + e.getMessage());
         }
         endGroupPut();
+        PVStructure pvResult =  PVDataFactory.getPVDataCreate().createPVStructure(pvTop);
         unlock();
+        return pvResult;
     }
-
-
-    public Service getService(PVStructure pvRequest)
-    {
-        return new RPCServiceImpl(this);
-    }
+    
 
 }

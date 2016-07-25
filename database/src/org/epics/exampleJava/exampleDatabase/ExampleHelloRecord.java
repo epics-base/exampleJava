@@ -24,6 +24,10 @@ import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
 
+/**
+ * A PVRecord that implements a hello service accessed via a channelPutGet request.
+ *
+ */
 public class ExampleHelloRecord extends PVRecord {
     private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
     private static final PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
@@ -32,6 +36,11 @@ public class ExampleHelloRecord extends PVRecord {
     private PVString arg;
     private PVString result;
 
+    /**
+     * Create an instance of ExampleHelloRecord.
+     * @param recordName The name of the record.
+     * @return The new instance.
+     */
     public static PVRecord create(String recordName)
     {
         FieldBuilder fb = fieldCreate.createFieldBuilder();
@@ -49,7 +58,8 @@ public class ExampleHelloRecord extends PVRecord {
         master.addRecord(pvRecord);
         return pvRecord;
     }
-    public ExampleHelloRecord(String recordName,PVStructure pvStructure) {
+   
+    private ExampleHelloRecord(String recordName,PVStructure pvStructure) {
         super(recordName,pvStructure);
         arg = pvStructure.getSubField(PVString.class, "argument.value");
         if(arg==null) throw new IllegalArgumentException("arg not found");
@@ -58,6 +68,9 @@ public class ExampleHelloRecord extends PVRecord {
 
     }
 
+    /**
+     * Implement hello semantics.
+     */
     public void process()
     {
         int level = getTraceLevel();

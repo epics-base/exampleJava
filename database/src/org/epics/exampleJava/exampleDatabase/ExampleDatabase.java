@@ -37,11 +37,6 @@ import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.*;
 import org.epics.pvdatabase.pva.ChannelProviderLocalFactory;
 
-
-/**
- * @author Marty Kraimer
- *
- */
 public class ExampleDatabase {
 
     private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
@@ -172,10 +167,8 @@ public class ExampleDatabase {
     }
 
     /**
-     * @param args
-     */
-    /**
-     * @param args
+     * Create a server for an example PVDatabase.
+     * @param args Ignored.
      */
     public static void main(String[] args)
     {
