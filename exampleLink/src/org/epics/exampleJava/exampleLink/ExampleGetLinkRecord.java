@@ -1,18 +1,17 @@
+/*
+ * Copyright information and license terms for this software can be
+ * found in the file LICENSE that is included with the distribution
+ */
+
 /**
- * Copyright - See the COPYRIGHT that is included with this distribution.
- * EPICS pvData is distributed subject to a Software License Agreement found
- * in file LICENSE that is included with this distribution.
+ * @author mrk
  */
 
 package org.epics.exampleJava.exampleLink;
 
-import org.epics.pvaClient.*;
-import org.epics.pvaClient.PvaClientChannel;
-import org.epics.pvaClient.PvaClientMonitor;
-import org.epics.pvaClient.PvaClientMonitorRequester;
-import org.epics.pvdata.factory.ConvertFactory;
+import org.epics.pvaClient.PvaClient;
+import org.epics.pvaClient.PvaClientGet;
 import org.epics.pvdata.factory.StandardPVFieldFactory;
-import org.epics.pvdata.pv.Convert;
 import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
