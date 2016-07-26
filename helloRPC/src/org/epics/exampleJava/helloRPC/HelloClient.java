@@ -1,3 +1,8 @@
+/*
+ * Copyright information and license terms for this software can be
+ * found in the file LICENSE that is included with the distribution
+ */
+
 package org.epics.exampleJava.helloRPC;
 /**
  * HelloClient is a simple example of an EPIVS V4 client, demonstrating support for a

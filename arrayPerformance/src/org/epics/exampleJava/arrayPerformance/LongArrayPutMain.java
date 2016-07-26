@@ -1,4 +1,14 @@
-package org.epics.exampleJava.arrayPerformance;
+/*
+ * Copyright information and license terms for this software can be
+ * found in the file LICENSE that is included with the distribution
+ */
+
+/**
+ * @author mrk
+ *
+ */
+
+ package org.epics.exampleJava.arrayPerformance;
 
 import java.io.Console;
 

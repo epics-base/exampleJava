@@ -1,3 +1,13 @@
+/*
+ * Copyright information and license terms for this software can be
+ * found in the file LICENSE that is included with the distribution
+ */
+
+/**
+ * @author Dave Hickin
+ *
+ */
+
 package org.epics.exampleJava.pvDatabaseRPC;
 
 import org.epics.pvaccess.server.rpc.RPCRequestException;
@@ -26,11 +36,6 @@ import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
 
-
-/**
- * @author Dave Hickin
- *
- */
 public class ExampleRPCRecord extends PVRecord {
     private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
     private static final PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();

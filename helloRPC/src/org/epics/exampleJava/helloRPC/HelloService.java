@@ -1,3 +1,8 @@
+/*
+ * Copyright information and license terms for this software can be
+ * found in the file LICENSE that is included with the distribution
+ */
+
 /**
  * helloWorld is meant to illustrate the simplest example of a remote procedure call (RPC)
  * style interaction between a client and a server using EPICS V4. 

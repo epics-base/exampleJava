@@ -1,3 +1,13 @@
+/*
+ * Copyright information and license terms for this software can be
+ * found in the file LICENSE that is included with the distribution
+ */
+
+/**
+ * @author mrk
+ *
+ */
+
 package org.epics.exampleJava.arrayPerformance;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,6 +24,7 @@ import org.epics.pvdata.pv.PVLongArray;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdatabase.PVRecord;
+
 
 public class ArrayPerformance extends PVRecord implements RunnableReady {
     private static ThreadCreate threadCreate = ThreadCreateFactory.getThreadCreate();
