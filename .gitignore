@@ -1,5 +1,5 @@
 target/
 documentation/html
-*/.classpath
-*/.settings
-*/shell/source
+.classpath
+.settings
+shell/source
