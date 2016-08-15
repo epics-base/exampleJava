@@ -22,21 +22,23 @@ public class ExampleLinkClient
     {
         int argc = args.length;
         String provider = "pva";
+        String doubleArray = "doubleArray";
         if(argc==1 && args[0].endsWith("-help")) {
             System.out.println("provider");
             System.out.println("default");
-            System.out.println(provider);
+            System.out.println(provider + " " + doubleArray);
             System.exit(0);
         }
         System.out.println("_____exampleLinkClient starting_______");
         if(argc>0) provider = args[0];
+        if(argc>1) doubleArray = args[1];
         String providers = "pva";
         if(provider.equals("ca")) providers = "pva ca";
         PvaClient pva= PvaClient.get(providers);
         try {
-            PvaClientPut put = pva.channel("doubleArray",provider,5.0).put();
+            PvaClientPut put = pva.channel(doubleArray,provider,5.0).put();
             PvaClientPutData putData = put.getData();
-            PvaClientMonitor monitor = pva.channel("exampleLink").monitor("");
+            PvaClientMonitor monitor = pva.channel("exampleMonitorLink").monitor("");
             PvaClientMonitorData pvaData = monitor.getData();
             if(!monitor.waitEvent(0.0)) {
                 System.out.println("waitEvent returned false. Why???");
