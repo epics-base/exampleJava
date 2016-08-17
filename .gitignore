@@ -3,3 +3,4 @@ documentation/html
 .classpath
 .settings
 shell/source
+nbactions.xml
