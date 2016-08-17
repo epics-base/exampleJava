@@ -227,8 +227,9 @@ public class ExampleDatabase {
             pvRecord = ExampleHelloRPC.create(recordName);
             master.addRecord(pvRecord);
             ServerContextImpl context = ServerContextImpl.startPVAServer(channelProvider.getProviderName(),0,true,null); 
+            System.out.println("ExampleDatabase started");
             while(true) {
-                System.out.print("waiting for exit: ");
+                System.out.print("Type 'exit' to shut down: ");
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 String value = null;
                 try {
