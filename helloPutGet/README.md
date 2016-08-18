@@ -26,23 +26,14 @@ In addition the timeStamp is set to the time when process is called.</p>
 
 In the helloPutGet directory
 
-    mvn package
-    cd shell
-    cp sourceEXAMPLE source
-    # edit file source so that EPICSV4 is correctly defined
-
-
+    mvn install
 
 ## To start helloPutGet
 
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/helloPutGet/shell
-    mrk> ./helloPutGet
+    ./scripts/helloPutGetMain
+    
 
 ## To start the  client
  
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/helloPutGet/shell
-    mrk> ./helloClient
-
+    ./scripts/helloPutGetClient
 

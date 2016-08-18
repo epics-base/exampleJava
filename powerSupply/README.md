@@ -29,35 +29,55 @@ The process routine computes current.value.
 
 ## Building
 
-In the example directory
+In the exampleJava/powerSupply directory
 
-    mvn package
-    cd shell
-    cp sourceEXAMPLE source
-    # edit source so that EPICSV4 is correctly defined
+    mvn install
 
 
-## To start the examplePowerSupply
+## To start examplePowerSupplyMain
 
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/powerSupply/shell
-    mrk> ./powerSupply
+In the exampleJava/powerSupply directory
 
-## After starting powerSupply
+On Linux
 
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/powerSupply/shell
-    mrk> ./powerSupplyClient
+    ./scripts/powerSupplyMain
+
+On Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\powerSupplyMain.bat
+
+## To start powerSupplyMonitor
+
+There is also an example to monitor changes in the powerSupply.
+
+In the exampleJava/powerSupply directory
+
+On Linux
+
+    ./scripts/powerSupplyMonitor
+
+On Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\powerSupplypowerSupplyMonitor.bat
+
+   
+## To start powerSupplyClient
+
+In the exampleJava/powerSupply directory
+
+On Linux
+
+    ./scripts/powerSupplyClient
+
+On Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\powerSupplyClient.bat
+
 
 This client calls channelPutGet several times specifying different value for power and voltage.
 
 The last call sets the voltage to 0, which results in process throwing an exception.
-
-## powerSupplyMonitor
-
-There is also an example to monitor changes in the powerSupply.
-
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/powerSupply/shell
-    mrk> ./powerSupplyMonitor
 

@@ -36,7 +36,7 @@ public class DoubleArrayMain {
     public static void main(String[] args)
     {
         int argc = args.length;
-        String doubleArrayRecordName = "doubleArray";
+        String doubleArrayRecordName = "doubleArrayExternal";
         if(argc==1 && args[0].endsWith("-help")) {
             System.out.println("doubleArrayRecordName");
             System.out.println("default");

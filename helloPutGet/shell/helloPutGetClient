@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-source source
-java org.epics.exampleJava.helloPutGet.HelloPutGetClient

@@ -6,10 +6,8 @@ This example implements main programs that demonstrate performance of large arra
 
 In the example directory
 
-    mvn package
-    cd shell
-    cp sourceEXAMPLE source
-    # edit file source so that EPICSV4 is correctly defined
+    mvn install
+    
 
 ## To understand the examples read documentation/arrayPerformance.html
 
