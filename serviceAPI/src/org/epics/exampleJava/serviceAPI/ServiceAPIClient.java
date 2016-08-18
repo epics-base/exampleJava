@@ -1,4 +1,4 @@
-package org.epics.serviceAPI;
+package org.epics.exampleJava.serviceAPI;
 
 import org.epics.pvaccess.client.rpc.RPCClientImpl;
 import org.epics.pvaccess.server.rpc.RPCRequestException;

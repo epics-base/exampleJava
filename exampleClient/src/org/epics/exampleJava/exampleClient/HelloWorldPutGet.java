@@ -7,7 +7,7 @@
  * @author mrk
  */
 
-package org.epics.exampleClient;
+package org.epics.exampleJava.exampleClient;
 
 import org.epics.pvaClient.PvaClient;
 import org.epics.pvaClient.PvaClientChannel;

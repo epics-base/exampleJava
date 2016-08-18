@@ -1,3 +1,3 @@
 @echo off
 set /p CP=<target\cp.txt
-java -classpath target\*;%CP% org.epics.exampleClient.ExamplePvaClientMonitor %*
+java -classpath target\*;%CP% org.epics.exampleJava.exampleClient.ExamplePvaClientMonitor %*

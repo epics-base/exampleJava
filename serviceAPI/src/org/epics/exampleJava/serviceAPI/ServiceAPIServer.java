@@ -1,4 +1,4 @@
-package org.epics.serviceAPI;
+package org.epics.exampleJava.serviceAPI;
 
 
 import java.util.Date;

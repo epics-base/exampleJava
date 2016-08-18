@@ -7,7 +7,7 @@
  * @author mrk
  */
 
-package org.epics.exampleClient;
+package org.epics.exampleJava.exampleClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
