@@ -12,10 +12,16 @@ In the exampleJava/database directory
 
 ## Running
 
-In the exampleJava/database directory
+In the exampleJava/database directory, run
 
-    mvn exec:exec
+on Linux:
 
+    ./scripts/exampleDatabase
+
+on Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\exampleDatabase.bat
 
 ## database/src/org/epics/exampleJava/exampleDatabase
 

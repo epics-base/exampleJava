@@ -37,22 +37,27 @@
     </modules>
 
     <build>
+        <scriptSourceDirectory>${basedir}/scripts</scriptSourceDirectory>
+
         <plugins>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
                 <executions>
                     <execution>
+                        <id>build-classpath</id>
+                        <phase>generate-sources</phase>
                         <goals>
-                            <goal>exec</goal>
+                            <goal>build-classpath</goal>
                         </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <outputFile>${project.build.directory}/cp.txt</outputFile>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>java</executable>
-                </configuration>
             </plugin>
 
             <plugin>
