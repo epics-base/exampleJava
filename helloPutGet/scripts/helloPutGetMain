@@ -1,0 +1,2 @@
+
+java -classpath "target/*:"`cat target/cp.txt` org.epics.exampleJava.helloPutGet.HelloPutGetMain "$@"

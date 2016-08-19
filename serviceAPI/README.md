@@ -10,21 +10,31 @@ making the example, so it's completely self contained and aims for simplicity.
 
 In the example directory
 
-    mvn package
-    cd shell
-    cp sourceEXAMPLE source
-    # edit source so that EPICSV4 is correctly defined
+    mvn install
 
 
 ## To start the server
 
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/serviceAPI/shell
-    mrk> ./serviceAPIServer
+On Linux
+
+    ./scripts/serviceAPIServer
+
+On Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\serviceAPIServer.bat
+
+
 ## To start the client
- 
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/serviceAPI/shell
-    mrk> ./serviceAPIClient
+
+On Linux
+
+    ./scripts/serviceAPIClient
+
+On Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\serviceAPIClient.bat
+
 
 

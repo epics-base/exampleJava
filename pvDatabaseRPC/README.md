@@ -1,41 +1,40 @@
-# database
+# pvDatabaseRPC
 
 A pvAccess server that has PVRecords
 
 
 ## Building
 
-In the example directory
+In the exampleJava/pvDatabaseRPC directory
 
-    mvn package
-    cd shell
-    cp sourceEXAMPLE source
-    # edit file source so that EPICSV4 is correctly defined
+    mvn install
+    
 
+## To start exampleDatabaseRPC
 
+In the exampleJava/pvDatabaseRPC directory
 
-## To start the example
+On Linux
 
-    mrk> pwd
-    /home/epicsv4/master/exampleJava/database/shell
-    mrk> ./exampleDatabase
+    ./scripts/exampleRPCMain
 
-## database/src/org/epics/exampleJava/exampleDatabase
+On Windows:
 
-This directory has the following files:
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\exampleRPCMain.bat
 
-### ExampleHello.java
-   
-Code for an example that is accessed via channelPutGet.
+## To start move
 
-### ExampleHelloRPC.java
-   
-Code for an example that is accesed via channelRPC.
+In the exampleJava/pvDatabaseRPC directory
 
-### ExampleDatabase.java
-  
-Code that creates many PVRecords.    
-Most are soft records but also exampleHello and exampleHelloRPC.
+On Linux
+
+    ./scripts/move 1 2 10 20
+
+On Windows:
+
+    set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_25   (where your Java is)
+    .\scripts\move.bat 1 2 10 20
 
 
 
