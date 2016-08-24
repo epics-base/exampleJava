@@ -84,12 +84,12 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
     private PVInt          pvStateIndex;
     private PVStringArray  pvStateChoices;
 
+    private PVTimeStamp pvTimeStamp    = PVTimeStampFactory.create();
     private PVTimeStamp pvTimeStamp_sp = PVTimeStampFactory.create();
     private PVTimeStamp pvTimeStamp_rb = PVTimeStampFactory.create();
     private PVTimeStamp pvTimeStamp_st = PVTimeStampFactory.create();
 
     private boolean firstTime = true;
-    private boolean writeInProgress = false;
 
     public void readbackChanged(Point rb)
     {
@@ -100,7 +100,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
         pvx_rb.put(rb.x);
         pvy_rb.put(rb.y);
         pvTimeStamp_rb.set(timeStamp);
-        process();
+        pvTimeStamp.set(timeStamp);
         endGroupPut();
         unlock();
     }
@@ -108,7 +108,6 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
     public void setpointChanged(Point sp)
     {
         lock();
-        if (!writeInProgress)
         {
             TimeStamp timeStamp = TimeStampFactory.create();
             timeStamp.getCurrentTime();
@@ -116,7 +115,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
             pvx.put(sp.x);
             pvy.put(sp.y);
             pvTimeStamp_sp.set(timeStamp);
-            process();
+            pvTimeStamp.set(timeStamp);
             endGroupPut();
         }
         unlock();
@@ -134,9 +133,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
             pvStateIndex.put(index);
             pvTimeStamp_st.set(timeStamp);
         }
-        pvStateIndex.put(index);
-        pvTimeStamp_st.set(timeStamp);
-        process();
+        pvTimeStamp.set(timeStamp);
         endGroupPut();
         unlock();
     }
@@ -159,9 +156,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
       
             if (!sp_initial.equals(newSP))
             {
-                writeInProgress = true;
                 device.setSetpoint(newSP);
-                writeInProgress = false;
             }
         }
         catch (IllegalOperationException o)
@@ -198,7 +193,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
         }
 
         firstTime = false;
-        super.process();
+        pvTimeStamp.set(timeStamp);
     }
 
     static class AbortService implements RPCService {
@@ -354,7 +349,6 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
 
     static class ScanService implements RPCServiceAsync, Device.Callback
     {
-
         private ExampleRPCRecord pvRecord;
         private final static Status statusOk = StatusFactory.
                 getStatusCreate().getStatusOK();
@@ -363,7 +357,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
             pvRecord = record;
         }
 
-       private RPCResponseCallback callback;
+        private RPCResponseCallback callback;
 
         public void request(PVStructure args, RPCResponseCallback callback)
         {
@@ -425,6 +419,7 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
         pvx_rb = pvStructure.getSubField(PVDouble.class, "positionRB.value.x");
         pvy_rb = pvStructure.getSubField(PVDouble.class, "positionRB.value.y");
 
+        pvTimeStamp.attach(pvStructure.getSubField(PVStructure.class, "timeStamp"));
         pvTimeStamp_sp.attach(pvStructure.getSubField(PVStructure.class, "positionSP.timeStamp"));
         pvTimeStamp_rb.attach(pvStructure.getSubField(PVStructure.class, "positionRB.timeStamp"));
         pvTimeStamp_st.attach(pvStructure.getSubField(PVStructure.class, "state.timeStamp"));
