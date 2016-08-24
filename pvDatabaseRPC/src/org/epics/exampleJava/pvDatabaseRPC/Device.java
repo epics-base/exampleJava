@@ -94,45 +94,46 @@ public class Device implements RunnableReady
         {
             try {
                 Thread.sleep(100);
-
-                if (state == State.IDLE || state == State.RUNNING)
-                {
-                    if (!positionRB.equals(positionSP))
+                synchronized(this) {
+                    if (state == State.IDLE || state == State.RUNNING)
                     {
-                        double dx = positionSP.x - positionRB.x;
-                        double dy = positionSP.y - positionRB.y;
+                        if (!positionRB.equals(positionSP))
+                        {
+                            double dx = positionSP.x - positionRB.x;
+                            double dy = positionSP.y - positionRB.y;
 
-                        final double ds = Math.sqrt(dx*dx+dy*dy);
-                        final double maxds = 0.01;
+                            final double ds = Math.sqrt(dx*dx+dy*dy);
+                            final double maxds = 0.01;
                         // avoid very small final steps
                         final double maxds_x = maxds + 1.0e-5;
 
                         if (ds > maxds_x)
+                            {
+                                double scale = maxds/ds;
+                                dx *= scale;
+                                dy *= scale;
+                                setReadbackImpl(new Point(
+                                    positionRB.x + dx, positionRB.y + dy));
+                            }
+                            else
+                            {
+                                setReadbackImpl(positionSP);
+                            }
+                        }
+                    }
+
+                    if (state == State.RUNNING && positionRB.equals(positionSP))
+                    {
+                        if (index < points.size())
                         {
-                            double scale = maxds/ds;
-                            dx *= scale;
-                            dy *= scale;
-                            setReadbackImpl(new Point(
-                                positionRB.x + dx, positionRB.y + dy));
+                            setSetpointImpl(points.get(index));
+                            ++index;
                         }
                         else
                         {
-                            setReadbackImpl(positionSP);
+                            scanComplete();
+                            stop();
                         }
-                    }
-                }
-
-                if (state == State.RUNNING && positionRB.equals(positionSP))
-                {
-                    if (index < points.size())
-                    {
-                        setSetpointImpl(points.get(index));
-                        ++index;
-                    }
-                    else
-                    {
-                        scanComplete();
-                        stop();
                     }
                 }
             }
