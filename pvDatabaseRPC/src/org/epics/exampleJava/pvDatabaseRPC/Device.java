@@ -104,8 +104,10 @@ public class Device implements RunnableReady
 
                         final double ds = Math.sqrt(dx*dx+dy*dy);
                         final double maxds = 0.01;
+                        // avoid very small final steps
+                        final double maxds_x = maxds + 1.0e-5;
 
-                        if (ds > maxds)
+                        if (ds > maxds_x)
                         {
                             double scale = maxds/ds;
                             dx *= scale;
@@ -183,7 +185,8 @@ public class Device implements RunnableReady
         System.out.println("Abort");
         setStateImpl(State.IDLE);
         points.clear();
-        setSetpointImpl(positionRB);
+        if (!positionSP.equals(positionRB))
+            setSetpointImpl(positionRB);
     }
 
     synchronized public void configure(ArrayList<Point> newPoints)
@@ -198,7 +201,8 @@ public class Device implements RunnableReady
         System.out.println("Configure");
         setStateImpl(State.READY);
         points = (ArrayList<Point>)newPoints.clone();
-        setSetpointImpl(positionRB);
+        if (!positionSP.equals(positionRB))
+            setSetpointImpl(positionRB);
     }
 
     synchronized public void run()
