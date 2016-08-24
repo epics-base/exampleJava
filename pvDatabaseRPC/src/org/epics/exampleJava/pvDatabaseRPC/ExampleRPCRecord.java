@@ -94,20 +94,28 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
     public void readbackChanged(Point rb)
     {
         lock();
-        TimeStamp timeStamp = TimeStampFactory.create();
-        timeStamp.getCurrentTime();
-        beginGroupPut();
-        pvx_rb.put(rb.x);
-        pvy_rb.put(rb.y);
-        pvTimeStamp_rb.set(timeStamp);
-        pvTimeStamp.set(timeStamp);
-        endGroupPut();
+        try {
+            TimeStamp timeStamp = TimeStampFactory.create();
+            timeStamp.getCurrentTime();
+            beginGroupPut();
+            pvx_rb.put(rb.x);
+            pvy_rb.put(rb.y);
+            pvTimeStamp_rb.set(timeStamp);
+            pvTimeStamp.set(timeStamp);
+            endGroupPut();
+        }
+        catch (Throwable t)
+        {
+            unlock();
+            throw t;
+        }
         unlock();
     }
 
     public void setpointChanged(Point sp)
     {
         lock();
+        try
         {
             TimeStamp timeStamp = TimeStampFactory.create();
             timeStamp.getCurrentTime();
@@ -118,23 +126,35 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
             pvTimeStamp.set(timeStamp);
             endGroupPut();
         }
+        catch (Throwable t)
+        {
+            unlock();
+            throw t;
+        }
         unlock();
     }
 
     public void stateChanged(Device.State state)
     {
         lock();
-        TimeStamp timeStamp = TimeStampFactory.create();
-        timeStamp.getCurrentTime();
-        beginGroupPut();
-        int index = device.getState().ordinal();
-        if (index != pvStateIndex.get())
-        {
-            pvStateIndex.put(index);
-            pvTimeStamp_st.set(timeStamp);
+        try {
+            TimeStamp timeStamp = TimeStampFactory.create();
+            timeStamp.getCurrentTime();
+            beginGroupPut();
+            int index = device.getState().ordinal();
+            if (index != pvStateIndex.get())
+            {
+                pvStateIndex.put(index);
+                pvTimeStamp_st.set(timeStamp);
+            }
+            pvTimeStamp.set(timeStamp);
+            endGroupPut();
         }
-        pvTimeStamp.set(timeStamp);
-        endGroupPut();
+        catch (Throwable t)
+        {
+            unlock();
+            throw t;
+        }
         unlock();
     }
 
