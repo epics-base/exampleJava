@@ -285,7 +285,7 @@ public class Control
             //System.out.println(pvResult);
             System.out.println("Done");
         } catch (RPCRequestException e) {
-            System.out.println("exception " + e.getMessage());
+            System.out.println("Exception: " + e.getMessage());
         }
         finally
         {

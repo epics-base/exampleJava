@@ -112,41 +112,41 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
         unlock();
     }
 
-    public void setpointChanged(Point sp)
-    {
-        lock();
-        try
-        {
-            TimeStamp timeStamp = TimeStampFactory.create();
-            timeStamp.getCurrentTime();
-            beginGroupPut();
-            pvx.put(sp.x);
-            pvy.put(sp.y);
-            pvTimeStamp_sp.set(timeStamp);
-            pvTimeStamp.set(timeStamp);
-            endGroupPut();
-        }
-        catch (Throwable t)
-        {
-            unlock();
-            throw t;
-        }
-        unlock();
-    }
-
-    public void stateChanged(Device.State state)
+    public void update(int flags)
     {
         lock();
         try {
             TimeStamp timeStamp = TimeStampFactory.create();
             timeStamp.getCurrentTime();
+
             beginGroupPut();
-            int index = device.getState().ordinal();
-            if (index != pvStateIndex.get())
+
+            if ((flags & Device.Callback.SETPOINT_CHANGED) != 0)
             {
-                pvStateIndex.put(index);
-                pvTimeStamp_st.set(timeStamp);
+                Point sp = device.getPositionSetpoint();
+                pvx.put(sp.x);
+                pvy.put(sp.y);
+                pvTimeStamp_sp.set(timeStamp);
             }
+
+            if ((flags & Device.Callback.READBACK_CHANGED) != 0)
+            {
+                Point rb = device.getPositionReadback();
+                pvx_rb.put(rb.x);
+                pvy_rb.put(rb.y);
+                pvTimeStamp_rb.set(timeStamp);
+            }
+
+            if ((flags & Device.Callback.STATE_CHANGED) != 0)
+            {
+                int index = device.getState().ordinal();
+                if (index != pvStateIndex.get())
+                {
+                    pvStateIndex.put(index);
+                    pvTimeStamp_st.set(timeStamp);
+                }
+            }
+
             pvTimeStamp.set(timeStamp);
             endGroupPut();
         }
@@ -156,10 +156,6 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
             throw t;
         }
         unlock();
-    }
-
-    public void scanComplete()
-    {
     }
 
     public void process()
@@ -384,32 +380,27 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
             this.callback = callback;
         }
 
-        private void handleError(String message, RPCResponseCallback callback)
+        private void handleError(String message)
         {
-            Status status = StatusFactory.getStatusCreate().
-                    createStatus(StatusType.ERROR, message, null);
-            callback.requestDone(status, null);
+            if (callback != null)
+            {
+                Status status = StatusFactory.getStatusCreate().
+                        createStatus(StatusType.ERROR, message, null);
+                callback.requestDone(status, null);
+            }
             pvRecord.device.unregisterCallback(this);
-        }
-
-        public void setpointChanged(Point sp)
-        {
-        }
-
-        public void readbackChanged(Point rb)
-        {
         }
 
         public void stateChanged(Device.State state)
         {
             if (state == Device.State.READY)
             {
-                handleError("Scan was stopped", callback);
+                handleError("Scan was stopped");
                 return;
             }
             else if (state == Device.State.IDLE)
             {
-                 handleError("Scan was aborted", callback);
+                 handleError("Scan was aborted");
                  return;
             } 
         }
@@ -418,6 +409,19 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
         {
             callback.requestDone(statusOk, pvDataCreate.createPVStructure(resultStructure));
             pvRecord.device.unregisterCallback(this);
+        }
+
+        public void update(int flags)
+        {
+            if ((flags & Device.Callback.SCAN_COMPLETE) != 0)
+            {
+                scanComplete();
+            }
+            else if ((flags & Device.Callback.STATE_CHANGED) != 0)
+            {
+                Device.State state = pvRecord.device.getState();
+                stateChanged(state);
+            }
         }
     }
 
