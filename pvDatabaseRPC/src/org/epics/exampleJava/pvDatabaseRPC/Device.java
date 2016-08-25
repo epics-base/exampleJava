@@ -17,7 +17,6 @@ import org.epics.pvdata.misc.ThreadPriority;
 import org.epics.pvdata.misc.ThreadReady;
 
 
-
 public class Device implements RunnableReady
 {
     public enum State {
@@ -31,10 +30,12 @@ public class Device implements RunnableReady
 
     public static interface Callback
     {
-        public void setpointChanged(Point sp);
-        public void readbackChanged(Point rb);
-        public void stateChanged(State state);
-        public void scanComplete();
+        public void update(int flags);
+
+        public final static int SETPOINT_CHANGED = 0x1;
+        public final static int READBACK_CHANGED = 0x2;
+        public final static int STATE_CHANGED    = 0x4;
+        public final static int SCAN_COMPLETE    = 0x8;
     }
 
     public synchronized void registerCallback(Callback callback)
@@ -50,36 +51,22 @@ public class Device implements RunnableReady
         return callbacks.remove(callback);
     }
 
-    synchronized void setpointCallback(Point sp)
-    {
-        ArrayList<Callback> callbacks = (ArrayList<Callback>)this.callbacks.clone();
-
-        for (Callback callback : callbacks)
-            callback.setpointChanged(sp);
-    }
-
-    synchronized void readCallback(Point rb)
-    {
-        ArrayList<Callback> callbacks = (ArrayList<Callback>)this.callbacks.clone();
-
-        for (Callback callback : callbacks)
-            callback.readbackChanged(rb);
-    }
-
-    synchronized void stateCallback(State state)
-    {
-        ArrayList<Callback> callbacks = (ArrayList<Callback>)this.callbacks.clone();
-
-        for (Callback callback : callbacks)
-            callback.stateChanged(state);
-    }
-
     synchronized void scanComplete()
     {
+        flags |= Device.Callback.SCAN_COMPLETE;
+    }
+
+    synchronized void update()
+    {
         ArrayList<Callback> callbacks = (ArrayList<Callback>)this.callbacks.clone();
 
-        for (Callback callback : callbacks)
-            callback.scanComplete();
+        if (flags != 0)
+        {
+            for (Callback callback : callbacks)
+                callback.update(flags);
+
+            flags = 0;
+        }
     }
 
     public Device()
@@ -138,6 +125,7 @@ public class Device implements RunnableReady
                 }
             }
             catch (Throwable t) { abort(); }
+            update();
         }
     }
 
@@ -166,19 +154,19 @@ public class Device implements RunnableReady
     private void setSetpointImpl(Point sp)
     {
        positionSP = sp;
-       setpointCallback(sp);
+       flags |= Device.Callback.SETPOINT_CHANGED;
     }
 
     private void setReadbackImpl(Point rb)
     {
        positionRB = rb;
-       readCallback(rb);
+       flags |= Device.Callback.READBACK_CHANGED;
     }
 
     private void setStateImpl(State state)
     {
         this.state = state;
-        stateCallback(state);  
+        flags |= Device.Callback.STATE_CHANGED;
     }
 
     synchronized public void abort()
@@ -255,6 +243,8 @@ public class Device implements RunnableReady
         case READY:
             System.out.println("Stop");
             setStateImpl(State.READY);
+            if (!positionSP.equals(positionRB))
+                setSetpointImpl(positionRB);
             break;
         default:
             {
@@ -300,6 +290,8 @@ public class Device implements RunnableReady
     }
 
     private State state = State.IDLE;
+
+    private int flags = 0;
 
     private Point positionSP = new Point();
     private Point positionRB = new Point();
