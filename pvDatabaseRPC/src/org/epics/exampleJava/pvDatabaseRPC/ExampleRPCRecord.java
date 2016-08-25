@@ -167,8 +167,6 @@ public class ExampleRPCRecord extends PVRecord implements Device.Callback
         TimeStamp timeStamp = TimeStampFactory.create();
         timeStamp.getCurrentTime();
 
-        boolean updateSPTimeStamp = firstTime;
-
         Point newSP = new Point(pvx.get(), pvy.get()); 
         try
         {
