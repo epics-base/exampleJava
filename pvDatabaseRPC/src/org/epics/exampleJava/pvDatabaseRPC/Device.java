@@ -104,10 +104,10 @@ public class Device implements RunnableReady
 
                             final double ds = Math.sqrt(dx*dx+dy*dy);
                             final double maxds = 0.01;
-                        // avoid very small final steps
-                        final double maxds_x = maxds + 1.0e-5;
+                            // avoid very small final steps
+                            final double maxds_x = maxds + 1.0e-5;
 
-                        if (ds > maxds_x)
+                            if (ds > maxds_x)
                             {
                                 double scale = maxds/ds;
                                 dx *= scale;
