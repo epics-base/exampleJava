@@ -1,7 +1,8 @@
 # Example Application `arrayPerformance`
 
-This example application demonstrates the performance of large arrays. Specific 
-explanations and instructions can be found in the documentation of the parent 
+This example application demonstrates the performance of large arrays.
+
+Specific explanations and instructions can be found in the documentation of the parent 
 module `exampleJava`.
 
 ## Building

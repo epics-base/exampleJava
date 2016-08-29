@@ -26,7 +26,7 @@
 
 <div class="head">
 <h1>EPICS exampleJava/arrayPerformance</h1>
-<h2 class="nocount">Release 4.1 - 2016.03.14</h2>
+<h2 class="nocount">2016.08.26</h2>
 
 
 <h2 class="nocount">Abstract</h2>
@@ -35,12 +35,6 @@ of large arrays and can also be used to check for memory leaks.
 Checking for memory leaks can be accomplished by running the programs with valgrind
 or some other memory check program.
 </p>
-  <!-- last para of Abstract is boilerplate reference to EPICS -->
-      <p>For more information about EPICS generally, please refer to the home page of the <a
-       href="http://www.aps.anl.gov/epics/">Experimental Physics and Industrial
-      Control System</a>.</p>
-
-
 </div> <!-- head -->
 
 <div id="toc">
@@ -69,23 +63,23 @@ or some other memory check program.
 <p>Each has support for <b>-help</b>.</p>
 <pre>
 mrk&gt; pwd
-/home/epicsv4/master/exampleJava/arrayPerformance/shell
-mrk&gt; ./arrayPerformance -help
+/home/epicsv4/master/exampleJava/arrayPerformance
+mrk&gt; scripts/arrayPerformance -help
 recordName size delay providerName nMonitor
 default
 arrayPerformance 10000000 0.0001 local 1
 
-mrk&gt; ./longArrayMonitor -help
+mrk&gt; scripts/longArrayMonitor -help
 channelName
 default
 arrayPerformance
 
-mrk&gt; ./longArrayGet -help
+mrk&gt; scripts/longArrayGet -help
 channelName iterBetweenCreateChannel iterBetweenCreateChannelGet delayTime
 default
 arrayPerformance 0 0 1
 
-mrk&gt; ./longArrayPutMain -help
+mrk&gt; scripts/longArrayPut -help
 channelName arraySize iterBetweenCreateChannel iterBetweenCreateChannelPut delayTime
 default
 arrayPerformance 10 0 0 1
@@ -96,15 +90,15 @@ mrk&gt;
 <p><b>Note:</b> These may fail if run on a platform that does not have sufficient memory,</p>
 <p>To see an example just execute the following commands in four different terminal windows:</p>
 <pre>
-./arrayPerformanceMain
-./longArrayMonitorMain
-./longArrayGetMain
-./longArrayPutMain
+scripts/arrayPerformance
+scripts/longArrayMonitor
+scripts/longArrayGet
+scripts/longArrayPut
 </pre>
 <p>Each program generates a report every second when it has something to report.
 Examples are:</p>
 <pre>
-./arrayPerformanceMain
+scripts/arrayPerformance
 arrayPerformance 10000000 0.0001 local 1 2 0
 ...
 arrayPerformance value 34 time 1.055 Iterations/sec 10.42654028436019 megaElements/sec 104.26540284360189
@@ -122,7 +116,7 @@ arrayPerformance value 93 time 1.025 Iterations/sec 13.658536585365855 megaEleme
 ...
 </pre>
 <pre>
-./longArrayMonitorMain
+scripts/longArrayMonitor
 longArrayMonitorMain arrayPerformance 2 0
 ...
 
@@ -136,7 +130,7 @@ longArrayMonitorMain arrayPerformance 2 0
 ...
 </pre>
 <pre>
-./longArrayPutMain
+scripts/longArrayPut
 longArrayPutMain arrayPerformance 10 0 0 1
 ...
 put numChannelPut 0 Elements/sec 79.8819
@@ -144,7 +138,7 @@ put numChannelPut 1  Elements/sec 79.8598
 ...
 </pre>
 <pre>
-./longArrayGetMain
+scripts/longArrayGet
 longArrayGetMain arrayPerformance 0 0 1
 ...
 get kiloElements/sec 7384.61

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>EPICS exampleJava/exampleLink</title>
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/base.css" />
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/epicsv4.css" />
+  <style type="text/css">
+/*<![CDATA[*/
+     .about { margin-left: 3em; margin-right: 3em; font-size: .83em}
+     table { margin-left: auto; margin-right: auto }
+     .diagram { text-align: center; margin: 2.5em 0 }
+     body { margin-right: 10% }
+/*]]>*/</style>
+
+ <!-- Script that generates the Table of Contents -->
+  <script type="text/javascript" src="http://epics-pvdata.sourceforge.net/script/tocgen.js"></script>
+
+</head>
+
+<body>
+
+<div class="head">
+<h1>EPICS exampleJava/exampleLink</h1>
+<h2 class="nocount">2016.08.26</h2>
+
+<h2 class="nocount">Abstract</h2>
+<p>
+<b>exampleLink</b> implements a PVRecord that uses pvAccess to access another channel.
+</p>
+  
+</div> <!-- head -->
+
+<div id="toc">
+  <h2 class="nocount">Table of Contents</h2>
+</div>
+
+<!-- Place what you would like in the Table of Contents, inside the contents div -->
+<div id="contents" class="contents">	  
+<hr />
+
+<h2>Overview</h2>
+<p>This example provides the following:</p>
+<dl>
+  <dt>exampleLinkMain</dt>
+    <dd>
+     A database with records named exampleMonitorLink, exampleGetLink, and examplePutLink.
+     Each has a link to another channel.
+    The process method of the records use pvaChannelMonitor, pvaChannelGet,
+     and pvaChannelPut to connect to the other channel.
+    </dd>
+  <dt>exampleLinkClient</dt>
+     <dd>
+       This uses pvaClientPut to change values in the record to which exampleLinkMain
+       connects and uses pvaClientMonitor to monitor changes in pvaChannelMonitor.
+     </dd>
+  <dt>doubleArrayMain</dt>
+     <dd>
+       This is an PVDatabase that holds a PVRecord in another IOC to which exampleLinkMain
+       can connect.
+     </dd>
+  <dt>v3IOC</dt>
+     <dd>
+       A V3 softIOC that can be used to create a V3 DBRecord to which exampleLinkMain
+       can connect.
+     </dd>
+</dl>
+<h2>exampleLinkMain</h2>
+<p>exampleLinkMain supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleLink
+mrk> scripts/exampleLinkMain -help
+provider linkedRecordName generateLinkedRecord
+default
+pva doubleArray true
+mrk> 
+</pre>
+The arguments are:
+<dl>
+   <dt>provider</dt>
+     <dd>
+      This can be <b>pva</b> or <b>ca</b> or <b>local</b>.
+      <br />
+      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
+      e. g. it is the name of a DBRecord in a V3 IOC.
+      <br />
+      <b>local</b> only works if generateLinkedRecord is true.
+     </dd>
+   <dt>linkedRecordName</dt>
+     <dd>
+       The name of the channel to which records
+       exampleMonitorLink, exampleGetLink, and examplePutLink connect.
+     </dd>
+   <dt>generateLinkedRecord</dt>
+     <dd>
+      If true then record generateLinkedRecord is allocated in the same IOC.
+     </dd>
+</dl>
+<h2>exampleLinkClient</h2>
+<p>exampleLinkClient supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleLink
+mrk> scripts/exampleLinkClient -help
+provider linkedRecordName
+default
+pva doubleArray
+</pre>
+The arguments are:
+<dl>
+   <dt>provider</dt>
+     <dd>
+      This can be <b>pva</b> or <b>ca</b> or <b>local</b>.
+      <br />
+      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
+      e. g. it is the name of a DBRecord in a V3 IOC.
+      <br />
+      <b>local</b> only works if generateLinkedRecord is true.
+     </dd>
+   <dt>linkedRecordName</dt>
+     <dd>
+       The name of the channel to which records
+       exampleMonitorLink, exampleGetLink, and examplePutLink connect.
+     </dd>
+</dl>
+<h2>doubleArrayMain</h2>
+<p>doubleArrayMain supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleLink
+mrk> scripts/exampleLinkdoubleArrayMain -help
+doubleArrayRecordName
+default
+doubleArrayExternal
+</pre>
+The argument is:
+<dl>
+   <dt>doubleArrayRecordName</dt>
+     <dd>
+     The channel name of the PVRecord.
+     </dd>
+   <dt>linkedRecordName</dt>
+     <dd>
+       The name of the channel to which records
+       exampleMonitorLink, exampleGetLink, and examplePutLink connect.
+     </dd>
+</dl>
+<h2>Using exampleLinkMain to test providers pva, local and ca</h2>
+<h3>channel provider pva</h3>
+<p>Just start exampleLinkMain and exampleLinkClient with the default options.</p>
+<h3>channel provider local</h3>
+<p>start exampleLinkMain as:</p>
+<pre>
+scripts/exampleLinkMain local
+</pre>
+<p>exampleLinkClient can be started with the default options.</p>
+<h3>channel provider ca</h3>
+<p>In order to test using provider <b>ca</b>
+a softIoc for record doubleArray must also be started:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/master/exampleJava/exampleLink/v3IOC
+mrk> softIoc st.cmd
+</pre>
+<p>Start exampleLinkMain:</p>
+<pre>
+scripts/exampleLinkMain ca doubleArray false
+</pre>
+<p>Start exampleLinkClient:</p>
+<pre>
+scripts/exampleLinkClient ca
+</pre>
+<h2>Discussion</h2>
+<h3>Access Alternatives</h3>
+<p>The process routine of a PVRecord can access other PVRecords in two ways:</p>
+<dl>
+  <dt>Directly accessing local pvDatabase</dt>
+    <dd>
+    If the other PVRecord is accessed via the master PVDatabase then
+    threading issues are up to the implementation.
+    </dd>
+  <dt>Access via channelProvider pva or ca</dt>
+    <dd>
+      If  provider  <b>pva</b> or <b>ca</b> is used then locking is handled by pvAccess.</dd>
+  <dt>Access via channelProvider local</dt>
+    <dd>
+    If provider  <b>local</b> is used the implementation must be careful that it does not
+    cause deadlocks.
+    When the process method is called the pvRecord for the process method is locked.
+    When it makes a pvAccess get, put, etc request the other record is locked.
+    Thus if a set of pvAccess links are implemented the possibility of deadlocks
+    exists. A simple example is two records that have links to each other.
+    More complex sets are easily created.
+    Unless the developer has complete control of the set of records then remote pvAccess should
+    be used.
+    But this results in more context switches.
+    </dd>
+</dl>
+
+<h3>Data synchronization</h3>
+<p>If pvAccess (provider  <b>pva</b> or <b>ca</b>) is used then it handles data synchronization.
+This is done by making a copy of the data that is transferred between the two pvRecords.
+This is true if either remote or local pvAccess is used.
+Each get, put, etc request results in data being copied between the two records.</p>
+<p>
+If the linked channel is a local pvRecord then,
+for scalar and structure arrays,
+raw data is NOT copied for gets.
+This is because pvData uses shared_vector to hold the raw data.
+Instead of copying the raw data the reference count is incremented.</p>
+<p>For puts the linked array will force a new allocation of the raw data in the linked record,
+i. e. copy on write semantics are enforced. This is done automatically
+by pvData and not by pvDatabase.</p>
+
+
+
+</div> <!-- class="contents" -->
+</body>
+</html>
