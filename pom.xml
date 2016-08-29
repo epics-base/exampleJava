@@ -40,26 +40,7 @@
 
         <plugins>
 
-           <plugin> 
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        
-                    </execution>
-                </executions>
-                <configuration>
-                    <reportOutputDirectory>documentation</reportOutputDirectory>
-                    <destDir>html</destDir>
-                    <overview>documentation/exampleJava.html</overview>
-                    <sourcepath>database/src:exampleClient/src:arrayPerformance:exampleLink:helloPutGet:helloRPC:powerSupply:pvDatabaseRPC:serviceAPI:serviceAPI</sourcepath>
-                </configuration>
-            </plugin>
-
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
                 <version>2.10</version>
                 <executions>
