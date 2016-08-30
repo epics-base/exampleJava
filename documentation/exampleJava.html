@@ -62,11 +62,6 @@ The reader should also be familiar with
       developerGuide
 </a> 
 </p> 
-<h3>Javadoc</h3>
-<p>Javadoc for all the examples is available at
-<a
-href="./html/index.html">Javadoc</a>
-</p>
 <h3>Each example is a template</h3>
 <p>
 Each example can be used as a template for building other applications:
@@ -82,7 +77,6 @@ Each example can be used as a template for building other applications:
 <p>Just type:</p>
 <pre>
 mvn install
-mvn javadoc:javadoc
 </pre>
 
 <h3>Building an individual example</h3>
@@ -93,7 +87,7 @@ mvn install
 
 <h3>exampleCPP and exampleJava</h3>
 <p>Each example that appears in both <b>exampleJava</b> and <b>exampleCPP</b>
-are compatible, i. e. the client from one can communicate with the server
+are compatible, i. e. A client from one can communicate with a server
 from the other.
 </p>
 
@@ -145,7 +139,12 @@ channel name as the position PV.
 
 <h3>exampleLink</h3>
 <p>
-This implements a V3 IOC that has a PVRecord doubleArray and a PVRecord exampleLink that monitors changes to doubleArray. PVRecord exampleLink uses pvAccess client code to monitor for changes in doubleArray. It can use either provider local, pva, or ca to connect to doubleArray.
+This implements a server that has records exampleGetLink, exampleMonitorLink, and examplePutLink.
+Each has a link to another record (default name is doubleArray).
+The other record can be in the same server or in another server including a V3 IOC DBRecord.
+</p>
+<p>
+The example records can use provider local, pva, or ca to connect to doubleArray.
 </p>
 <p>Documentation:<a href="./exampleLink.html">exampleLink</a></p>
 <h3>powerSupply</h3>
