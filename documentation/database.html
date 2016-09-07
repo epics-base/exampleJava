@@ -26,17 +26,11 @@
 
 <div class="head">
 <h1>EPICS exampleJava/database</h1>
-<h2 class="nocount">Release 4.1 - 2016.03.14</h2>
+<h2 class="nocount">2016.08.26</h2>
 
 <h2 class="nocount">Abstract</h2>
 <p>database provides a set of PVRecords as defined by pvDatabaseJava.
 </p>
-  <!-- last para of Abstract is boilerplate reference to EPICS -->
-      <p>For more information about EPICS generally, please refer to the home page of the <a
-       href="http://www.aps.anl.gov/epics/">Experimental Physics and Industrial
-      Control System</a>.</p>
-
-
 </div> <!-- head -->
 
 <div id="toc">
@@ -47,17 +41,13 @@
 <div id="contents" class="contents">	  
 <hr />
 
-<h2>Overview</h2>
-<p>In directory database/shell there is a file <b>sourceEXAMPLE</b>.
-Before you can start the example database you must create a file <b>source</b>.
-To do this copy <b>sourceEXAMPLE</b> to <b>source</b> and
-edit it so that <b>EPICSV4</b> is defined correctly.
-</p>
-<p>The database can then be started as follows:</p>
+<h2>Start exampleDatabase</h2>
+
+<p>The database can then be started on linux as follows:</p>
 <pre>
 mrk&gt; pwd
-/home/epicsv4/master/exampleJava/database/shell
-mrk&gt; ./exampleDatabase
+/home/epicsv4/master/exampleJava/database
+mrk&gt; scripts/exampleDatabase
 </pre>
 <p>The example database has the following PVRecords:</p>
 <pre>
@@ -120,7 +110,8 @@ PVRvariantUnionArray
        The code is described in the following sub - section.
        It also has the main program</dd>
 </dl>
-<h3>ExampleDatabase.java</h3>
+<h2>ExampleDatabase.java</h2>
+<h3>Private methods</h3>
 <p>This has a number of private methods:</p>
 <dl>
    <dt>createRecords</dt>
@@ -140,8 +131,8 @@ PVRvariantUnionArray
       <dd>Creates a record with a value field that a structureArray.</dd>
 </dl>
 
-<p><b>ExampleDatabase::main</b>
-creates all the PVRecords that make up the
+<h3>ExampleDatabase::main</h3>
+<p>creates all the PVRecords that make up the
 example database.</p>
 <p>It:</p>
 <dl>

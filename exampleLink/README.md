@@ -2,6 +2,9 @@
 
 This example implements a PVRecord that accesses another PVRecord.
 
+Specific explanations and instructions can be found in the documentation of the parent 
+module `exampleJava`.
+
 ## Building
 
 In the exampleJava/exampleLink directory

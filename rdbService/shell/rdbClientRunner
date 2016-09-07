@@ -1,0 +1,35 @@
+#!/bin/bash
+#!-*- sh -*-
+#
+# Abs: rdb ClientRunner executes the rdbClient EV4 client.
+#
+# Rem: rdbClient is a simple example of an EPICS v4 RPC service client demonstrating 
+#      how one might use EPICS V4 to get data out of a relational database like Oracle.
+#
+# Args: $1 the name of a query (a SQL SELECT statement) to execute in the db.
+#       $2 whether you want column or row oriented output (column is default)
+#       $3 whether you want headings (the names of the db columns) in your printout     
+#
+# Usage: Execute rdbClientRunner anytime while rdbServerRunner is running. It
+#        takes one non-optional argument, being the name of a query that itself
+#        is understood by your rdbServer to identify a SQL select statement. 
+# 
+#         > ./rdbClientRunner name-of-query-understood-by-your-server
+#
+#         Examples: 
+#         bash-3.2$ ./rdbClientRunner swissfel:alldevices
+#                   ./rdbClientRunner sls:allmagnetdata col nolabels 
+#                   
+# 
+# Ref: <TODO>
+# ----------------------------------------------------------------------------
+# Auth: 14-Sep-2011, Greg White (greg@slac.stanford.edu)
+# Mod:  
+# ============================================================================
+
+source rdb_setup.bash
+
+java -client services.rdbService/RdbClient $1 ${2:-col} ${3:-labels}
+
+exit $?
+

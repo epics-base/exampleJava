@@ -24,7 +24,7 @@ public class ExampleLinkClient
         String provider = "pva";
         String doubleArray = "doubleArray";
         if(argc==1 && args[0].endsWith("-help")) {
-            System.out.println("provider");
+            System.out.println("provider linkedRecordName");
             System.out.println("default");
             System.out.println(provider + " " + doubleArray);
             System.exit(0);

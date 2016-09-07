@@ -4,6 +4,9 @@ A pvAccess server that has a PVRecord that supports Channel RPC as well as
 the usual operations: Channel Get, Put and Monitor and get introspection
 data.
 
+Specific explanations and instructions can be found in the documentation of the parent 
+module `exampleJava`.
+
 It illustrates synchronous and asynchronous RPC services, selecting services
 based on the supplied pvRequest and using EPICS V4 to talk to an existing
 object which has no knowledge of EPICS and call its methods, so creating 

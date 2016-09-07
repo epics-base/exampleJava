@@ -1,23 +1,88 @@
-RDBSERVICE_README.txt
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>EPICS exampleJava/rdbServicet</title>
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/base.css" />
+  <link rel="stylesheet" type="text/css"
+  href="http://epics-pvdata.sourceforge.net/epicsv4.css" />
+  <style type="text/css">
+/*<![CDATA[*/
+     .about { margin-left: 3em; margin-right: 3em; font-size: .83em}
+     table { margin-left: auto; margin-right: auto }
+     .diagram { text-align: center; margin: 2.5em 0 }
+     body { margin-right: 10% }
+/*]]>*/</style>
 
-This is the README file of the rdbService module. rdbService is a 
+ <!-- Script that generates the Table of Contents -->
+  <script type="text/javascript" src="http://epics-pvdata.sourceforge.net/script/tocgen.js"></script>
+
+</head>
+
+<body>
+
+<div class="head">
+<h1>EPICS exampleJava/rdbService</h1>
+<h2 class="nocount">2016.08.26</h2>
+
+<h2 class="nocount">Abstract</h2>
+<p>
+<b>rdbService is an example EPICS V4 relational database service.</b>
+</p>
+
+</div> <!-- head -->
+
+<div id="toc">
+  <h2 class="nocount">Table of Contents</h2>
+</div>
+
+<!-- Place what you would like in the Table of Contents, inside the contents div -->
+<div id="contents" class="contents">	  
+<hr />
+
+<h2>Status</h2>
+<p><b>Warning:</b> rdbService does not run as delivered with EPICS V4 release 4.6</p>
+<p>In addition to the components delivered with release 4.6, it requires access to a relational database.
+This example was created by Greg White at LCLS and was used to access an LCLS Oracle database.
+The example is similar to what was delivered with EPICS V4 release 4.5.
+The following are differences:</p>
+<dl>
+   <dt>pom.xml</dt>
+      <dd>Changed to be like the other examples provided with exampleJava</dd>
+   <dt>scripts</dt>
+      <dd>The 4.6 way to start rdbClient and rdbService.<br />
+       Note that rdbService fails because it does not connect to Oracle.
+      </dd>
+   <dt>shell/*</dt>
+      <dd>In release 4.5 these were in <b>exampleJava/src/services/rdbService</b>.<br />
+         They have not been changed and someone will have to figure out what to do with them.
+      </dd>
+   <dt>RDBSERVICE_README.txt</dt>
+      <dd>Replaced by this document</dd>
+</dl>
+<p>If someone has questions about this example please contact Greg White at LCLS.</p>
+
+<h2>Overview</h2>
+<p><b>rdbService</b> is a 
 minimal EPICS V4 service which demonstrates the use of EPICS V4 RPC support.
 It implements a relational database service, which accesses a relational
 database on behalf of a pvAccess client, shows how users can trivially 
-get data from a db like Oracle.
-
+get data from a db like Oracle.</p>
+<pre>
 Auth: Greg White, 13-Oct-2011 (greg@slac.stanford.edu) / gregory.white@psi.ch
 Mod:  Greg White,  9-Nov-2012 (greg@slac.stanford.edu) / gregory.white@psi.ch
       Updated for EPICS V4 beta 2 APIs and techniques.
-
-      
-EXAMPLE
--------
+</pre>
+<h3>Example</h3>
+<p>
 The following is an example of running the client. This examples gets details
 about all the devices in the SwissFEL Test accelerator from the PSI Oracle database,
-and prints them to the terminal. For brevity, only 6 rows of the output are included here:
-
-  % ./rdbClientRunner swissfeltest:alldevices
+and prints them to the terminal. For brevity, only 6 rows of the output are included here:</p>
+<pre>
+   ./rdbClientRunner swissfeltest:alldevices
         NAME         PREFIX  SUFFIX                 DESCRIPTION                    RESPONSIBLE    
     F10BC-VVPG24010    F10BC    VVPG                           valve gate DN 40     Lothar Schulz   
        F10BC-MCRY10    F10BC    MCRY                           corrector magnet    Marco Negrazus  
@@ -25,26 +90,26 @@ and prints them to the terminal. For brevity, only 6 rows of the output are incl
        F10BC-MCRX10    F10BC    MCRX                           corrector magnet   Marco Negrazius   
     F10BC-VCHA24010    F10BC    VCHA                             dipole chamber     Lothar Schulz  
        F10BC-MBND10    F10BC    MBND                                     dipole    Marco Negrazus   
-  <rows and columns snipped for clarity>
+  &lt;rows and columns snipped for clarity&gt;
+</pre>
 
-
-SUMMARY
--------
-
-rdbService is a minimum client and server implemented in the EPICS v4 RPC "framework" intended
+<h3>Summary</h3>
+<p>
+rdbService is a minimum client and server implemented in the EPICS V4 RPC "framework" intended
 to show programming required to implement a service that gets data out 
 of a relational database, like Oracle. The server side receives a named request for 
 data, such as "swissFEL:allQUADs" and finds the SQL SELECT (or equivalent) database 
 query for that name. It then executes the database query, and returns the resulting 
 table of data to the client. 
-	RdbService illustrates mapping a JDBC ResultSet returned by a relational DB query,
+</p>
+<p>
+RdbService illustrates mapping a JDBC ResultSet returned by a relational DB query,
 to a PVStructure (in fact, specifically an early version of the NTTable normative type), 
 extracting the data from a PVStructure (see use of GetHelper class) and a tabular data formatting
 utility useful for printing the tabular contents of an NTTable (see use of NamedValues class).
-
-
-FILES THAT COMPRISE THE RDB SERVICE EXAMPLE
--------------------------------------------
+</p>
+<h2>Files for rdbService example</h2>
+<pre>
 RdbService.java                 Java source code of the server side of the example
 RdbServiceConnection.java       Java source code of the server side of the example handling the RDB connection
 RdbClient.java                  Java source code of the client side of the example
@@ -54,95 +119,121 @@ rdbServerRunner                 A unix (bash) executable script to run the serve
 rdb_setup.bash                  A unix (bash) source script which initializes the 
                                 runtime environment (as written, for both client and server).
 UnableToGetDataException        A simple Exception class used to indicate inability to get data.
+</pre>
 
 
-REQUISITES
-----------
-EPICS V4 components. Basically, check these repos out of EPICS V4 Mercurial
-1. caj and jca, prerequisities of pvAccessJava. If you acquired pvAccessJava by
+<h2>Requisites</h2>
+<p>
+EPICS V4 components. Basically, check these repos out of EPICS V4 Mercurial</p>
+<ol>
+  <li>caj and jca, prerequisities of pvAccessJava. If you acquired pvAccessJava by
    by maven, you will have the right versions in your maven repo.
-2. pvAccessJava - for PVAccess 
-3. pvDataJava   - for PVData 
-4. exampleJava   - for the rdbService java classes and config files.
+  </li>
+  <li>pvAccessJava - for PVAccess</li> 
+  <li>pvDataJava   - for PVData</li>
+  <li>exampleJava   - for the rdbService java classes and config files.</li>
+</ol>
 
-CONFIGURATION
--------------
-0. Most importantly, work out how your rdbService server side will translate the names
-   it is given, like "myaccelerators:magnetdata" into a SQL SELECT statement. As shipped
-   rdbService does this in RdbServiceConnection, by looking up the name it was given in 
-   a trivial 2-column Oracle table called EIDA_NAMES (see RdbServiceFactory.java). Eg:
-
-   sls:alldevices	         Select * from sls.alldevices_v
-   sls:allmagnets	         Select * from sls.magnetdevice_v order by domain,ds
-   sls:allmagnetdata	     Select * from sls.magnetddata_v order by type
-   swissfeltest:sectiontree	 Select *  from swissfel.swissfel_test_tree_v
-
-   Then edit your version of rdbServiceRunner to pass the right Java Properties (-Ds)
-   
-1. Edit your version of common/script/pvCommon_setup.bash
-
-2. Edit your version of exampleJava/src/rdbService/rdbSetup.bash and set it for your environment.
- 
-EXECUTION
----------
+<h2>Configuration</h2>
+<p>Do the following:</p>
+<ul>
+<li>rdbServiceRunner
+<p>Most importantly, work out how your rdbService server side will translate the names
+it is given, like "myaccelerators:magnetdata" into a SQL SELECT statement. As shipped
+rdbService does this in RdbServiceConnection, by looking up the name it was given in 
+a trivial 2-column Oracle table called EIDA_NAMES (see RdbServiceFactory.java). Eg:
+</p>
+<pre>
+sls:alldevices	         Select * from sls.alldevices_v
+sls:allmagnets	         Select * from sls.magnetdevice_v order by domain,ds
+sls:allmagnetdata	 Select * from sls.magnetddata_v order by type
+swissfeltest:sectiontre  Select *  from swissfel.swissfel_test_tree_v
+</pre>
+<p>
+Then edit your version of rdbServiceRunner to pass the right Java Properties (-Ds)
+</p>
+</li>
+<li>
+Edit your version of common/script/pvCommon_setup.bash
+</li>
+<li>
+Edit your version of exampleJava/src/rdbService/rdbSetup.bash and set it for your environment.
+</li>
+</ul>
+<h2>Execution</h2>
+<p>
 This section describes how you start server and client sides of the rdb Service. 
-Start the server side first.
-
-To start the rdbService server 
-------------------------------
-** If you encounter issues, you might start with 
-   http://epics-pvdata.sourceforge.net/troubleshooting.html **
-
-1. cd to the directory containing the rdbService source files:
-
-   E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
-  
-2. If you have never started the server before (for instance you are deploying a fresh install), 
+</p>
+<h3>Start Server</h3>
+<p>
+Start the server side first.<br />
+If you encounter issues, you might start with 
+<a href="http://epics-pvdata.sourceforge.net/troubleshooting.html">troubleshooting</a>
+</p>
+<p>
+To start the rdbService server</p>
+<ol>
+    <li>cd to the directory containing the rdbService source files:
+<pre>
+ cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
+</pre>
+    </li>
+    <li>  
+    If you have never started the server before (for instance you are deploying a fresh install), 
    then you'll need to edit rdb_setup.bash to change value of WORKSPACE.
-
-3. Start the server in one terminal 
-
-   E.g. % ./rdbServerRunner
+   </li>
+    <li>  
+    Start the server in one terminal 
+<pre>
+./rdbServerRunner
+</pre>
    
    You should see, at the end of the startup echos, "Running server ..."
-  
-4. Terminate the server with a SIGTERM (like CTRL-C in its process window) - after
+   </li>
+    <li> 
+    Terminate the server with a SIGTERM (like CTRL-C in its process window) - after
    you've tested it with the client below of course.
-   
-   
-To run the rdbService example client
---------------------------------------------
-In another window from the server:
- 
+   </li>
+</ol>
+<h3>Start Client</h3>
+  
+<p>In another window from the server</p>
+<ol>
+   <li>
 1. cd to the directory containing the rdbService files (both client and server are in the same dir 
    for demo purposes)
-   
-   E.g. % cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
- 
-2. Execute the client side example runner script rdbClientRunner, giving as an argument the name
+<pre>
+% cd ~/Development/epicsV4/workspace_hg_beta2/exampleJava/src/services/rdbService
+</pre>
+   </li>
+   <li>
+    Execute the client side example runner script rdbClientRunner, giving as an argument the name
    of some query you know is understood by the server. In this example "LCLS:elementInfo.byZ" is 
    theis "key" understood by the rdbService to lookup the SQL SELECT string which is itself 
    the SQL query the service executes to get the data. 
- 
-   E.g. % ./rdbClientRunner  swissfeltest:alldiag
-   
+<pre>
+% ./rdbClientRunner  swissfeltest:alldiag
+</pre>
    Alternatively, use the getRdb wrapper of the client side executable:
-   
-   E.g. % getRdb swissfeltest:alldiag
-   
-
-IMPLEMENTATION DETAILS
-======================
+<pre>   
+% getRdb swissfeltest:alldiag
+</pre>
+   </li>
+</ol>
+<h2>Implementation Details</h2>
+<p>
 At PSI there is an Oracle database for SLS and anther for SWissFEL projects. A single oracle "schema"
 named EIDA has been granted read access to both of these. The example rdbService uses that 
 schema to access data in the other 2 schema. 
-
+</p>
+<p>
 The name to SQL query mapping is stored, in this example, within the EIDA schema itself (though
 other implementations may like to keep the mapping elsewhere, such as in a directory service). 
 Specifically, EIDA_NAMES is a table in EIDA, which just has 2 important columns, the "names" of
 queries (what a user asks for), and the SQL statement equivalent to that query (the SQL
 that the rdb Server executes when the user asks for a given name. Here is an extract from EIDA_NAMES:
-
+</p>
+<pre>
 NAME                        QRY
 ------------------------    ---------------------------------------------------------------
 sls:alldevices	            Select * from sls.alldevices_v
@@ -150,13 +241,14 @@ sls:allmagnets	            Select * from sls.magnetdevice_v order by domain,ds
 sls:allmagnetdata	        Select * from sls.magnetddata_v order by type
 swissfeltest:sectiontree	Select * from swissfel.swissfel_test_tree_v
 swissfeltest:alldevices	    Select * from swissfel.feltest_heilig_v order by PREFIX,"Z0(M)"
-<many rows snipped for clarity>
-
+&lt;many rows snipped for clarity>
+</pre>
+<p>
 So, when a user asks for, for example, swissfeltest:alldevices, the rdbService first looks
 in EIDA_NAMES to find the QRY whose NAME is swissfeltest:alldevices, and then it executes the
 SQL statement it finds 'Select * from swissfel.feltest_heilig_v order by PREFIX,"Z0(M)". Simple as that.
-
-Eg:
+</p>
+<pre>
 [gregsmac:exampleJava/src/rdbService] greg% ./rdbClientRunner swissfeltest:alldevices | more
         NAME         PREFIX  SUFFIX                 DESCRIPTION                    RESPONSIBLE    
     F10BC-VVPG24010    F10BC    VVPG                           valve gate DN 40     Lothar Schulz   
@@ -165,6 +257,10 @@ Eg:
        F10BC-MCRX10    F10BC    MCRX                           corrector magnet   Marco Negrazius   
     F10BC-VCHA24010    F10BC    VCHA                             dipole chamber     Lothar Schulz  
        F10BC-MBND10    F10BC    MBND                                     dipole    Marco Negrazus   
-<rows and columns snipped for clarity>
+&lt;rows and columns snipped for clarity>
+</pre>
 
 
+</div> <!-- class="contents" -->
+</body>
+</html>

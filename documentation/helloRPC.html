@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-  <title>EPICS exampleJava/rdbServicet</title>
+  <title>EPICS exampleJava/helloRPCt</title>
   <link rel="stylesheet" type="text/css"
   href="http://epics-pvdata.sourceforge.net/base.css" />
   <link rel="stylesheet" type="text/css"
@@ -25,19 +25,13 @@
 <body>
 
 <div class="head">
-<h1>EPICS exampleJava/rdbServicet</h1>
-<h2 class="nocount">Release 4.1 - 2016.04.07</h2>
+<h1>EPICS exampleJava/helloRPC</h1>
+<h2 class="nocount">2016.08.26</h2>
 
 <h2 class="nocount">Abstract</h2>
 <p>
-<b>rdbServicet- NEEDS DOCUMENTATION</b>
+<b>helloRPC</b> implements a simple channelRPC service.
 </p>
-  <!-- last para of Abstract is boilerplate reference to EPICS -->
-      <p>For more information about EPICS generally, please refer to the home page of the <a
-       href="http://www.aps.anl.gov/epics/">Experimental Physics and Industrial
-      Control System</a>.</p>
-
-
 </div> <!-- head -->
 
 <div id="toc">
@@ -48,8 +42,27 @@
 <div id="contents" class="contents">	  
 <hr />
 
-<h2>Overview</h2>
-<p><b>NOT YET WRITTEN</b></p>
+<h2>Running</h2>
+<h3>Server</h3>
+<p>On linux in the helloRPC directory enter:</p>
+<pre>
+scripts/helloService
+</pre>
+<p>There is also a <b>scripts/helloService.bat</b> file for windows.
+</p>
+<h3>Client</h3>
+<p>On linux in the helloRPC directory the following are examples of running the client</p>
+<pre>
+mrk> scripts/helloClient
+Hello anonymous
+mrk> scripts/helloClient Me
+Hello Me
+mrk> 
+</pre>
+<p>There is also a <b>scripts/helloClient.bat</b> file for windows.</p>
+<h2>Some Details</h2>
+<p>This is a starting point for writing an RPC service without using <strong>pvDatabaseJava</strong>.</p>
+<p>But note that example <strong>database</strong> has a similar example implemented via <strong>pvDatabaseJava</strong>, which allows clients to monitor the result of each request.</p>
 
 </div> <!-- class="contents" -->
 </body>

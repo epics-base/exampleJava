@@ -2,6 +2,8 @@
 
 A pvAccess server that has a database of PVRecords.
 
+Specific explanations and instructions can be found in the documentation of the parent 
+module `exampleJava`.
 
 ## Building
 

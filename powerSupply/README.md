@@ -3,6 +3,9 @@
 
 This is an example of creating a service that requires a somewhat complicated top level PVStructure.
 
+Specific explanations and instructions can be found in the documentation of the parent 
+module `exampleJava`.
+
 The example record has the structure:
 
     powerSupply
