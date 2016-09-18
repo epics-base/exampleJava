@@ -8,7 +8,7 @@
     <parent>
         <groupId>org.epics</groupId>
         <artifactId>epics-examples</artifactId>
-        <version>4.2.2</version>
+        <version>4.2.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>epics-examples-arrayPerformance</artifactId>
@@ -19,7 +19,7 @@
             <groupId>org.epics</groupId>
             <artifactId>epics-core</artifactId>
             <type>pom</type>
-            <version>4.6.0</version>
+            <version>4.6.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
