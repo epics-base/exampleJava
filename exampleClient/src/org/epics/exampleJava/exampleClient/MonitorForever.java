@@ -53,18 +53,23 @@ public class MonitorForever
     {
         String provider ="pva";
         String channelName ="PVRdouble";
+        String request = "value,alarm,timeStamp";
         boolean  debug = false;
         int nargs = args.length;
         if(nargs==1 && args[0].equals("-help")) {
-            System.out.println("provider channelName  debug");
+            System.out.println("provider channelName request debug");
             System.out.println("default");
-            System.out.println(provider + " " + channelName + " " + debug);
+            System.out.println(provider
+                + " " + channelName
+                + " " + request
+                + " " + debug);
             return;
         }
         if(nargs>0) provider = args[0];
         if(nargs>1) channelName = args[1];
-        if(nargs>2) {
-            String value = args[2];
+        if(nargs>2) request = args[2];
+        if(nargs>3) {
+            String value = args[3];
             debug = (value.equals("true") ? true : false);
         }
         boolean pvaSrv = provider.contains("pva") ? true : false;
@@ -78,6 +83,7 @@ public class MonitorForever
             + " pvaSrv" + pvaSrv
             + " caSrv" + caSrv
             + " channelName " + channelName
+            + " request " + request
             + " debug " + debug
         );
         System.out.println("_____monitorForever starting_______");
@@ -85,7 +91,7 @@ public class MonitorForever
             PvaClient pva = PvaClient.get(provider);
             if(debug) PvaClient.setDebug(true);
             ClientMonitorRequester monitorRequester = new ClientMonitorRequester();
-            PvaClientMonitor monitor = pva.channel(channelName,provider).monitor("value,timeStamp",monitorRequester,monitorRequester);
+            PvaClientMonitor monitor = pva.channel(channelName,provider).monitor(request,monitorRequester,monitorRequester);
             System.out.println("Type exit to stop:");
             while(true) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

@@ -44,7 +44,8 @@ public class ExampleDatabase {
     private static final FieldCreate fieldCreate = FieldFactory.getFieldCreate();
     private static final StandardField standardField = StandardFieldFactory.getStandardField();
     private static final PVDataCreate pvDataCreate = PVDataFactory.getPVDataCreate();
-
+    
+    
     static void createStructureArrayRecord(
             PVDatabase master,
             String recordName)
@@ -144,6 +145,62 @@ public class ExampleDatabase {
         boolean result = master.addRecord(pvRecord);
         if(!result) throw new RuntimeException(recordName + " not added");
     }
+    
+    static void createBigRecord(
+            PVDatabase master,
+            String recordName)
+    {
+        Structure top = fieldCreate.createFieldBuilder().
+                add("timeStamp",standardField.timeStamp()) .
+                addNestedStructure("scalar") .
+                    addNestedStructure("boolean") .
+                        add("value",ScalarType.pvBoolean) .
+                    endNested().
+                    addNestedStructure("byte") .
+                        add("value",ScalarType.pvByte) .
+                    endNested().
+                    addNestedStructure("long") .
+                        add("value",ScalarType.pvLong) .
+                    endNested().
+                    addNestedStructure("double") .
+                        add("value",ScalarType.pvDouble) .
+                    endNested().
+                    addNestedStructure("string") .
+                        add("value",ScalarType.pvString) .
+                    endNested().
+                endNested().
+                addNestedStructure("scalarArray") .
+                    addNestedStructure("boolean") .
+                        addArray("value",ScalarType.pvBoolean) .
+                    endNested().
+                    addNestedStructure("byte") .
+                        addArray("value",ScalarType.pvByte) .
+                    endNested().
+                    addNestedStructure("long") .
+                        addArray("value",ScalarType.pvLong) .
+                    endNested().
+                    addNestedStructure("double") .
+                        addArray("value",ScalarType.pvDouble) .
+                    endNested().
+                    addNestedStructure("string") .
+                        addArray("value",ScalarType.pvString) .
+                    endNested().
+                endNested().
+                addNestedStructureArray("structureArray").
+                    add("name",ScalarType.pvString).
+                    add("value",ScalarType.pvString).
+                endNested().
+                addNestedUnion("restrictedUnion").
+                    add("string",ScalarType.pvString).
+                    addArray("stringArray",ScalarType.pvString).
+                endNested().
+                add("variantUnion",fieldCreate.createVariantUnion()).
+            createStructure();
+        PVStructure pvStructure = pvDataCreate.createPVStructure(top);
+        PVRecord pvRecord = new PVRecord(recordName,pvStructure);
+        boolean result = master.addRecord(pvRecord); 
+        if(!result) throw new RuntimeException(recordName + " not added");
+    }
 
     private static void createRecords(
             PVDatabase master,
@@ -218,6 +275,7 @@ public class ExampleDatabase {
             createRegularUnionArrayRecord(master,"PVRrestrictedUnionArray");
             createVariantUnionArrayRecord(master,"PVRvariantUnionArray");
             createDumbPowerSupplyRecord(master,"PVRdumbPowerSupply");
+            createBigRecord(master,"PVRBigRecord");
 
             String recordName = "PVRhelloPutGet";
             pvRecord = ExampleHelloRecord.create(recordName);
