@@ -14,13 +14,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.epics.pvaClient.*;
+import org.epics.pvdata.misc.*;
 
 
 public class GetForever
 {
     static class ChannelStateChangeRequester implements PvaClientChannelStateChangeRequester
     {
-        private boolean connected = true;
+        private boolean connected = false;
 
         @Override
         public void channelStateChange(PvaClientChannel channel, boolean isConnected) {
@@ -35,18 +36,23 @@ public class GetForever
     {
         String provider ="pva";
         String channelName ="PVRdouble";
+        String request = "value,alarm,timeStamp";
         boolean  debug = false;
         int nargs = args.length;
         if(nargs==1 && args[0].equals("-help")) {
-            System.out.println("provider channelName  debug");
+            System.out.println("provider channelName request debug");
             System.out.println("default");
-            System.out.println(provider + " " + channelName + " " + debug);
+            System.out.println(provider
+               + " " + channelName 
+               + " " + request
+               + " " + debug);
             return;
         }
         if(nargs>0) provider = args[0];
         if(nargs>1) channelName = args[1];
-        if(nargs>2) {
-            String value = args[2];
+        if(nargs>2) request = args[2];
+        if(nargs>3) {
+            String value = args[3];
             debug = (value.equals("true") ? true : false);
         }
         boolean pvaSrv = provider.contains("pva") ? true : false;
@@ -60,18 +66,30 @@ public class GetForever
             + " pvaSrv " + pvaSrv
             + " caSrv " + caSrv
             + " channelName " + channelName
+            + " request " + request
             + " debug " + debug
         );
         System.out.println("_____getForever starting_______");
         try {
             PvaClient pva= PvaClient.get(provider);
             if(debug) PvaClient.setDebug(true);
-            PvaClientChannel channel = pva.channel(channelName,provider);
+            PvaClientChannel channel = pva.channel(channelName,provider,0.0);
             ChannelStateChangeRequester stateChangeRequester = new ChannelStateChangeRequester();
+            channel.setStateChangeRequester(stateChangeRequester);
+            PvaClientGet pvaClientGet = null;
             while(true) {
                 if(stateChangeRequester.isConnected()) {
-                    double value =  channel.get().getData().getDouble();
-                    System.out.println("value " + value);
+                    if(pvaClientGet==null) {
+                        pvaClientGet = channel.createGet(request);
+                  }
+                  pvaClientGet.get();
+                  PvaClientGetData data = pvaClientGet.getData();
+                  BitSet bitSet =  data.getChangedBitSet();
+                  if(bitSet.cardinality()>0) {
+                      System.out.println("changed\n"
+                      + data.showChanged()
+                      + "bitSet " + bitSet);
+                  }
                 } else {
                     System.out.println("did not issue get because connection lost");
                 }
