@@ -280,12 +280,10 @@ public class ExampleDatabase {
             String recordName = "PVRhelloPutGet";
             pvRecord = ExampleHelloRecord.create(recordName);
             master.addRecord(pvRecord);
-            
-            recordName = "PVRBusy";
-            pvRecord = ExampleBusyRecord.create(recordName);
+
+            recordName = "PVRsoft";
+            pvRecord = ExampleSoftRecord.create(recordName);
             master.addRecord(pvRecord);
-
-
             recordName = "PVRhelloRPC";
             pvRecord = ExampleHelloRPC.create(recordName);
             master.addRecord(pvRecord);
