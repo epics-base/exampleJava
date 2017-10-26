@@ -281,6 +281,9 @@ public class ExampleDatabase {
             pvRecord = ExampleHelloRecord.create(recordName);
             master.addRecord(pvRecord);
 
+            recordName = "PVRsoft";
+            pvRecord = ExampleSoftRecord.create(recordName);
+            master.addRecord(pvRecord);
             recordName = "PVRhelloRPC";
             pvRecord = ExampleHelloRPC.create(recordName);
             master.addRecord(pvRecord);

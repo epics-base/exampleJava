@@ -67,13 +67,13 @@ public class PutUnionForever
             System.out.println(channelName  + " request " + request + " " + debug);
             return;
         }
-        if(nargs>0) channelName = args[0];
-        if(nargs>1) request = args[1];
-        if(nargs>2) {
-            String value = args[2];
+        if(nargs>0) provider = args[0];
+        if(nargs>1) channelName = args[1];
+        if(nargs>2) request = args[2];
+        if(nargs>3) {
+            String value = args[3];
             debug = (value.equals("true") ? true : false);
         }
-        
         System.out.println(" channelName " + channelName + " request " + request + " debug " + debug);
         System.out.println("____PutUnionForever starting_______");
         try {
