@@ -103,6 +103,8 @@ public class MonitorForever
                         System.out.println("IO error trying to read input!");
                     }
                     if(valueIn.equals("exit")) break;
+                    if(valueIn.equals("stop")) monitor.stop();
+                    if(valueIn.equals("start")) monitor.start();
                     if(monitorRequester.unlistenCalled) {
                         System.out.println("exiting because unlisten was called");
                         break;
