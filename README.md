@@ -1,4 +1,4 @@
-# exampleJava
+exampleJava   [![Build Status](https://travis-ci.org/epics-base/exampleJava.svg?branch=master)](https://travis-ci.org/epics-base/exampleJava)
 
 This project provides a set of examples of client and server code for pvAccess.
 Each example can be built separately by building in the example subdirectory.

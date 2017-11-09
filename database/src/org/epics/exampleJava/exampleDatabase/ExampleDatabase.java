@@ -36,7 +36,9 @@ import org.epics.pvdata.pv.StandardField;
 import org.epics.pvdata.pv.Structure;
 import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
-import org.epics.pvdatabase.*;
+import org.epics.pvdatabase.PVRecord;
+import org.epics.pvdatabase.RemoveRecord;
+import org.epics.pvdatabase.TraceRecord;
 import org.epics.pvdatabase.pva.ChannelProviderLocalFactory;
 
 public class ExampleDatabase {

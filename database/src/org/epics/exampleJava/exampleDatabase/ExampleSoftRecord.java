@@ -9,21 +9,13 @@
  */
 package org.epics.exampleJava.exampleDatabase;
 
-import org.epics.pvdata.factory.FieldFactory;
-import org.epics.pvdata.factory.PVDataFactory;
-import org.epics.pvdata.factory.StandardFieldFactory;
-import org.epics.pvdata.pv.FieldBuilder;
-import org.epics.pvdata.pv.FieldCreate;
-import org.epics.pvdata.pv.PVDataCreate;
-import org.epics.pvdata.pv.PVString;
+import org.epics.nt.NTScalar;
+import org.epics.nt.NTScalarBuilder;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
-import org.epics.pvdata.pv.StandardField;
-import org.epics.pvdata.pv.Structure;
 import org.epics.pvdatabase.PVDatabase;
 import org.epics.pvdatabase.PVDatabaseFactory;
 import org.epics.pvdatabase.PVRecord;
-import org.epics.nt.*;
 
 /**
  * A PVRecord that has fields that change value only because a client put.
