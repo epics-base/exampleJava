@@ -26,9 +26,9 @@
 
 <div class="head">
 <h1>EPICS exampleJava/exampleClient</h1>
-<h2 class="nocount">2016.08.26</h2>
+<h3 class="nocount">2017.12.19</h3>
 
-<h2 class="nocount">Abstract</h2>
+<h3 class="nocount">Abstract</h3>
 <p>
 <b>exampleClient</b> has examples for <b>pvaClientJava
 </b>
@@ -45,14 +45,243 @@ Many of the examples are adapted from exampleClient.
 </div> <!-- head -->
 
 <div id="toc">
-  <h2 class="nocount">Table of Contents</h2>
+  <h3 class="nocount">Table of Contents</h3>
 </div>
 
 <!-- Place what you would like in the Table of Contents, inside the contents div -->
 <div id="contents" class="contents">	  
 <hr />
 
-<h2>examplePvaClientGet</h2>
+<h2>Non-blocking Examples</h2>
+<p>These are examples that never block while waiting for a channel to connect.
+They are good examples for use by display manager tools that want to access channels
+via pvAccessJava. The examples all use pvaClientJava rather than pvAccessJava itself.
+</p>
+<p>Each example implements a class that can be used as a starting point for
+imlementing pvAccess channel connections for a display manager.
+</p>
+
+<h3>get</h3>
+<p>This example uses PvaClientGet. It supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleClient
+mrk> scripts/get -help
+-p provider -r request -d debug channelNames
+default
+-p pva -r value,alarm,timeStamp -d false PVRdouble
+mrk> 
+</pre>
+The arguments are:
+<dl>
+   <dt>provider</dt>
+     <dd>
+      This can be either <b>pva</b> or <b>ca</b>.
+      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
+      e. g. it is the name of a DBRecord in a V3 IOC.
+     </dd>
+   <dt>request</dt>
+     <dd>
+      The request for creating the channel get,
+     </dd>
+   <dt>debug</dt>
+     <dd>
+      If true then debug messages are displayed.
+     </dd>
+   <dt>channelNames</dt>
+     <dd>
+       A list of channel names.
+     </dd>
+
+</dl>
+
+<p>
+When the example is started a PvaClientChannel is created and issueConnect is called.
+The first time the channel connects a PvaChannelGet is created and issueConnect is called.
+</p>
+<p>The example then enters a forever loop the lets the client enter commands.
+Two commands are accepted:</p>
+<dl>
+   <dt>exit</dt>
+     <dd>The example terminates.</dd>
+   <dt>get</dt>
+     <dd>A channel get is requested. The results are displayed.</dd>
+</dl>
+
+<p>
+Note that if a channel disconnects and reconnects between gets the example should continuue
+to work.
+</p>
+<h3>Put</h3>
+<p>This example uses PvaClientPut. It supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleClient
+mrk> scripts/monitor -help
+-p provider -r put -d debug channelNames
+default
+-p pva -r value -d false PVRdouble
+mrk> 
+</pre>
+The arguments are:
+<dl>
+   <dt>provider</dt>
+     <dd>
+      This can be either <b>pva</b> or <b>ca</b>.
+      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
+      e. g. it is the name of a DBRecord in a V3 IOC.
+     </dd>
+   <dt>request</dt>
+     <dd>
+      The request for creating the channel put,
+     </dd>
+   <dt>debug</dt>
+     <dd>
+      If true then debug messages are displayed.
+     </dd>
+   <dt>channelNames</dt>
+     <dd>
+       A list of channel names.
+     </dd>
+
+</dl>
+
+<p>
+When the example is started a PvaClientChannel is created and issueConnect is called.
+The first time the channel connects a PvaChannelPut is created and issueConnect is called.
+</p>
+<p>The example then enters a forever loop the lets the client enter commands.
+Two commands are accepted:</p>
+<dl>
+   <dt>exit</dt>
+     <dd>The example terminates.</dd>
+    <dt>put</dt>
+     <dd>A channel put is requested</dd>
+   <dt>get</dt>
+     <dd>A PvaChannelPut::get is requested. The results are displayed.</dd>
+</dl>
+
+<p>
+Note that if a channel disconnects and reconnects between gets the example should continuue
+to work.
+</p>
+<h3>PutGet</h3>
+<p>This example uses pvaClientPutGet. It supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleClient
+mrk> scripts/monitor -help
+-p provider -r put -d debug channelNames
+default
+-p pva -r putField(argument)getField(result) -d false PVRhelloPutGet
+mrk> 
+</pre>
+The arguments are:
+<dl>
+   <dt>provider</dt>
+     <dd>
+      This can be either <b>pva</b> or <b>ca</b>.
+      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
+      e. g. it is the name of a DBRecord in a V3 IOC.
+     </dd>
+   <dt>request</dt>
+     <dd>
+      The request for creating the channel putGet,
+     </dd>
+   <dt>debug</dt>
+     <dd>
+      If true then debug messages are displayed.
+     </dd>
+   <dt>channelNames</dt>
+     <dd>
+       A list of channel names.
+     </dd>
+
+</dl>
+
+<p>
+When the example is started a PvaClientChannel is created and issueConnect is called.
+The first time the channel connects a PvaChannelGet is created and issueConnect is called.
+</p>
+<p>The example then enters a forever loop the lets the client enter commands.
+Two commands are accepted:</p>
+<dl>
+   <dt>exit</dt>
+     <dd>The example terminates.</dd>
+   <dt>putGet</dt>
+     <dd>A putGet is requested. The results are displayed.</dd>
+   <dt>getPut</dt>
+     <dd>A getPut is requested. The results are displayed.</dd>
+   <dt>getGet</dt>
+     <dd>A getGet is requested. The results are displayed.</dd>
+</dl>
+
+<p>
+Note that if a channel disconnects and reconnects between gets the example should continuue
+to work.
+</p>
+<h3>monitor</h3>
+<p>This example uses pvaClientMonitor. It supports help as follows:</p>
+<pre>
+mrk> pwd
+/home/epicsv4/release4_6/exampleJava/exampleClient
+mrk> scripts/monitor -help
+-p provider -r request -d debug channelNames
+default
+-p pva -r value,alarm,timeStamp -d false PVRdouble
+mrk> 
+</pre>
+The arguments are:
+<dl>
+   <dt>provider</dt>
+     <dd>
+      This can be either <b>pva</b> or <b>ca</b>.
+      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
+      e. g. it is the name of a DBRecord in a V3 IOC.
+     </dd>
+   <dt>request</dt>
+     <dd>
+      The request for creating the channel get,
+     </dd>
+   <dt>debug</dt>
+     <dd>
+      If true then debug messages are displayed.
+     </dd>
+   <dt>channelNames</dt>
+     <dd>
+       A list of channel names.
+     </dd>
+
+</dl>
+
+<p>
+When the example is started a PvaClientChannel is created and issueConnect is called.
+The first time the channel connects a PvaChannelMonitor is created and issueConnect is called.
+</p>
+<p>The example then enters a forever loop the lets the client enter commands.
+Two commands are accepted:</p>
+<dl>
+   <dt>exit</dt>
+     <dd>The example terminates.</dd>
+   <dt>stop</dt>
+     <dd>A stop request is issued</dd>
+    <dt>start</dt>
+     <dd>The client is asked to enter a new request and then
+       PvaChannelMonitor::start is called with the new request.
+    </dd>
+</dl>
+
+<p>
+Note that if a channel disconnects and reconnects between gets the example should continuue
+to work.
+</p>
+
+<h2>Blocking Examples</h2>
+<p>These are examples only work if a channel is already connected when the client starts.
+They are examples that could be used by scripting tools.
+</p>
+
+<h3>ExamplePvaClientGet</h3>
 <p>This has a number of examples:</p>
 <dl>
    <dt>exampleDouble</dt>
@@ -66,12 +295,12 @@ Many of the examples are adapted from exampleClient.
          Like exampleDouble except the data is a scalarArray.
      </dd>
 </dl>
-<h2>examplePvaClientMonitor</h2>
+<h3>ExamplePvaClientMonitor</h3>
 <p>This is an example of creating a monitor on a channel.
 It monitors a scalar double field.
 It also issues puts to the same channel so that it can make the monitors occur.
 </p>
-<h2>examplePvaClientPut</h2>
+<h3>ExamplePvaClientPut</h3>
 <p>This has the folllowing examples:</p>
 <dl>
    <dt>exampleDouble</dt>
@@ -84,109 +313,19 @@ It also issues puts to the same channel so that it can make the monitors occur.
    <dt>examplePVFieldPut</dt>
      <dd>This does a put and then a get.</dd>
 </dl>
-<h2>examplePvaClientProcess</h2>
+<h3>ExamplePvaClientProcess</h3>
 <p>This example makes a process request to a channel.</p>
 
-<h2>examplePvaClientMultiDouble</h2>
+<h3>ExamplePvaClientMultiDouble</h3>
 <p>This is an example of using pvaClientMultiChannel,
 pvaClientMultiGetDouble, pvaClientMultiPutDouble, and pvaClientMultiMonitorDouble.
 </p>
-<h2>examplePvaClientNTMulti</h2>
+<h3>ExamplePvaClientNTMulti</h3>
 <p>This is an example of using pvaClientMultiChannel to get data as an NTMultiChannel.</p>
-<h2>helloWorldPutGet</h2>
+<h3>helloWorldPutGet</h3>
 <p>This is an example of issuing a pvaClientPutGet.</p>
-<h2>helloWorldRPC</h2>
+<h3>helloWorldRPC</h3>
 <p>This is an example of issuing a pvaClientRPC request.
-</p>
-
-<h2>getForever</h2>
-<p>This example uses pvaClientGet. It supports help as follows:</p>
-<pre>
-mrk> pwd
-/home/epicsv4/release4_6/exampleJava/exampleClient
-mrk> scripts/getForever -help
-provider channelName  debug
-default
-pva PVRdouble false
-mrk> 
-</pre>
-The arguments are:
-<dl>
-   <dt>provider</dt>
-     <dd>
-      This can be either <b>pva</b> or <b>ca</b>.
-      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
-      e. g. it is the name of a DBRecord in a V3 IOC.
-     </dd>
-   <dt>channelName</dt>
-     <dd>
-       The name of the channel.
-     </dd>
-   <dt>debug</dt>
-     <dd>
-      If true then debug messages are displayed/
-     </dd>
-</dl>
-<p>When run an attempt is made to connect to channelName, create a pvaClientGet,
-and a get is issued. If any of these fails an error message is issued and the process
-terminates.
-</p>
-<p>If successful the result of the get is shown and then the process waits for
-input from the console. If exit is entered the process terminates.
-</p>
-<p>
-If the get fails, e. g. the channel has disconnected since the last get,
-an error message is displayed and the process terminates.
-If the get is successful then the result is displayed and the process again waits for
-console input.
-</p>
-<p>
-Note that if a channel disconnects and reconnects between gets the process should continuue
-to work.
-</p>
-
-<h2>monitorForever</h2>
-<p>This example uses pvaClientMonitor. It supports help as follows:</p>
-<pre>
-mrk> pwd
-/home/epicsv4/release4_6/exampleJava/exampleClient
-mrk> scripts/monitorForever -help
-provider channelName  debug
-default
-pva PVRdouble false
-mrk> 
-</pre>
-The arguments are:
-<dl>
-   <dt>provider</dt>
-     <dd>
-      This can be either <b>pva</b> or <b>ca</b>.
-      <b>ca</b> only works if channelName is a accessable via the ca network protocol,
-      e. g. it is the name of a DBRecord in a V3 IOC.
-     </dd>
-   <dt>channelName</dt>
-     <dd>
-       The name of the channel.
-     </dd>
-   <dt>debug</dt>
-     <dd>
-      If true then debug messages are displayed/
-     </dd>
-</dl>
-<p>When run an attempt is made to connect to channelName, create a pvaClientMonitor, and starts monitoring.
-If any of these fail an error message is issued and the process
-terminates.
-</p>
-<p>If successful then output is displayed for each monitor event.
-The process also waits for
-input from the console.
-If exit is entered the process terminates.
-If unlisten was called since the last console intput a message is displayed
-and the process terminates, otherwise the process continues.
-</p>
-<p>
-Note that if a channel disconnects and reconnects between console input
-the process should continuue to work.
 </p>
 
 

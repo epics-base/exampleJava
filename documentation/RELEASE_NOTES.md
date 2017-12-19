@@ -1,6 +1,15 @@
 Release Notes for exampleJava
 =============================
 
+## EPICS 7 Release 4.7
+
+* exampleClient: GetForever, PutForever, MonitorForever no longer exist.
+  These are replaced by Get, Put, and Monitor
+* Get, Put, PutGet, and Monitor are new. They all work even if channel is not connected when
+  they are started.
+* exampleLink: This now has examples for a get, put, and monitor link.
+  Each works even if linked channel does not exist when ExampleLinkMain is started.
+
 ## EPICS V4 Release 4.6
 
 ### Version 4.2
