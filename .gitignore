@@ -4,3 +4,6 @@ documentation/html
 .settings
 shell/source
 nbactions.xml
+
+# For all Mac OS users out there
+**/.DS_Store
