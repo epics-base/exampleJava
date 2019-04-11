@@ -21,11 +21,11 @@ import org.epics.pvdata.property.AlarmSeverity;
 import org.epics.pvdata.property.PVAlarm;
 import org.epics.pvdata.property.PVAlarmFactory;
 import org.epics.pvdata.pv.Convert;
-import org.epics.pvdata.pv.PVDoubleArray;
+import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.StandardPVField;
-import org.epics.pvdata.pv.*;
+import org.epics.pvdata.pv.Status;
 import org.epics.pvdatabase.PVRecord;
 
 public class ExamplePutLinkRecord extends PVRecord

@@ -60,7 +60,7 @@ public class HelloService
         {
             // Extract the arguments. Just one in this case.
             // Report an error by throwing a RPCRequestException.
-            PVString inputPersonNameField = args.getStringField("personsname");
+            PVString inputPersonNameField = args.getStringField("query.personsname");
             if (inputPersonNameField == null)
                 throw new RPCRequestException(StatusType.ERROR,
                         "PVString field with name 'personsname' expected.");

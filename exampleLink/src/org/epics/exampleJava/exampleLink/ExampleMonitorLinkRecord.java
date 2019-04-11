@@ -22,7 +22,6 @@ import org.epics.pvdata.property.AlarmSeverity;
 import org.epics.pvdata.property.PVAlarm;
 import org.epics.pvdata.property.PVAlarmFactory;
 import org.epics.pvdata.pv.Convert;
-import org.epics.pvdata.pv.PVDoubleArray;
 import org.epics.pvdata.pv.PVField;
 import org.epics.pvdata.pv.PVStructure;
 import org.epics.pvdata.pv.ScalarType;
@@ -39,9 +38,6 @@ implements   PvaClientChannelStateChangeRequester,PvaClientMonitorRequester
 
     private static final StandardPVField standardPVField = StandardPVFieldFactory.getStandardPVField();
     private static Convert convert = ConvertFactory.getConvert();
-    private boolean channelConnected = false;
-    private boolean monitorConnected = false;
-    private boolean setAlarmGood = false;
     private PVField pvValue = null;
     private PVStructure pvAlarmField = null;
     private PVAlarm pvAlarm = PVAlarmFactory.create();
@@ -93,9 +89,7 @@ implements   PvaClientChannelStateChangeRequester,PvaClientMonitorRequester
      */
     public void channelStateChange(PvaClientChannel channel, boolean isConnected)
     {
-        channelConnected = isConnected;
         if(isConnected) {
-            setAlarmGood = true;
             if(pvaClientMonitor==null) {
                 pvaClientMonitor = pvaClientChannel.createMonitor("value,alarm");
                 pvaClientMonitor.setRequester(this);
@@ -117,12 +111,8 @@ implements   PvaClientChannelStateChangeRequester,PvaClientMonitorRequester
      */
     public void monitorConnect(Status status, PvaClientMonitor pvaClientMonitor, Structure structure) 
     {
-        if(status.isOK()) {
-            monitorConnected = true;
-            return;
-        }
+        if(status.isOK()) return;
         lock();
-        monitorConnected = false;
         try {
             beginGroupPut();
             alarm.setMessage(status.getMessage());
@@ -139,7 +129,6 @@ implements   PvaClientChannelStateChangeRequester,PvaClientMonitorRequester
      */
     public void unlisten(PvaClientMonitor pvaClientMonitor) {
         lock();
-        monitorConnected = false;
         try {
             beginGroupPut();
             alarm.setMessage("unlisten was called");
@@ -171,11 +160,11 @@ implements   PvaClientChannelStateChangeRequester,PvaClientMonitorRequester
                             alarm.setMessage(linkAlarm.getMessage());
                             setAlarm = true;
                         }
-                        if(alarm.getSeverity()!=(linkAlarm.getSeverity())) {
+                        if(alarm.getSeverity()!=linkAlarm.getSeverity()) {
                             alarm.setSeverity(linkAlarm.getSeverity());
                             setAlarm = true;
                         }
-                        if(alarm.getStatus()!=(linkAlarm.getStatus())) {
+                        if(alarm.getStatus()!=linkAlarm.getStatus()) {
                             alarm.setStatus(linkAlarm.getStatus());
                             setAlarm = true;
                         }
