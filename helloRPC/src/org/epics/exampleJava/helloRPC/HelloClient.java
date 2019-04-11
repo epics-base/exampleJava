@@ -9,14 +9,13 @@ package org.epics.exampleJava.helloRPC;
  * a client/server environment using the ChannelRPC channel type of EPICS V4.  
  */
 
+import org.epics.nt.NTURI;
+import org.epics.nt.NTURIBuilder;
 import org.epics.pvaccess.client.rpc.RPCClientImpl;
 import org.epics.pvaccess.server.rpc.RPCRequestException;
-import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
-import org.epics.pvdata.pv.Field;
-import org.epics.pvdata.pv.FieldCreate;
+import org.epics.pvdata.pv.PVString;
 import org.epics.pvdata.pv.PVStructure;
-import org.epics.pvdata.pv.ScalarType;
 import org.epics.pvdata.pv.Structure;
 
 /**
@@ -32,17 +31,11 @@ import org.epics.pvdata.pv.Structure;
  *          Converted to beta 2.
  * @version Greg White, (greg@slac.stanford.edu), 6-Nov-2012, 
  *          Cleanup and simplification.
+ * @version Marty Kraimer 10-April-2019
+ *          Use NTURI         
  */
 public class HelloClient
 {
-    // Create the "data interface" required to send data to the hello service. That is,
-    // define the client side API of the hello service.
-    private final static FieldCreate fieldCreate = FieldFactory.getFieldCreate();
-    private final static Structure requestStructure =
-            fieldCreate.createStructure(
-                    new String[] { "personsname" },
-                    new Field[] { fieldCreate.createScalar(ScalarType.pvString) });
-
     // Set a pvAccess connection timeout, after which the client gives up trying 
     // to connect to server.
     private final static double REQUEST_TIMEOUT = 3.0;
@@ -59,58 +52,64 @@ public class HelloClient
     {
         // Start the pvAccess client side.
         org.epics.pvaccess.ClientFactory.start();
+        // Create an RPC client to the "helloService" service
+        // (the connection has already started in background).
+        RPCClientImpl client = new RPCClientImpl("helloService");
+        try {
+            NTURIBuilder nturiBuilder = NTURI.createBuilder();
+            Structure requestStructure = nturiBuilder.addQueryString("personsname").createStructure();
+            // Create the data instance used to send data to the server. That
+            // is,
+            // instantiate an instance of the "introspection interface" for the
+            // data interface of
+            // the hello server. The data interface was defined statically
+            // above.
+            PVStructure pvArguments = PVDataFactory.getPVDataCreate().createPVStructure(requestStructure);
 
-        try
-        {
-            // Create an RPC client to the "helloService" service
-            // (the connection has already started in background).
-            RPCClientImpl client = new RPCClientImpl("helloService");
-
-            // Create the data instance used to send data to the server. That is,
-            // instantiate an instance of the "introspection interface" for the data interface of
-            // the hello server. The data interface was defined statically above.
-            PVStructure pvArguments =
-                    PVDataFactory.getPVDataCreate().createPVStructure(requestStructure);
-
-            // Get the value of the first input argument to this executable and use it 
-            // to set the data to be sent to the server through the introspection interface. 
+            System.out.println(pvArguments);
+            // Get the value of the first input argument to this executable and
+            // use it
+            // to set the data to be sent to the server through the
+            // introspection interface.
             String name = args.length > 0 ? args[0] : "anonymous";
-            pvArguments.getStringField("personsname").put(name);
+            pvArguments.getSubField(PVString.class, "query.personsname").put(name);
+            // Create an RPC request and block until response is received. There
+            // is
+            // no need to explicitly wait for connection; this method takes care
+            // of it.
+            // In case of an error, an exception is throw.
+            PVStructure pvResult = client.request(pvArguments, REQUEST_TIMEOUT);
 
-            try
-            {
-                // Create an RPC request and block until response is received. There is
-                // no need to explicitly wait for connection; this method takes care of it.
-                // In case of an error, an exception is throw.
-                PVStructure pvResult = client.request(pvArguments, REQUEST_TIMEOUT);
-
-                // Extract the result using the introspection interface of the returned 
-                // datum, and print it. This particular service never returns a null result.
-                String res = pvResult.getStringField("greeting").get();
-                System.out.println(res);
-            }
-            catch (RPCRequestException ex)
-            {
-                // The client connected to the server, but the server request method issued its 
-                // standard summary exception indicating it couldn't complete the requested task.
-                System.err.println("Acquisition of greeting was not successful, " +
-                        "service responded with an error: " + ex.getMessage());
-            }
-            catch (IllegalStateException ex)
-            {
-                // The client failed to connect to the server. The server isn't running or
-                // some other network related error occurred.
-                System.err.println("Acquisition of greeting was not successful, " +
-                        "failed to connect: "+ ex.getMessage());
-            }
-
-            // Disconnect from the service client.
-            client.destroy();
+            // Extract the result using the introspection interface of the
+            // returned
+            // datum, and print it. This particular service never returns a null
+            // result.
+            String res = pvResult.getStringField("greeting").get();
+            System.out.println(res);
+            
+            System.out.println("The following should fail");
+            requestStructure =
+                    nturiBuilder.addQueryString("junk").createStructure();
+            pvArguments = PVDataFactory.getPVDataCreate().createPVStructure(requestStructure);
+            pvResult = client.request(pvArguments, REQUEST_TIMEOUT);
+            res = pvResult.getStringField("greeting").get();
+            System.out.println(res);
+        } catch (RPCRequestException ex) {
+            // The client connected to the server, but the server request method
+            // issued its
+            // standard summary exception indicating it couldn't complete the
+            // requested task.
+            System.err.println("Acquisition of greeting was not successful, " + "service responded with an error: "
+                    + ex.getMessage());
+        } catch (Exception ex) {
+            // The client failed to connect to the server. The server isn't
+            // running or
+            // some other network related error occurred.
+            System.err
+                    .println("Acquisition of greeting was not successful, " + "failed to connect: " + ex.getMessage());
         }
-        finally
-        {
-            // Stop pvAccess client, so that this application exits cleanly.
-            org.epics.pvaccess.ClientFactory.stop();
-        }
+
+        // Disconnect from the service client.
+        client.destroy();
     }
 }

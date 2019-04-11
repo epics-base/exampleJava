@@ -24,7 +24,7 @@ import org.epics.pvdata.pv.Structure;
 
 
 
-public class Monitor
+public class TestMonitorConnect
 {
 
     static class ClientMonitor implements PvaClientChannelStateChangeRequester,PvaClientMonitorRequester
@@ -39,14 +39,13 @@ public class Monitor
         private boolean unlistenCalled = false;
 
         private PvaClientChannel pvaClientChannel = null;
-        private PvaClientMonitor pvaClientMonitor = null;
+        PvaClientMonitor pvaClientMonitor = null;
 
         void init(PvaClient pvaClient)
         {
 
             pvaClientChannel = pvaClient.createChannel(channelName,providerName);
             pvaClientChannel.setStateChangeRequester(this);
-            pvaClientChannel.issueConnect();
         }
 
         public static ClientMonitor create(
@@ -94,7 +93,7 @@ public class Monitor
          */
         public void monitorConnect(Status status,PvaClientMonitor monitor,Structure structure)
         {
-            System.out.println("channelMonitorConnect " + channelName + " status " + status);
+            System.out.println("channelMonitorConnect " + channelName + " status ");
             if(!status.isOK()) return;
             monitorConnected = true;
             if(isStarted) return;
@@ -123,6 +122,17 @@ public class Monitor
                 monitor.releaseEvent();
             }
         }
+        
+        public boolean connect() 
+        {
+            try {
+                pvaClientChannel.connect(2.0);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        
         public PvaClientMonitor getPvaClientMonitor() {
             return pvaClientMonitor;
         }
@@ -222,6 +232,16 @@ public class Monitor
             int num = channelNames.length;
             ClientMonitor[] clientMonitors = new ClientMonitor[num];
             for(i=0; i<num; ++i) {
+                while(true) {
+                    ClientMonitor clientMonitor = ClientMonitor.create(pva,channelNames[i],provider,request);
+                    System.out.println("calling connect");
+                    if(!clientMonitor.connect()) {
+                        Thread.sleep(200);
+                        clientMonitor.delete();
+                    }
+                    clientMonitors[i] = clientMonitor;
+                    break;
+                }
                 clientMonitors[i] = ClientMonitor.create(pva,channelNames[i],provider,request);
             }
             while(true) {

@@ -13,6 +13,7 @@ package org.epics.exampleJava.exampleClient;
 import org.epics.pvaClient.*;
 import org.epics.pvaClient.PvaClientRPC;
 import org.epics.pvaClient.PvaClientRPCRequester;
+import org.epics.pvaccess.server.rpc.RPCRequestException;
 import org.epics.pvdata.factory.FieldFactory;
 import org.epics.pvdata.factory.PVDataFactory;
 import org.epics.pvdata.pv.FieldCreate;
@@ -73,10 +74,25 @@ public class HelloWorldRPC
         PVString pvArgument = pvRequest.getSubField(PVString.class,"value");
         pvArgument.put("World");
         System.out.println("send " + pvArgument.get());
-        PVStructure pvResult = pva.channel(channelName).rpc(pvRequest);
-        System.out.println("result\n" + pvResult);
+        try {
+            PVStructure pvResult = pva.channel(channelName).rpc(pvRequest);
+            System.out.println("result\n" + pvResult);
+        }
+        catch (RPCRequestException ex)
+        {
+            // The client connected to the server, but the server request method issued its 
+            // standard summary exception indicating it couldn't complete the requested task.
+            System.err.println("Acquisition of greeting was not successful, " +
+                    "service responded with an error: " + ex.getMessage());
+        }
+        catch (Exception ex)
+        {
+            // The client failed to connect to the server. The server isn't running or
+            // some other network related error occurred.
+            System.err.println("RPC request failed , " + ex.getMessage());
+        } 
     }
-    
+
     static void exampleMore(PvaClient pva,String channelName)
     {
         System.out.println("_____exampleMore___");
@@ -86,14 +102,29 @@ public class HelloWorldRPC
         PVStructure pvRequest = pvDataCreate.createPVStructure(topStructure);
         PVString pvArgument = pvRequest.getSubField(PVString.class,"value");
         PvaClientRPC rpc = pva.channel(channelName).createRPC();
-        pvArgument.put("World");
-        System.out.println("send " + pvArgument.get());
-        PVStructure pvResult = rpc.request(pvRequest);
-        System.out.println("result\n" + pvResult);
-        pvArgument.put("Again");
-        System.out.println("send " + pvArgument.get());
-        pvResult = rpc.request(pvRequest);
-        System.out.println("result\n" + pvResult);
+        try {
+            pvArgument.put("World");
+            System.out.println("send " + pvArgument.get());
+            PVStructure pvResult = rpc.request(pvRequest);
+            System.out.println("result\n" + pvResult);
+            pvArgument.put("Again");
+            System.out.println("send " + pvArgument.get());
+            pvResult = rpc.request(pvRequest);
+            System.out.println("result\n" + pvResult);
+        }
+        catch (RPCRequestException ex)
+        {
+            // The client connected to the server, but the server request method issued its 
+            // standard summary exception indicating it couldn't complete the requested task.
+            System.err.println("Acquisition of greeting was not successful, " +
+                    "service responded with an error: " + ex.getMessage());
+        }
+        catch (Exception ex)
+        {
+            // The client failed to connect to the server. The server isn't running or
+            // some other network related error occurred.
+            System.err.println("RPC request failed , " + ex.getMessage());
+        } 
     }
     
     static void exampleEvenMore(PvaClient pva,String channelName)
@@ -113,30 +144,37 @@ public class HelloWorldRPC
         rpc.issueConnect();
         status = rpc.waitConnect();
         if(!status.isOK()) {System.out.println(" rpc connect failed"); return;}
-        pvArgument.put("World");
-        System.out.println("send " + pvArgument.get());
-        rpc.request(pvRequest, requester);
-        requester.waitResponse();
-        pvArgument.put("Again");
-        System.out.println("send " + pvArgument.get());
-        rpc.request(pvRequest, requester);
-        requester.waitResponse();
-        rpc.setResponseTimeout(.001);
-        pvArgument.put("Once again");
-        System.out.println("send " + pvArgument.get());
         try {
+            pvArgument.put("World");
+            System.out.println("send " + pvArgument.get());
             rpc.request(pvRequest, requester);
             requester.waitResponse();
-        } catch (Exception e)
-        {
-            System.err.println("Expected exception " + e.getMessage());
+            pvArgument.put("Again");
+            System.out.println("send " + pvArgument.get());
+            rpc.request(pvRequest, requester);
+            requester.waitResponse();
+            //rpc.setResponseTimeout(.001);
+            pvArgument.put("Once again");
+            System.out.println("send " + pvArgument.get());
+            System.out.println("This should succeed");
+            rpc.request(pvRequest, requester);
+            requester.waitResponse();
+            System.out.println("This should fail");
+            rpc.request(pvRequest, requester);
+            rpc.request(pvRequest, requester);
         }
-        try {
-            rpc.request(pvRequest, requester);
-            rpc.request(pvRequest, requester);
-        } catch (Exception e)
+        catch (RPCRequestException ex)
         {
-            System.err.println("Expected exception " + e.getMessage());
+            // The client connected to the server, but the server request method issued its 
+            // standard summary exception indicating it couldn't complete the requested task.
+            System.err.println("Acquisition of greeting was not successful, " +
+                    "service responded with an error: " + ex.getMessage());
+        }
+        catch (Exception ex)
+        {
+            // The client failed to connect to the server. The server isn't running or
+            // some other network related error occurred.
+            System.err.println("RPC request failed , " + ex.getMessage());
         }
     }
 
@@ -157,7 +195,5 @@ public class HelloWorldRPC
             e.printStackTrace(System.err);
             System.exit(1);
         }
-        pva.destroy();
     }
-
 }
