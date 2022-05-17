@@ -20,7 +20,7 @@
             <groupId>org.epics</groupId>
             <artifactId>epics-core</artifactId>
             <type>pom</type>
-            <version>7.0.0-SNAPSHOT</version>
+            <version>4.6.0</version>
         </dependency>
     </dependencies>
 
